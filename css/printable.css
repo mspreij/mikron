@@ -1,0 +1,109 @@
+html,body {
+    font-family: serif;
+    font-size: 14pt;
+    padding: 10pt;
+    background: white;
+    color: black;
+}
+
+div#sidebar {
+    display: none
+}
+
+div#pagetitle {
+    font-variant: small-caps;
+    font-size: 60pt;
+    text-align: center;
+    margin-bottom: 35pt;
+    border-bottom: 2pt solid black;
+}
+
+div#sitetitle {
+    display: none
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    background: #C00000;
+}
+
+a.sidelink {
+    display: none;
+}
+
+a.sidelink:hover {
+    display: none;
+}
+
+a.knownpageref {
+    font-variant: small-caps;
+}
+
+a.unknownpageref {
+    font-variant: small-caps;
+    font-style: italic;
+}
+
+a.unknownpageref:after {
+    content: "??";
+}
+
+.code {
+  font-family: consolas, profont, monaco, monospace;
+  white-space: pre-wrap;
+  font-size: 0.8em;
+}
+
+div.contentwarning {
+    background: white;
+    padding: 15pt;
+    border: 1pt solid black;
+}
+
+div.lastedit {
+    display: none;
+}
+
+img.contentimg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15pt;
+    margin-bottom: 15pt;
+}
+
+img.contentlimg {
+    float: left;
+    margin-right: 15pt;
+    margin-bottom: 15pt;
+}
+
+img.contentrimg {
+    float: right;
+    margin-left: 15pt;
+    margin-bottom: 15pt;
+}
+
+h1.content {
+    font-weight: normal;
+    border-bottom: 1px dotted #808080;
+}
+
+h2.content {
+    font-weight: normal;
+    border-bottom: 1px dotted #808080;
+}
+
+h3.content {
+    font-weight: normal;
+}
+
+h4.content {
+    font-weight: normal;
+    font-style: italic;
+}

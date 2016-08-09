@@ -1,0 +1,235 @@
+html,body {
+  font-family: verdana, tahoma, helvetica, arial, sans-serif;
+  font-size: 14px;
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  background: black;
+  color: white;
+}
+
+div#sidebar {
+  position: fixed;
+  width: 250px;
+  height: 100%;
+}
+
+div#content {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 250px;
+  min-height: 100%;
+  color: black;
+  background: white;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#content p {
+  margin: 0px;
+}
+.code {
+  font-family: consolas, profont, monaco, monospace;
+  white-space: pre-wrap;
+  background: #eee;
+  color: navy;
+  line-height: .9em;
+}
+
+div#pagetitle {
+  font-variant: small-caps;
+  font-size: 60px;
+  color: #C00000;
+  margin-bottom: 35px;
+}
+
+div#sitetitle {
+  color: white;
+  font-size: 60px;
+  text-align: center;
+  margin-bottom: 30px;
+  font-variant: small-caps;
+}
+
+a {
+  color: #C00000;
+  text-decoration: none;
+}
+
+a:hover, #content a:focus {
+  color: white;
+  background: #C00000;
+}
+
+a.sidelink {
+  color: red;
+  text-decoration: none;
+  font-size: 15px;
+  font-variant: small-caps;
+  display: block;
+  font-weight: bold;
+  padding: 5px;
+  padding-left: 25px;
+  margin-bottom: 15px;
+}
+
+a.sidelink:hover {
+  color: black;
+  background: red;
+}
+
+a.knownpageref {
+  font-variant: small-caps;
+}
+
+
+a.unknownpageref {
+  font-variant: small-caps;
+  font-style: italic;
+}
+
+a.unknownpageref:after {
+  content: "??";
+}
+
+form {
+  margin: 0px;
+  padding: 0px;
+}
+
+input[type=text] {
+  border: 1px solid black;
+  font-family: verdana, tahoma, helvetica, arial, sans-serif;
+  font-size: 14px;
+  display: block;
+  width: 100%;
+}
+
+div.submitcontainer {
+  text-align: right;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+div.contentwarning {
+  background: #F0F0F0;
+  padding: 15px;
+  border: 1px solid #C00000;
+  color: #505050;
+}
+
+div.toc:before {
+  display: block;
+  font-weight: bold;
+  color: #505050;
+  border-bottom: 1px solid #808080;
+  margin-bottom: 15px;
+  content: "Table of contents:";
+}
+
+div.toc {
+  display: inline;
+  float: right;
+  background: #F0F0F0;
+  padding: 15px;
+  border: 1px solid #808080;
+  font-size: 85%;
+}
+
+a.toc {
+  display: block;
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+a.toc:hover {
+  color: #C00000;
+  background: #C0C0C0;
+}
+
+div.lastedit {
+  color: #C0C0C0;
+  font-size: 11px;
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+img.contentimg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+img.contentlimg {
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+img.contentrimg {
+  float: right;
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+
+h1.content {
+  font-weight: normal;
+  color: #C00000;
+  border-bottom: 1px solid #808080;
+}
+
+h2.content {
+  font-weight: normal;
+  color: #C00000;
+  border-bottom: 1px solid #808080;
+}
+
+h3.content {
+  font-weight: normal;
+  color: #C00000;
+}
+
+h4.content {
+  font-weight: normal;
+  font-style: italic;
+  color: #C00000;
+}
+
+input[type=submit],input[type=reset] {
+  right: 0px;
+  border: 0px solid #C00000;
+  background: #C00000;
+  color: white;
+  font-weight: bold;
+  font-variant: small-caps;
+  margin-left: 15px;
+  width: 120px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover,input[type=reset]:hover {
+  background: red;
+}
+
+textarea {
+  border: 1px solid black;
+  font-family: consolas, profont, monaco, monospace;
+  font-size: 14px;
+  display: block;
+  width: 100%;
+}
+
+hr {
+  border: 0px;
+  background: gray;
+  height: 1px;
+  padding: 0px;
+  margin: 0px;
+}
