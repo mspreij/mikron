@@ -1,0 +1,57 @@
+#last_modified tr:first-child td {
+	font-style: italic;
+	padding-left: 20px;
+}
+#last_modified td {
+	padding-right: 20px;
+}
+#last_modified a {
+	display: block;
+}
+.padding {
+	padding: 4px 10px;
+}
+.small {
+	font-size: .8em;
+}
+.shortcutKeyList {
+	padding: 4px 10px;
+	
+}
+.shortcutKeys {
+	color: red;
+}
+.bold {
+  color: #f08;
+  font-weight: bold;
+}
+.last_edited {
+	font-style: italic;
+	color: #666;
+	font-size: .9em;
+}
+#search_results .result {
+	border-bottom: 1px solid silver;
+	padding: 10px 0px;
+}
+#search_results .title {
+	font-size: 1.1em;
+}
+#search_results .result:hover {
+	cursor: pointer;
+}
+#search_results .result:hover .title {
+	color: white;
+	background: #C00000;
+}
+#search_results .preview {
+	padding-left: 10px;
+}
+#search_results .highlight {
+	background: #fed;
+	border-bottom: 1px dashed #800;
+}
+#pagecontent a span.numberlink:first-child {
+	font-size: .8em;
+	color: blue;
+}
