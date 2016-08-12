@@ -22,7 +22,7 @@ if ($url{strlen($url)-1} == '?') $url = substr($url, 0, strlen($url)-1);
 
 /** -- Functions -------------------------
  * 
- * getparam($name,$defval="")        -- _GET/_POST foo
+ * getparam($name,$defval="")        -- _GET/_POST foo (srslywtfbbq)
  * startswith($string, $search)      -- .. you got me!
  * str_split_unicode($str, $l = 0)   -- maybe not in use yet, for better parsing someday.
  * wiki_parse_cmd($cmd)              -- handles Wiki commands, called from wiki2html()
@@ -649,61 +649,11 @@ if ($html != "") {
 	<script src='js/jquery.min.js' type='text/javascript'></script>
 	<script src="js/keyboardjs.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/script.js" type="text/javascript" charset="utf-8"></script>
-	<style type="text/css" media="screen">
-	#last_modified tr:first-child td {
-		font-style: italic;
-		padding-left: 20px;
-	}
-	#last_modified td {
-		padding-right: 20px;
-	}
-	#last_modified a {
-		display: block;
-	}
-	.padding {
-		padding: 4px 10px;
-	}
-	.small {
-		font-size: .8em;
-	}
-	.bold {
-		color: yellow;
-	}
-	.last_edited {
-		font-style: italic;
-		color: #666;
-		font-size: .9em;
-	}
-	#search_results .result {
-		border-bottom: 1px solid silver;
-		padding: 10px 0px;
-	}
-	#search_results .title {
-		font-size: 1.1em;
-	}
-	#search_results .result:hover {
-		cursor: pointer;
-	}
-	#search_results .result:hover .title {
-		color: white;
-		background: #C00000;
-	}
-	#search_results .preview {
-		padding-left: 10px;
-	}
-	#search_results .highlight {
-		background: #fed;
-		border-bottom: 1px dashed #800;
-	}
-	#pagecontent a span.numberlink:first-child {
-		font-size: .8em;
-		color: blue;
-	}
-	</style>
+    <link rel="stylesheet" href="css/mikron.css" type="text/css" media="screen">
 	<link rel="shortcut icon" href="css/favicon.ico" />
 </head>
 
-<body>
+<body data-page="<?php echo htmlspecialchars($page); ?>">
 
 <div>
 <div id="sidebar">
@@ -719,17 +669,16 @@ if ($html != "") {
 		<a class="sidelink" href="<?php echo $url ?>?a=versions&p=<?php echo $page ?>">Older edits of this page</a>
 	<?php } ?>
 	<a class="sidelink" href="<?php echo $url ?>?a=last_modified">See last changes</a>
-	<div class='padding small'>
+	<div class='shortcutKeyList'>
 		Keyboard shortcuts:<br>
-		- <span class='bold'>I</span>ndex page<br>
-		- <span class='bold'>S</span>earch<br>
-		- <span class='bold'>E</span>dit<br>
-		- <span class='bold'>L</span>ast changes<br>
-		- <span class='bold'>C</span>ontact page<br>
-		- <span class='bold'>D</span>evlog page<br>
-		- <span class='bold'>Esc</span>ape = cancel editing<br>
-		- <span class='bold'>0-9</span> jump to nth link<br>
-		- <span class='bold'>Alt</span> show link numbers
+		- <span class='shortcutKeys'>I</span>ndex page<br>
+		- <span class='shortcutKeys'>S</span>earch<br>
+		- <span class='shortcutKeys'>E</span>dit<br>
+		- <span class='shortcutKeys'>L</span>ast changes<br>
+		- <span class='shortcutKeys'>H</span>istory for this page<br>
+		- <span class='shortcutKeys'>Esc</span>ape = cancel editing<br>
+		- <span class='shortcutKeys'>0-9</span> jump to nth link<br>
+		- <span class='shortcutKeys'>Alt</span> show link numbers
 	</div>
 </div>
 
