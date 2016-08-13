@@ -12,7 +12,7 @@ define('TAB_LENGTH', 2);
 $allowedit  = true;
 $editurl    = ""; // use if $allowedit is false to put a link to an editable URL
 $users = array(
-    '82.73.181.59'  => 'Area 61',
+    '82.73.172.82'  => 'Area 61',
 );
 
 
@@ -680,6 +680,11 @@ if ($html != "") {
 		- <span class='shortcutKeys'>0-9</span> jump to nth link<br>
 		- <span class='shortcutKeys'>Alt</span> show link numbers
 	</div>
+	<div class="padding">
+		You: <?php echo $_SERVER['REMOTE_ADDR']; ?>
+	</div>
+	
+	
 </div>
 
 <div id="content">
