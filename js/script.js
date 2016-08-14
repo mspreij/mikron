@@ -44,48 +44,39 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
             location.href = new_location;
         }, 50); // this starts to fail if it's lower than about 40, for some strange reason.. (thank you for your patience!)
     });
-
-    // i: go to index page
-    KeyboardJS.on('i', function(e) {
-        if (e.metaKey) return; // Cmd-I = page info
-        setTimeout(function() {
-            location.href = './?a=view';
-        }, 50); // I've seen this work. I've also seen it not work.
+    
+    
+    $(function(){
+    
+    var shortcutList = {
+      "i": './?a=view',
+      "h": './?a=versions&p='+$('body').data('page'),
+      "l": './?a=last_modified',
+      "w": './?a=view&p=WIKI',
+      "t": './?a=view&p=TODO'
+    };
+    
+    for (var shortcut in shortcutList) {
+      
+      KeyboardJS.on(shortcut, (function(shortcut) {
+        var target = shortcutList[shortcut];
+        return function(e) {
+          if (e.metaKey || e.ctrlKey) return; // allow default browser shortcuts
+          setTimeout(function() {
+            location.href = target;
+          }, 50);
+        };
+       })(shortcut)
+      );
+      
+    }
+    
     });
-
-    // l: go to Last Modified page
-    KeyboardJS.on('l', function(e) {
-        if (e.metaKey) return; // Cmd-L = jump to location field
-        setTimeout(function() {
-            location.href = './?a=last_modified';
-        }, 50);
-    });
-
-    // h: show History for current page
-    KeyboardJS.on('h', function(e) {
-        if (e.metaKey) return; // Cmd-H = hide application
-        location.href = './?a=versions&p=' + $page;
-    });
-
-    // w: go to Wiki/todo page
-    KeyboardJS.on('w', function(e) {
-        if (e.metaKey) return; // Cmd-W = close
-        setTimeout(function() {
-            location.href = './?a=view&p=WIKI';
-        }, 50);
-    });
-
-    // t: go to ACTUAL Todo page
-    KeyboardJS.on('t', function(e) {
-        if (e.metaKey) return; // Cmd-T = things?
-        setTimeout(function() {
-            location.href = './?a=view&p=TODO';
-        }, 50);
-    });
-
+    
+    
     // s: search popup
     KeyboardJS.on('s', function(e) {
-        if (e.metaKey) return; // Cmd-S = save
+        if (e.metaKey || e.ctrlKey) return;
         var query = prompt("Search for:");
         if (query) {
             location.href = './?a=search&q='+encodeURIComponent(query.trim());
