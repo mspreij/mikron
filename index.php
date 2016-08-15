@@ -430,6 +430,7 @@ if ($a == "view") {
 	}else{
 		$res=$db->query("SELECT datetime(time, 'unixepoch') as lastedit,title,content FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
 	}
+    if (! $res) echo '<div style="color: red;">you probably want to run <a href="./?a=install">install</a> at this point.</div>';
 	$row = $res->fetchArray(SQLITE3_ASSOC);
 	if ($row === false) {
 		$html = "Page <span class='pagename'>$page</span> not found. <a href='?a=edit&p=$page'>Create it</a>!";
