@@ -340,7 +340,7 @@ if (!valid_page($page)) {
 // }
 
 if ($a == "install") {
-    if (! $db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), content TEXT)")) die($db->lastErrorMsg());
+    if (! $db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), content TEXT, ip varchar(64))")) die($db->lastErrorMsg());
     // Add Mikron Syntax page
     $page = <<<SYNTAXCODE
 This page describes the syntax that Mikron understands for formatting pages.
@@ -386,6 +386,8 @@ If a command is a single character, then this character is inserted at the place
 Mikron pages use ALL UPPERCASE NAMES and can contain only english letters and the underscore character (ie. the valid set of characters is ABCDEFGHIJKLMNOPQRSTUVWXYZ_). Using a command which is a valid page name creates a link to that page. For example [[[]][FOO]] creates a link to the FOO page. If FOO has a title specified the FOO's title is displayed for the link's page, otherwise the Foo text will be used (that is the page's name with the first letter as uppercase and the rest as lowercase). To override the title use a colon after the page name, like [[[]][FOO:the Foo page]].
 
 To create a link to a webpage, ftp site or email just use the URL as the command. For example [[[]][http://runtimelegend.com]] creates a link to [[http://runtimelegend.com]]. To use a title put a space (not a colon) after the URL like [[[]][http://runtimelegend.com Runtime Legend]] (for [[http://runtimelegend.com Runtime Legend]]). Mikron understands URLs beginning with http:, https:, ftp:, mailto:, news: and irc:.
+
+Interestingly, [[[]][http:/localpath/file.html]] will also work, for local links, the href will look like http:/localpath/file.html but the browser will cope (chrome anyway) (currently).
 
 [[h2:Images]]
 Use [[[]][img:url]] to load an image from the given url. The image will be inserted as a standalone block. To align the image with the text left or right use [[[]][limg:url]] (for left) or [[[]][rimg:url]] (right).
