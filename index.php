@@ -340,7 +340,7 @@ if (!valid_page($page)) {
 // }
 
 if ($a == "install") {
-    if (! $db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), content TEXT)")) die($db->lastErrorMsg());
+    if (! $db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), content TEXT, ip varchar(64))")) die($db->lastErrorMsg());
     // Add Mikron Syntax page
     $page = <<<SYNTAXCODE
 This page describes the syntax that Mikron understands for formatting pages.
@@ -387,6 +387,8 @@ Mikron pages use ALL UPPERCASE NAMES and can contain only english letters and th
 
 To create a link to a webpage, ftp site or email just use the URL as the command. For example [[[]][http://runtimelegend.com]] creates a link to [[http://runtimelegend.com]]. To use a title put a space (not a colon) after the URL like [[[]][http://runtimelegend.com Runtime Legend]] (for [[http://runtimelegend.com Runtime Legend]]). Mikron understands URLs beginning with http:, https:, ftp:, mailto:, news: and irc:.
 
+Interestingly, [[[]][http:/localpath/file.html]] will also work, for local links, the href will look like http:/localpath/file.html but the browser will cope (chrome anyway) (currently).
+
 [[h2:Images]]
 Use [[[]][img:url]] to load an image from the given url. The image will be inserted as a standalone block. To align the image with the text left or right use [[[]][limg:url]] (for left) or [[[]][rimg:url]] (right).
 
@@ -428,6 +430,7 @@ if ($a == "view") {
 	}else{
 		$res=$db->query("SELECT datetime(time, 'unixepoch') as lastedit,title,content FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
 	}
+    if (! $res) echo '<div style="color: red;">you probably want to run <a href="./?a=install">install</a> at this point.</div>';
 	$row = $res->fetchArray(SQLITE3_ASSOC);
 	if ($row === false) {
 		$html = "Page <span class='pagename'>$page</span> not found. <a href='?a=edit&p=$page'>Create it</a>!";
