@@ -53,6 +53,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
       "h": './?a=versions&p='+$('body').data('page'),
       "l": './?a=last_modified',
       "w": './?a=view&p=WIKI',
+      "u": './?a=view&p=URLS',
       "p": './?a=view&p=PROJECTS',
       "t": './?a=view&p=TODO'
     };

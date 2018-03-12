@@ -76,7 +76,7 @@ function wiki_parse_cmd($cmd) {
 	if (strlen($cmd) == 1 and $cmd != '/') return $cmd;
 	if (startswith($cmd, "http:") || startswith($cmd, "https:") ||
 		startswith($cmd, "ftp:") || startswith($cmd, "mailto:") ||
-		startswith($cmd, "news:") || startswith($cmd, "irc:")) {
+		startswith($cmd, "news:") || startswith($cmd, "irc:") || startswith($cmd, "magnet:")) {
 		if (strchr($cmd, " ") === false) {
 			return "<a href='".htmlspecialchars($cmd)."' target='_blank'>".htmlspecialchars($cmd)."</a>";
 		} else {
@@ -386,7 +386,7 @@ If a command is a single character, then this character is inserted at the place
 [[h2:Links]]
 Mikron pages use ALL UPPERCASE NAMES and can contain only english letters and the underscore character (ie. the valid set of characters is ABCDEFGHIJKLMNOPQRSTUVWXYZ_). Using a command which is a valid page name creates a link to that page. For example [[[]][FOO]] creates a link to the FOO page. If FOO has a title specified the FOO's title is displayed for the link's page, otherwise the Foo text will be used (that is the page's name with the first letter as uppercase and the rest as lowercase). To override the title use a colon after the page name, like [[[]][FOO:the Foo page]].
 
-To create a link to a webpage, ftp site or email just use the URL as the command. For example [[[]][http://runtimelegend.com]] creates a link to [[http://runtimelegend.com]]. To use a title put a space (not a colon) after the URL like [[[]][http://runtimelegend.com Runtime Legend]] (for [[http://runtimelegend.com Runtime Legend]]). Mikron understands URLs beginning with http:, https:, ftp:, mailto:, news: and irc:.
+To create a link to a webpage, ftp site or email just use the URL as the command. For example [[[]][http://runtimelegend.com]] creates a link to [[http://runtimelegend.com]]. To use a title put a space (not a colon) after the URL like [[[]][http://runtimelegend.com Runtime Legend]] (for [[http://runtimelegend.com Runtime Legend]]). Mikron understands URLs beginning with http:, https:, ftp:, mailto:, news: and irc:. And magnet:. And possibly more in the future!
 
 Interestingly, [[[]][http:/localpath/file.html]] will also work, for local links, the href will look like http:/localpath/file.html but the browser will cope (chrome anyway) (currently).
 
