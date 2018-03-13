@@ -2,6 +2,7 @@
 
 This is a simple, php/sqlite-based wiki, with very little configuration, intended for small, simple wiki usage.
 
+
 ### Install
 
 By default records are saved to `data/mikron.db`. The server needs write access to this `data` directory.  
@@ -10,13 +11,20 @@ When visiting the wiki for the first time, it will offer an 'install' link, whic
 
 If this fails, check that your install of PHP includes SQLite3 (enabled by default since PHP 5.3.0), and that the server does have write access to the `data` directory.
 
+Mikron by default does some rudimentary auth, so you might see `Access denied: (your ip address)`. To fix that, open `inc/auth.inc.php` and edit or empty it.  
+It is recommended to leave *some* form of authentication in place, unless it's a local-only URL.
 
 
 ### Usage
 
 Mostly this is reading and clicking the links in the sidebar, and the buttons below the editing form.  
 Syntax rules are linked from the editing form, or can be found at  
-http://domain/path/?a=view&p=MIKRON_SYNTAX&mikron
+http://yourdomain/wikipath/?a=view&p=MIKRON_SYNTAX&mikron
+
+
+### Syntax examples / quickstart
+
+*to follow..*
 
 
 ### History
