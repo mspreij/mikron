@@ -1,20 +1,19 @@
 <?php
-// === Original: https://github.com/badsector/mikron ===
-
-require_once '../inc/site.inc.php';
 ini_set('display_errors', '1');
 error_reporting(-1);
-
 date_default_timezone_set("UTC"); 
-$sitetitle  = "Cloud";
-$dbfile     = "data/mikron.db";
+
+require_once 'inc/auth.inc.php';
+
 define('TAB_LENGTH', 2);
+$sitetitle  = "Mikron";
+$dbpath     = 'data';
+$dbfile     = "$dbpath/mikron.db";
 $allowedit  = true;
 $editurl    = ""; // use if $allowedit is false to put a link to an editable URL
 $users = array(
     '82.73.172.82'  => 'Area 61',
 );
-
 
 $url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
@@ -336,10 +335,6 @@ if (!valid_page($page)) {
     $a = "";
 }
 
-// if ($a == "phpinfo") {
-//     phpinfo();
-// }
-
 if ($a == "install") {
     if (! $db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), content TEXT, ip varchar(64))")) die($db->lastErrorMsg());
     // Add Mikron Syntax page
@@ -403,12 +398,16 @@ SYNTAXCODE;
     
     // Add Welcome page
     $page = <<<SYNTAXCODE
-Welcome to the **Mikron Wiki**. Mikron is a simple wiki system written in PHP. It is a standalone single-file script that only needs SQLite to operate and almost zero setup (a directory where the web server has write access to store the SQLite database file and a special URL call is enough to use Mikron). 
+[[h2:Welcome to the Mikron Wiki!]]
+Mikron is a simple wiki system written in PHP.
+It is a (currently) standalone single-file script that only needs SQLite (v3) to operate and almost zero setup (a directory where the web server has write access to store the SQLite database file).
+If you got this thing from Github, there should be a README.md file with more info.
 
-There isn't much to see here.
+There isn't much to see here - ''yet''!
 SYNTAXCODE;
     $db->query("INSERT INTO pages (time,name,title,content) VALUES (".time().", 'WELCOME', 'Welcome', '".$db->escapeString($page)."')");
-    $html = "install commands issued, hope for the best";
+    $html = "Install commands issued, hope for the best.<br>
+        <a href='./'>Try it out!</a>";
 }
 
 // === Printable =========================
@@ -427,11 +426,11 @@ if ($a == "printable") {
 if ($a == "view") {
 	$time = getparam("t");
 	if ($time == "") {
-		$res=$db->query("SELECT datetime(time, 'unixepoch') as lastedit,title,content FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1");
+		$res = $db->query("SELECT datetime(time, 'unixepoch') as lastedit,title,content FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1");
 	}else{
-		$res=$db->query("SELECT datetime(time, 'unixepoch') as lastedit,title,content FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
+		$res = $db->query("SELECT datetime(time, 'unixepoch') as lastedit,title,content FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
 	}
-    if (! $res) echo '<div style="color: red;">you probably want to run <a href="./?a=install">install</a> at this point.</div>';
+    if (! $res) echo '<div style="color: red;">No result, you might need to run <a href="./?a=install">install</a> at this point.</div>';
 	$row = $res->fetchArray(SQLITE3_ASSOC);
 	if ($row === false) {
 		$html = "Page <span class='pagename'>$page</span> not found. <a href='?a=edit&p=$page'>Create it</a>!";
