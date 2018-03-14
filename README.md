@@ -3,17 +3,20 @@
 This is a simple, php/sqlite-based wiki, with very little configuration, intended for small, simple wiki usage.
 
 
+### Requirements
+Some version of PHP that is not ancient (I started using this in 2012 if that's any indication), and includes SQLite3.  
+I have it running under Apache and Nginx, but the PHP CLI server will probably suffice, too.
+
+
 ### Install
 
+1. Mikron by default does some rudimentary auth, which sits in `inc/auth.inc.php`. For a fresh install you have to create this file by copying or renaming it from `inc/auth.inc.php.sample`, and editing it as you see fit. It is recommended to leave *some* form of authentication in place, unless it's a local-access-only wiki.
 
-Mikron by default does some rudimentary auth, which sits in `inc/auth.inc.php`. For a fresh install you have to create this file by copying or renaming it from
-`inc/auth.inc.php.sample`, and editing it as you see fit. It is recommended to leave *some* form of authentication in place, unless it's a local-access-only wiki.
+2. By default records are saved to `data/mikron.db`. The server needs write access to this `data` directory. If I haven't yet added it to the repo, create it and if needed give it write access with `chmod go+w data`.
 
-By default records are saved to `data/mikron.db`. The server needs write access to this `data` directory.  
-You may need to create the directory (I may need to add it to the repo), with eg `mkdir data` and then giving it write access with `chmod go+w data`.  
-When visiting the wiki for the first time, it will offer an 'install' link, which should create the database file.  
+3. Now when visiting the wiki for the first time, it will offer an 'install' link, which should create the database file.  
 
-If this fails, check that your install of PHP includes SQLite3 (enabled by default since PHP 5.3.0), and that the server does have write access to the `data` directory.
+If this fails, check that your install of PHP includes SQLite3 (enabled by default since PHP 5.3.0), and that the server does have write access to the `data` directory. And uh, file an issue or something, hopefully it's fixable.
 
 
 ### Usage

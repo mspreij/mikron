@@ -716,6 +716,7 @@ if ($html != "") {
 
 /* --- Log -------------------------------
 
+[2018-03-14 06:43:20] Time flies. Getting it ready for github.
 [2013-02-20 14:37:01] Keyboard link number shortcuts, they show up with Alt key
 [2013-01-21 11:30:56] UTF8 should work now.
 [2013-01-18 13:33:42] Fixed shortcuts getting in the way of command/meta key combo's
