@@ -491,7 +491,7 @@ if ($a == "edit") {
 			$content = "Type the content for the '$title' page here";
 		} else {
 			// $row = $row[0];
-			$pagetitle = htmlspecialchars($row['title']);
+			$pagetitle = htmlspecialchars($row['title'], ENT_QUOTES);
 			if ($pagetitle == "") $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
 			$content = $row['content'];
 			if ($content == "") $content = "Type the content for the '$pagetitle' page here";
@@ -500,7 +500,7 @@ if ($a == "edit") {
 		$title = "Edit $pagetitle";
 		
 		$html = "<form action='$url' method='post'><input type='hidden' name='a' value='store'><input type='hidden' name='p' value='$page'>".
-			"<strong>Title</strong> <input type='text' name='title' maxlength='255' value='".htmlspecialchars($pagetitle, ENT_QUOTES)."'><br>".
+			"<strong>Title</strong> <input type='text' name='title' maxlength='255' value='$pagetitle'><br>".
 		"<strong>Content</strong> (<a href='".$url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)<br><textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>".
 		"<div class='submitcontainer'><input type='submit' value='Save page'><input type='reset' value='Reset form'></div></form>";
 		if ($time != "") $html .= "<div class='contentwarning'>Please note that this form will not edit the previous version but will create a new one!</div>";
