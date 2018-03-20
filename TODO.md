@@ -1,6 +1,3 @@
-Todo
-###
-
 **Technical:**
 
 - split up index.php a little, and refactor. The installation/init code (and/or syntax template) at least can go in separate file(s), esp when adding prefs/session tables
