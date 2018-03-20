@@ -1,4 +1,4 @@
-###Todo
+This is *messy*, I tried to categorize it but there will be outdated, duplicate and overlapping todo items.
 
 **Technical:**
 
