@@ -6,7 +6,7 @@ It is very much under development still, has a 50+ item todo list, and requires 
 
 ### Requirements
 Some version of PHP that is not ancient (I started using this in 2012 if that's any indication), and includes SQLite3.  
-I have it running under Apache and Nginx, but the PHP CLI server will probably suffice, too.
+I have it running under Apache, Nginx, and the PHP CLI server (had to enable some sqlite/pdo dlls in the php.ini file though).
 
 
 ### Install
