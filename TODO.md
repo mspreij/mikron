@@ -67,6 +67,9 @@ Things that need to go in a settings thing. File/table/whatever.
 - what links here?
 
 
+**Random:**
+- github link somewhere in the sidebar?
+
 **Housekeeping:**
 
 - remove history older than 50 (say) versions.
