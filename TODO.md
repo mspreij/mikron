@@ -3,7 +3,7 @@ This is *messy*, I tried to categorize it but there will be outdated, duplicate 
 **Technical:**
 
 - split up index.php a little, and refactor. The installation/init code (and/or syntax template) at least can go in separate file(s), esp when adding prefs/session tables
-- there is a crazy notion that Markdown - or commonMark, http://commonmark.org - would work, but we'd have to hack in wiki-style links and colors.. post-process? That could actually work, with the double-square bracket style. All the current formatting options could be left to markdown(/cm). Figure out a composer version of that, maybe possibly, in case this ever goes github. While you're at it, get a markdown-editor textarea (cmd/ctrl-B for bold etc), that doesn't interfere with the current shortcut keys thing (it shouldn't).
+- there is a crazy notion that Markdown - or commonMark, http://commonmark.org - would work, but we'd have to hack in wiki-style links and colors.. post-process? That could actually work, with the double-square bracket style. All the current formatting options could be left to markdown(/cm). Figure out a composer version of that, maybe possibly, in case this ever goes github. While you're at it, get a markdown-editor textarea (cmd/ctrl-B for bold etc), that doesn't interfere with the current shortcut keys thing (it shouldn't). If ALL ELSE FAILS one could always hack in a ajax preview type thing. With jQuery.
   - also check what Drawlang is up to wrt parsing
 - look at https://github.com/victorstanciu/Wikitten/ just for fun
 - a few todos here concern settings/prefs in wiki pages vs hardcoded, maybe just add a table "settings" with name=value pairs for whatevers. like for example the IP -> name map, or the shortcuts -> pages.
