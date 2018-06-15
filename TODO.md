@@ -55,6 +55,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - alt showing numbers can show same number for same link if it appears multiple times
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail?
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
+- link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
 
 
 **History mode:**
@@ -70,6 +71,7 @@ Things that need to go in a settings thing. File/table/whatever.
 **Random:**
 - github link somewhere in the sidebar?
 
+
 **Housekeeping:**
 
 - remove history older than 50 (say) versions.
@@ -82,6 +84,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - hooks, for...
 - plugins! which could be single files that, when active, are included 1-3 times with '?js' or '?css' in the url. Pro: single file. Con: messy code. BUT SINGLE FILE! Come to think of it regular custom .js and .css files could go in the same directory and be included normally, in the right spots. Plugin filenames would be foo.php or foo.js.php or foo.js.css.php, depending. Make a nice little sample template.
 - show shortcut keys next to links to those pages, WIKI[w] or something.. possibly instead of the alt-numbers
+- prevent people overwriting eachother's work while editing at the same time - send an md5 of the current content along, if it has changed upon save, someone else also edited and saved. do smart things somehow? or lock records while editing? try keep it non-easily-breaking o.o
 - tabbed pages, somehow? templates? something making it easier to customize layout or manage larger projects on the single page? Some kind of templating tags for common elements like ToC or ..?
 - when the parser has settled down, store rendered pages and update (or remove cache, whatever) on save
 - √ how does one delete a page? by simply removing the content \o/
