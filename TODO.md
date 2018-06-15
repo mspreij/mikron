@@ -50,17 +50,14 @@ Things that need to go in a settings thing. File/table/whatever.
 - Ajax:
   - make a Save action that doesn't leave edit mode, somehow. Ctrl-enter? Maybe even handle_ajax()?
   - search: if zero results, stay on the same page, throw up alert (or new prompt) or something
-    - initial
-    - asdfasdfasdf
-      - asdfasdfasdf
-        - afasdf
+    - initial search just returns a count, if > 0 redirect to search results page which does the actual links-rendering and such
   - search: jump to a page by typing/autocompleting the title (filtering out sensitive/non-public pages); means replacing prompt by something modal'y
 - make <tab> jump to the first link in the content, not the sidebar
 - alt showing numbers can show same number for same link if it appears multiple times
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail?
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
-
+- live preview! o.o
 
 **History mode:**
 
