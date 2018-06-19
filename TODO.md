@@ -1,3 +1,5 @@
+Note to self: Github edit has a preview-changes thing when editing, saves a lot of commits eh.
+
 This is *messy*, I tried to categorize it but there will be outdated, duplicate and overlapping todo items.
 
 **Technical:**
@@ -83,8 +85,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - 404 page?
 - checkboxes that save state via Ajax for todo lists (field 'metadata' or something?)
   - or eeeven, checkboxes with multiple states for deluxe todo lists (todo, doing, done, waiting/low-prio, won't-do, prio, unclear).  
-    This probably needs 
-- hooks, for...
+    This probably needs a tag-type thing that 1. knows what list-options it has 2. can save/"hold" those 3. is not overly long to type.  - hooks, for...
 - plugins! which could be single files that, when active, are included 1-3 times with '?js' or '?css' in the url. Pro: single file. Con: messy code. BUT SINGLE FILE! Come to think of it regular custom .js and .css files could go in the same directory and be included normally, in the right spots. Plugin filenames would be foo.php or foo.js.php or foo.js.css.php, depending. Make a nice little sample template.
 - show shortcut keys next to links to those pages, WIKI[w] or something.. possibly instead of the alt-numbers
 - prevent people overwriting eachother's work while editing at the same time - send an md5 of the current content along, if it has changed upon save, someone else also edited and saved. do smart things somehow? or lock records while editing? try keep it non-easily-breaking o.o
