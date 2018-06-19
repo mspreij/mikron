@@ -82,6 +82,7 @@ Things that need to go in a settings thing. File/table/whatever.
 
 - 404 page?
 - checkboxes that save state via Ajax for todo lists (field 'metadata' or something?)
+  - or eeeven, checkboxes with multiple states for deluxe todo lists (todo, doing, done, waiting/low-prio, won't-do, prio, unclear)
 - hooks, for...
 - plugins! which could be single files that, when active, are included 1-3 times with '?js' or '?css' in the url. Pro: single file. Con: messy code. BUT SINGLE FILE! Come to think of it regular custom .js and .css files could go in the same directory and be included normally, in the right spots. Plugin filenames would be foo.php or foo.js.php or foo.js.css.php, depending. Make a nice little sample template.
 - show shortcut keys next to links to those pages, WIKI[w] or something.. possibly instead of the alt-numbers
