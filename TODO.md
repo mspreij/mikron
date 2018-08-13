@@ -17,6 +17,7 @@ This is *messy*, I tried to categorize it but there will be outdated, duplicate 
 - √ better idea: make an array/object in JS that's more easily editable that handles the thing.
 - make the shortcut keys object a non-repo file, just have a shortcutkeys.sample.js file (in the repo) that can be loaded if shortcutkeys.js doesn't exist.
   - orrrrrrrrrrrrrr... *page settings* (a tab or something in the edit mode). Which can include a shortcut?
+  - if page settings also a default custom content for any pages created from this page (nice for linking back)
 - ? also show the shortcut key (if any) next to the title for the current page - and possibly in the links, too.
 
 
