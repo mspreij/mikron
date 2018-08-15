@@ -98,3 +98,4 @@ Things that need to go in a settings thing. File/table/whatever.
 - analysis page: "broken" links, unlinked pages, most changes, oldest, ..
 - also after technical/refactoring: encryption? password thing on access, used as decrypt key. this will mess with the search though.. http://bristolcrypto.blogspot.nl/2013/11/how-to-search-on-encrypted-data-in.html
 - fuck it. filemanager (+table), upload and/or link files in edit mode.
+- subscribe to page change notifications: depends on user accounts
