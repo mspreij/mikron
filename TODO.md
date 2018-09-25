@@ -62,6 +62,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
 - live preview! o.o
+- simply hilight all links, like with background. maybe this'd be a plugin.
 
 **History mode:**
 
