@@ -23,8 +23,8 @@ This is *messy*, I tried to categorize it but there will be outdated, duplicate 
 
 **Bugs:**
 
-- this alt-key thing - make it so the links are numbered automatically, but the numbers are hidden and only show up on Alt-down  
-  not fixed at Fargeau, that just takes a different approach
+- this alt-key thing - make it so the links are numbered automatically, but the numbers are hidden and only show up on Alt-down.
+  while you're at it, make it configurable (on Windows Alt will focus the menu), or at least define a var for which key to use which can be re-set somehow, down the road.
 - escape in edit-mode shouldn't throw up dialog when nothing was changed, or when the changes were undone.
 - currently ../inc/site.inc.php is required.. originally for auth on cloud. so that needs fixing.
 - make history (key 'h') check that we're a=view[ing] a regular page instead of say, search results, history itself, last-changed, etc.
