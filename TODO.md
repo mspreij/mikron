@@ -104,5 +104,5 @@ Things that need to go in a settings thing. File/table/whatever.
 
 
 **Plugins**
-- Syntax blocks: [[code:js]] ... [[/code]] or something like that to syntax-hilight the contents. https://highlightjs.org/ or smoething similar?
+- Syntax blocks: [[code:js]] ... [[/code]] or something like that to syntax-hilight the contents. https://highlightjs.org/ or something similar?
  
