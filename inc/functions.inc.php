@@ -14,15 +14,19 @@
 * 
 **/
 
-//_____________________________
-// getparam($name,$defval="") /
-function getparam($name,$defval="") {
+//______________________________
+// getparam($name, $defval="") /
+function getparam($name, $defval="") {
     $value = "";
-    if (isset($_GET[$name])) $value = $_GET[$name];
-    if (($value == "" || !$value) && isset($_POST[$name])) $value = $_POST[$name];
-    if ($value == "" || !$value)
+    if (isset($_GET[$name])) {
+        $value = $_GET[$name];
+    }
+    if (($value == "" || !$value) && isset($_POST[$name])) {
+        $value = $_POST[$name];
+    }
+    if ($value == "" || !$value) {
         $value = $defval;
-    elseif (get_magic_quotes_gpc()) {
+    } elseif (get_magic_quotes_gpc()) {
         $value = stripslashes($value);
     }
     return $value;
