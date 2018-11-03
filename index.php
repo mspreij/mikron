@@ -21,11 +21,13 @@ $users = array(
     '127.0.0.1'  => 'A. Utho',
 );
 
+$formats = ['markdown', 'mikron'];
+
 $url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
 if ($url{strlen($url)-1} == '?') $url = substr($url, 0, strlen($url)-1);
 
-require_once 'inc/functions.inc.php';
+require_once 'inc/site.inc.php';
 
 if (!($db = new SQLite3($dbfile))) {
 	die($db->lastErrorMsg());
@@ -43,7 +45,7 @@ if (!valid_page($page)) {
 }
 
 if ($a == "install") {
-    if (! $db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), content TEXT, ip varchar(64))")) die($db->lastErrorMsg());
+    if (! $db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), format VARCHAR(255), content TEXT, ip varchar(64))")) die($db->lastErrorMsg());
     // Add Mikron Syntax page
     $page = file_get_contents('inc/syntax_template.txt');
     $db->query("INSERT INTO pages (time,name,title,content) VALUES (".time().", 'MIKRON_SYNTAX', 'MIKRON SYNTAX', '".$db->escapeString($page)."')");
@@ -71,9 +73,9 @@ if ($a == "printable") {
 if ($a == "view") {
 	$time = getparam("t");
 	if ($time == "") {
-		$res = $db->query("SELECT datetime(time, 'unixepoch') as lastedit,title,content FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1");
+		$res = $db->query("SELECT datetime(time, 'unixepoch') as lastedit, title, format, content FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1");
 	}else{
-		$res = $db->query("SELECT datetime(time, 'unixepoch') as lastedit,title,content FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
+		$res = $db->query("SELECT datetime(time, 'unixepoch') as lastedit, title, format, content FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
 	}
     if (! $res) echo '<div style="color: red;">No result, you might need to run <a href="./?a=install">install</a> at this point.</div>';
 	$row = $res->fetchArray(SQLITE3_ASSOC);
@@ -84,7 +86,8 @@ if ($a == "view") {
 		$title = htmlspecialchars($row['title']);
 		if ($title == "") $title = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
 		if ($time != "") $html .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$url."?a=view&p=$page'>click here</a>.</div>";
-		$html .= wiki2html($row['content']);
+		$html .= wiki2html($row['content'], $row['format']);
+        
 		$html = post_process($html);
 		if ($html == "") $html = "No content";
 		if ($time != "") $html .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$url."?a=edit&p=$page&t=$time'>click here</a>.</div>";
@@ -126,9 +129,9 @@ if ($a == "edit") {
 	} else {
 		$time = getparam("t");
 		if ($time == "") {
-			$res=$db->query("SELECT title,content FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1");
+			$res=$db->query("SELECT title, content, format FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1");
 		}else{
-			$res=$db->query("SELECT title,content FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
+			$res=$db->query("SELECT title, content, format FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
 		}
 		$row = $res->fetchArray(SQLITE3_ASSOC);
 		if ($row === false) {
@@ -139,15 +142,26 @@ if ($a == "edit") {
 			$pagetitle = htmlspecialchars($row['title'], ENT_QUOTES);
 			if ($pagetitle == "") $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
 			$content = $row['content'];
+			$format  = $row['format'];
 			if ($content == "") $content = "Type the content for the '$pagetitle' page here";
 		}
 		
 		$title = "Edit $pagetitle";
 		
-		$html = "<form action='$url' method='post'><input type='hidden' name='a' value='store'><input type='hidden' name='p' value='$page'>".
-			"<strong>Title</strong> <input type='text' name='title' maxlength='255' value='$pagetitle'><br>".
-		"<strong>Content</strong> (<a href='".$url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)<br><textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>".
-		"<div class='submitcontainer'><input type='submit' value='Save page'><input type='reset' value='Reset form'></div></form>";
+		$html = "
+        <form action='$url' method='post'>
+            <input type='hidden' name='a' value='store'>
+            <input type='hidden' name='p' value='$page'>
+            <strong>Title</strong> <input type='text' name='title' maxlength='255' value='$pagetitle'><br>
+            <strong>Content</strong> (<a href='".$url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)
+                ".selectList('format', $formats, $format, ['usekeys'=>0,'return'=>1])."
+                <br>
+            <textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
+            <div class='submitcontainer'>
+                <input type='submit' value='Save page'>
+                <input type='reset' value='Reset form'>
+            </div>
+        </form>";
 		if ($time != "") $html .= "<div class='contentwarning'>Please note that this form will not edit the previous version but will create a new one!</div>";
 	}
 }
@@ -158,15 +172,17 @@ if ($a == "store") {
 		$html = "Editing is disabled";
 	} else {
 		$pagetitle = getparam("title", strtoupper($page{0}).strtolower(substr($page, 1, strlen($page))));
-		$content = getparam("content");
+		$content   = getparam("content");
+		$format    = getparam("format");
 		if ($content == "") {
-			$r=$db->query("DELETE FROM pages WHERE name='".$db->escapeString($page)."'");
+			$r=$db->query("DELETE FROM pages WHERE name='".$db->escapeString($page)."'"); // deletes history as well. maybe look into?
 		}else{
 			$content = pre_store_processing($content);
 			$ip = $_SERVER['REMOTE_ADDR'];
-			$r=$db->query("INSERT INTO pages (time, name, title, content, ip) VALUES (".
+			$r=$db->query("INSERT INTO pages (time, name, format, title, content, ip) VALUES (".
 				time().", '".
 				$db->escapeString($page)."', '".
+				$db->escapeString($format)."', '".
 				$db->escapeString($pagetitle)."', '".
 				$db->escapeString($content)."', '".
 				$db->escapeString($ip)."')");
@@ -193,7 +209,7 @@ if ($a == 'search') {
 	$preview_size = 200; // total length of content preview [parts] per found page
 	$q_esc = $db->escapeString($q);
 	$sql = 
-	 "SELECT     datetime(p.time, 'unixepoch', 'localtime') as lastedit, p.name, p.title AS link_title, p.content,
+	 "SELECT     datetime(p.time, 'unixepoch', 'localtime') as lastedit, p.name, p.title AS link_title, p.content, p.format,
 	             (LENGTH(p.content)-LENGTH(REPLACE(LOWER(p.content), LOWER('$q_esc'), '')))/LENGTH('$q_esc') AS occurrences
 	  FROM       pages AS p
 	  INNER JOIN (
@@ -213,7 +229,7 @@ if ($a == 'search') {
 			extract($row);
 			$lastedit = date('H:i:s - l, j F', strtotime($row['lastedit']));
 			$link_title = preg_replace("/(".preg_quote($q).")/i", '<span class="highlight">$1</span>', $link_title);
-			$content = strip_tags(wiki2html($content));
+			$content = strip_tags(wiki2html($content, $format ?: 'markdown'));
 			$content_length = strlen($content);
 			if (stripos($content, $q) === false) {
 				// $q must've been found in title only, just show the start of the page.
@@ -345,7 +361,7 @@ if ($html != "") {
 <script type="text/javascript" charset="utf-8">
 	// focus on textarea when editing
 	var ta = document.getElementsByTagName('textarea');
-	if (typeof ta[0] != 'undefined') ta[0].focus(); // (*damn* JS is picky..)
+	if (typeof ta[0] != 'undefined') ta[0].focus();
 </script>
 
 </body>
@@ -355,6 +371,7 @@ if ($html != "") {
 
 /* --- Log -------------------------------
 
+[2018-11-03 16:32:46] Refactoring o.o added support for markdown
 [2018-03-14 06:43:20] Time flies. Getting it ready for github.
 [2013-02-20 14:37:01] Keyboard link number shortcuts, they show up with Alt key
 [2013-01-21 11:30:56] UTF8 should work now.
