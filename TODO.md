@@ -51,6 +51,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - friendly urls for nicer bookmarks, http://domain/path/$TITLE or something. maybe even a nicely cased version that will be uppercased by the script. router. thing.
 - make it auto-include js/css assets from 1 or 2 gitignore'd directories
 - make it so you can add pages without having to come from a link ('n' for new? js prompt? Ajax check for page name?)
+- allow one to rename a page (the actual name, not the title)
 - Ajax:
   - make a Save action that doesn't leave edit mode, somehow. Ctrl-enter? Maybe even handle_ajax()?
   - search: if zero results, stay on the same page, throw up alert (or new prompt) or something
