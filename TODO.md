@@ -64,6 +64,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
 - live preview! o.o
 - simply hilight all links, like with background. maybe this'd be a plugin.
+- allow one to include *another* page in the current page with a special tag; it would be subtly bordered or something, and there'd be links to the original/edit mode. This requires the main parser code to have been rewritten properly to class/methods. And should probably be a toggle in prefs to dis/allow it? Make sure it won't nest o.o or simply only include up to n levels deep. OR BOTH. Plugin?
 
 **History mode:**
 
@@ -102,6 +103,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - also after technical/refactoring: encryption? password thing on access, used as decrypt key. this will mess with the search though.. http://bristolcrypto.blogspot.nl/2013/11/how-to-search-on-encrypted-data-in.html
 - fuck it. filemanager (+table), upload and/or link files in edit mode. Uploading a file in edit mode could create an entry for it in the files table, and link it to the page in some link table. So one file could be attached to 0, 1 or many pages. Same for images (and sounds, yadda).
 - subscribe to page change notifications: depends on user accounts
+- if plugins, then some interface for them to add preference tabs to settings page. thing. which will exist at some point.
 
 
 **Plugins**
