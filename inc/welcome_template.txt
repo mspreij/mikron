@@ -1,0 +1,6 @@
+[[h2:Welcome to the Mikron Wiki!]]
+Mikron is a simple wiki system written in PHP.
+It is a (currently) standalone single-file script that only needs SQLite (v3) to operate and almost zero setup (a directory where the web server has write access to store the SQLite database file).
+If you got this thing from Github, there should be a README.md file with more info.
+
+There isn't much to see here - ''yet''!
