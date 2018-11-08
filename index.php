@@ -3,6 +3,9 @@ ini_set('display_errors', '1');
 error_reporting(-1);
 date_default_timezone_set("UTC"); 
 
+$sitetitle  = "Fargeau";
+$dbfile     = "data/mikron.db";
+
 $auth_file = 'inc/auth.inc.php';
 if (file_exists($auth_file)) {
     require_once $auth_file;
@@ -228,7 +231,7 @@ if ($a == 'search') {
 		foreach ($rows as $row) {
 			extract($row);
 			$lastedit = date('H:i:s - l, j F', strtotime($row['lastedit']));
-			$link_title = preg_replace("/(".preg_quote($q).")/i", '<span class="highlight">$1</span>', $link_title);
+			$link_title = preg_replace("/(".preg_quote($q, '/').")/i", '<span class="highlight">$1</span>', $link_title);
 			$content = strip_tags(wiki2html($content, $format ?: 'markdown'));
 			$content_length = strlen($content);
 			if (stripos($content, $q) === false) {
@@ -255,7 +258,7 @@ if ($a == 'search') {
 						$preview .= ($found_at-$padding > 0 ? '...':'').substr($content, max($found_at-$padding, 0), $q_length + ($padding*2)) . ($preview_end < $content_length ? '...' : '');
 					}
 				}
-				$preview = preg_replace("/(".preg_quote($q).")/i", '<span class="highlight">$1</span>', $preview);
+				$preview = preg_replace("/(".preg_quote($q, '/').")/i", '<span class="highlight">$1</span>', $preview);
 			}
 			// .. and add it to output:
 			$html .= 
