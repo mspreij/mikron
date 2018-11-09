@@ -24,7 +24,8 @@ This is *messy*, I tried to categorize it but there will be outdated, duplicate 
 **Bugs:**
 
 - this alt-key thing - make it so the links are numbered automatically, but the numbers are hidden and only show up on Alt-down.
-  while you're at it, make it configurable (on Windows Alt will focus the menu), or at least define a var for which key to use which can be re-set somehow, down the road.
+  - while you're at it, make it configurable (on Windows Alt will focus the menu), or at least define a var for which key to use which can be re-set somehow, down the road.
+  - clicking non-wiki links opens a new window, alt-<num> doesn't because JS. It can be re-written to open a new window, but that's a security thing that you need to grant as end-user, and the browser can remember. Put that in the readme or something, when it's added. And just for kicks, see if JS can check whether or not it worked, and show a message explaining if it didn't.
 - escape in edit-mode shouldn't throw up dialog when nothing was changed, or when the changes were undone.
 - currently ../inc/site.inc.php is required.. originally for auth on cloud. so that needs fixing.
 - make history (key 'h') check that we're a=view[ing] a regular page instead of say, search results, history itself, last-changed, etc.
