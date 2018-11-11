@@ -11,13 +11,13 @@ var $page;
 $(function(){
     
     $page = $('body').data('page');
-    var spare_height = $('body').height() - $('textarea').height();
     
+    // you can maybe probably do this with CSS? but then this works without having to tear more hair out.
+    var nonTextareaVertical = $('textarea').offset().top + 50; // 50 for the save/reset buttons
+    $('textarea').height($('body').height() - nonTextareaVertical);
     $(window).on('resize', function() {
-        var window_height = $(this).height();
-        $('textarea').height(window_height - spare_height);
+        $('textarea').height($('body').height() - nonTextareaVertical);
     });
-    
     
     // Search results clickable
     $('#search_results .result').on('click', function() {
