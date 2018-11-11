@@ -27,7 +27,8 @@ This is *messy*, I tried to categorize it but there will be outdated, duplicate 
 **Bugs:**
 
 - this alt-key thing - make it so the links are numbered automatically, but the numbers are hidden and only show up on Alt-down.
-  while you're at it, make it configurable (on Windows Alt will focus the menu), or at least define a var for which key to use which can be re-set somehow, down the road.
+  - while you're at it, make it configurable (on Windows Alt will focus the menu), or at least define a var for which key to use which can be re-set somehow, down the road.
+  - clicking non-wiki links opens a new window, alt-<num> doesn't because JS. It can be re-written to open a new window, but that's a security thing that you need to grant as end-user, and the browser can remember. Put that in the readme or something, when it's added. And just for kicks, see if JS can check whether or not it worked, and show a message explaining if it didn't.
 - escape in edit-mode shouldn't throw up dialog when nothing was changed, or when the changes were undone.
 - currently ../inc/site.inc.php is required.. originally for auth on cloud. so that needs fixing.
 - make history (key 'h') check that we're a=view[ing] a regular page instead of say, search results, history itself, last-changed, etc.
@@ -106,9 +107,12 @@ Things that need to go in a settings thing. File/table/whatever.
 - also after technical/refactoring: encryption? password thing on access, used as decrypt key. this will mess with the search though.. http://bristolcrypto.blogspot.nl/2013/11/how-to-search-on-encrypted-data-in.html
 - fuck it. filemanager (+table), upload and/or link files in edit mode. Uploading a file in edit mode could create an entry for it in the files table, and link it to the page in some link table. So one file could be attached to 0, 1 or many pages. Same for images (and sounds, yadda).
 - subscribe to page change notifications: depends on user accounts
+- below tags: how in God's name do we keep stuff from overwriting the other's output? maybe the result of markdown needs to be re-parsed into an AST of sorts.. >.>
+  - tag: [[noParse]] text that should not be touched (could be html, could be .. random stuff) [[/noParse]]
+  - tag: [[parser:xizzy]] text that will be parsed not with the main page's format, but with xizzy [[/parser]]
+  - tag: [[expr:someCallback]] data, stuff [[/expr]]
 - if plugins, then some interface for them to add preference tabs to settings page. thing. which will exist at some point.
 
 
 **Plugins**
 - Syntax blocks: [[code:js]] ... [[/code]] or something like that to syntax-hilight the contents. https://highlightjs.org/ or something similar?
- 
