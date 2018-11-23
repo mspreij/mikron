@@ -12,13 +12,6 @@ $(function(){
     
     $page = $('body').data('page');
     
-    // you can maybe probably do this with CSS? but then this works without having to tear more hair out.
-    var nonTextareaVertical = $('textarea').offset().top + 50; // 50 for the save/reset buttons
-    $('textarea').height($('body').height() - nonTextareaVertical);
-    $(window).on('resize', function() {
-        $('textarea').height($('body').height() - nonTextareaVertical);
-    });
-    
     // Search results clickable
     $('#search_results .result').on('click', function() {
         var _this = $(this);
@@ -135,7 +128,15 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
 
     // any other shortcuts for non-editing go here..
 
-}else{ // User is editing, catch escape shortcut
+}else{ // User is editing
+    
+    // you can maybe probably do this with CSS? but then this works without having to tear more hair out.
+    var nonTextareaVertical = $('textarea').offset().top + 50; // 50 for the save/reset buttons
+    $('textarea').height($('body').height() - nonTextareaVertical);
+    $(window).on('resize', function() {
+        $('textarea').height($('body').height() - nonTextareaVertical);
+    });
+    
     // esc: bail
     KeyboardJS.on('esc', function() {
         if (confirm('Lose changes?')) {
