@@ -8,8 +8,9 @@ This is *messy*, I tried to categorize it but there will be outdated, duplicate 
 
 - <span style="color: #0064B8;">split up index.php a little, and refactor. The installation/init code (and/or syntax template) at least can go in separate file(s), esp when adding prefs/session tables</span>
 - <span style="color: #0064B8;">there is a crazy notion that Markdown - or commonMark, http://commonmark.org - would work, but we'd have to hack in wiki-style links and colors.. post-process? That could actually work, with the double-square bracket style. All the current formatting options could be left to markdown(/cm).</span>
-  - While you're at it, get a markdown-editor textarea (cmd/ctrl-B for bold etc), that doesn't interfere with the current shortcut keys thing (it shouldn't). If ALL ELSE FAILS one could always hack in a ajax preview type thing. With jQuery.
+  - While you're at it, get a markdown-editor textarea (cmd/ctrl-B for bold etc), that doesn't interfere with the current shortcut keys thing (it shouldn't). If ALL ELSE FAILS one could always hack in a ajax preview type thing. With jQuery. Or yanno, leave it for later.
   - also check what Drawlang is up to wrt parsing
+- refactor: outsource the fetch-page-parse things to a class that splits it up in methods so it's easier to hook things in, and like implement sub-page tags.
 - look at https://github.com/victorstanciu/Wikitten/ just for fun
 - a few todos here concern settings/prefs in wiki pages vs hardcoded, maybe just add a table "settings" with name=value pairs for whatevers. like for example the IP -> name map, or the shortcuts -> pages.
 - also look at session preferences, possibly for different modifier keys for shortcuts if that makes 'm work better for Chrome (say)
@@ -20,7 +21,7 @@ This is *messy*, I tried to categorize it but there will be outdated, duplicate 
 - √ better idea: make an array/object in JS that's more easily editable that handles the thing.
 - make the shortcut keys object a non-repo file, just have a shortcutkeys.sample.js file (in the repo) that can be loaded if shortcutkeys.js doesn't exist.
   - orrrrrrrrrrrrrr... *page settings* (a tab or something in the edit mode). Which can include a shortcut?
-  - if page settings also a default custom content for any pages created from this page (nice for linking back)
+  - if page settings also a default custom content for any pages created from this page (nice for linking back). or a checkbox with 'link back'. which would paste in that content. which could be configurable in *main* settings.
 - ? also show the shortcut key (if any) next to the title for the current page - and possibly in the links, too.
 
 
