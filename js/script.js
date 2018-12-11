@@ -11,13 +11,6 @@ var $page;
 $(function(){
     
     $page = $('body').data('page');
-    var spare_height = $('body').height() - $('textarea').height();
-    
-    $(window).on('resize', function() {
-        var window_height = $(this).height();
-        $('textarea').height(window_height - spare_height);
-    });
-    
     
     // Search results clickable
     $('#search_results .result').on('click', function() {
@@ -31,7 +24,7 @@ $(function(){
 if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index shortcuts
   
     // e: edit current page
-    KeyboardJS.on('e', function(e) {
+    keyboardJS.on('e', function(e) {
         // using a setTimeout callback for the "redirect"; FF remembers JS state which would confuse the script when using backbutton
         // (https://github.com/RobertWHurst/KeyboardJS/issues/42)
         var new_location = '';
@@ -60,7 +53,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     
     for (var shortcut in shortcutList) {
       
-      KeyboardJS.on(shortcut, (function(shortcut) {
+      keyboardJS.on(shortcut, (function(shortcut) {
         var target = shortcutList[shortcut];
         return function(e) {
           if (e.metaKey || e.ctrlKey) return; // allow default browser shortcuts
@@ -77,7 +70,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     
     
     // s: search popup
-    KeyboardJS.on('s', function(e) {
+    keyboardJS.on('s', function(e) {
         if (e.metaKey || e.ctrlKey) return;
         var query = prompt("Search for:");
         if (query) {
@@ -86,7 +79,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     });
 
     // alt key: Show link keyboard-shortcut numbers
-    KeyboardJS.on('alt', function(e) {
+    keyboardJS.on('alt', function(e) {
         $('#pagecontent a[href]').not('.toc').each(function(i, e) {
             $(e).html($(e).html()+'<span class="numberlink"> '+(i+1)+'</span>');
         });
@@ -97,7 +90,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     });
 
     // Jump to link
-    KeyboardJS.on('1,2,3,4,5,6,7,8,9,0', function(e) {
+    keyboardJS.bind(['1','2','3','4','5','6','7','8','9','0'], function(e) {
         var links;
         var keys = '';
         var next_key_delay;
@@ -135,9 +128,17 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
 
     // any other shortcuts for non-editing go here..
 
-}else{ // User is editing, catch escape shortcut
+}else{ // User is editing
+		
+    // you can maybe probably do this with CSS? but then this works without having to tear more hair out.
+    var nonTextareaVertical = $('textarea').offset().top + 50; // 50 for the save/reset buttons
+    $('textarea').height($('body').height() - nonTextareaVertical);
+    $(window).on('resize', function() {
+        $('textarea').height($('body').height() - nonTextareaVertical);
+    });
+		
     // esc: bail
-    KeyboardJS.on('esc', function() {
+    keyboardJS.on('esc', function() {
         if (confirm('Lose changes?')) {
             location.href = location.href.replace('a=edit', 'a=view');;
         }
