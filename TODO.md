@@ -64,21 +64,23 @@ Things that need to go in a settings thing. File/table/whatever.
   - search: jump to a page by typing/autocompleting the title (filtering out sensitive/non-public pages); means replacing prompt by something modal'y
 - make <tab> jump to the first link in the content, not the sidebar
 - alt showing numbers can show same number for same link if it appears multiple times
-- keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail?
+- keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
 - live preview! o.o
 - simply hilight all links, like with background. maybe this'd be a plugin.
 - allow one to include *another* page in the current page with a special tag; it would be subtly bordered or something, and there'd be links to the original/edit mode. This requires the main parser code to have been rewritten properly to class/methods. And should probably be a toggle in prefs to dis/allow it? Make sure it won't nest o.o or simply only include up to n levels deep. OR BOTH. Plugin?
+- on edit: show warning if page is already being edited elsewhere, + name & ip
+- mikron syntax could jump up in an overlay (overlay.css, kinda like print.css?)
+- what links here?
+
 
 **History mode:**
 
 - next/previous links
-- diff on content page (background color? on alt?)
+- diff-view of content (background color? on alt?)
+  - to allow searching in diff (like in git log -p) maybe keep the diff with the previous version around, in the current page record
 - show ip/username as in Last Changes page
-- on edit: show warning if page is already being edited elsewhere, + name & ip
-- mikron syntax could jump up in an overlay (overlay.css, kinda like print.css?)
-- what links here?
 
 
 **Random:**
