@@ -89,7 +89,7 @@ Things that need to go in a settings thing. File/table/whatever.
 
 **Housekeeping:**
 
-- remove history older than 50 (say) versions.
+- remove history older than 50 (say) versions. Should be config option.
 
 
 ***Future:***
