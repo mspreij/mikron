@@ -314,7 +314,7 @@ if ($html != "") {
 		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<?php endif; ?>
 	<script src='js/jquery.min.js' type='text/javascript'></script>
-	<script src="js/keyboardjs.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/keyboard.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/script.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="css/mikron.css" type="text/css" media="screen">
 	<link rel="shortcut icon" href="css/favicon.ico" />
