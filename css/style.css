@@ -38,9 +38,10 @@ div#content {
 }
 
 div#pagetitle {
-  font-size: 40px;
+  font-size: 30px;
   color: #336;
-  margin-bottom: 35px;
+  margin-top: 20px;
+  margin-bottom: 25px;
 }
 
 div#sitetitle {
