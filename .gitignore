@@ -1,6 +1,8 @@
-data/
-images/
+/data/
+/vendor/
+/files/
+/images/
+.idea/
 .DS_Store
 inc/auth.inc.php
-files/
-.idea/
+/todo.txt

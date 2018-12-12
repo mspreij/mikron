@@ -3,7 +3,7 @@ Handle some keyboard shortcuts.
   "e" for edit
   "i" for index page
   "esc" to cancel editing
-
+  ... var shortcutList has some more
 */
 
 var $page;
@@ -22,11 +22,12 @@ $(function(){
 
 
 if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index shortcuts
-  
+    
     // e: edit current page
     keyboardJS.on('e', function(e) {
         // using a setTimeout callback for the "redirect"; FF remembers JS state which would confuse the script when using backbutton
         // (https://github.com/RobertWHurst/KeyboardJS/issues/42)
+        // might be time to take another look at this because it was ages ago and I think another version of keyboardJS came out anyway?
         var new_location = '';
         if (location.href.indexOf('a=view') > 0) {
             new_location = location.href.replace('a=view', 'a=edit');
@@ -90,7 +91,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     });
 
     // Jump to link
-    keyboardJS.bind(['1','2','3','4','5','6','7','8','9','0'], function(e) {
+    keyboardJS.on(['1','2','3','4','5','6','7','8','9','0'], function(e) {
         var links;
         var keys = '';
         var next_key_delay;
@@ -129,14 +130,16 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     // any other shortcuts for non-editing go here..
 
 }else{ // User is editing
-		
-    // you can maybe probably do this with CSS? but then this works without having to tear more hair out.
-    var nonTextareaVertical = $('textarea').offset().top + 50; // 50 for the save/reset buttons
-    $('textarea').height($('body').height() - nonTextareaVertical);
-    $(window).on('resize', function() {
+    
+    $(function(){ // THIS MAKES IT WORK OK
+        // Resize the editing textarea to take up space available for it
+        var nonTextareaVertical = $('textarea').offset().top + 50; // 50px for the save/reset buttons
         $('textarea').height($('body').height() - nonTextareaVertical);
+        $(window).on('resize', function() {
+            $('textarea').height($('body').height() - nonTextareaVertical);
+        }); // (you can maybe probably do this with CSS? but then this works without having to tear more hair out)
     });
-		
+    
     // esc: bail
     keyboardJS.on('esc', function() {
         if (confirm('Lose changes?')) {
