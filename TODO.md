@@ -95,6 +95,7 @@ Things that need to go in a settings thing. File/table/whatever.
 ***Future:***
 
 - 404 page?
+- API (needs looking at auth thing) so you can use different clients, and/or edit from CLI.
 - checkboxes that save state via Ajax for todo lists (field 'metadata' or something?)
   - or eeeven, checkboxes with multiple states for deluxe todo lists (todo, doing, done, waiting/low-prio, won't-do, prio, unclear).  
     This probably needs a tag-type thing that 1. knows what list-options it has 2. can save/"hold" those 3. is not overly long to type.  - hooks, for...
@@ -117,6 +118,7 @@ Things that need to go in a settings thing. File/table/whatever.
   - tag: [[parser:xizzy]] text that will be parsed not with the main page's format, but with xizzy [[/parser]]
   - tag: [[expr:someCallback]] data, stuff [[/expr]]
 - if plugins, then some interface for them to add preference tabs to settings page. thing. which will exist at some point.
+- offline version/synching.
 
 
 **Plugins**
