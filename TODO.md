@@ -2,7 +2,7 @@ Note to self: Github edit has a preview-changes thing when editing, saves a lot 
 
 This is *messy*, I tried to categorize it but there will be outdated, duplicate and overlapping todo items.
 
-<span style="color: #0064B8;">Doing</span>, <span style="color: #080;">Done!</span>, <span style="color: #800;">Fail</span>
+<span style="color: #0064B8;">Doing</span>, <span style="color: #080;">Done!</span>, <span style="color: #800;">Fail</span>  
 These ^ are colorized, but github doesn't support that.
 
 **Technical:**
