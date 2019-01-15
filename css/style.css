@@ -29,10 +29,11 @@ div#content {
 #content p {
   margin: 0px;
 }
-.code {
+code, .code {
   font-family: consolas, profont, monaco, monospace;
   white-space: pre-wrap;
   background: #eee;
+  padding: 0 4px;
   color: navy;
   line-height: .9em;
 }
