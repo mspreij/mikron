@@ -2,7 +2,8 @@ Note to self: Github edit has a preview-changes thing when editing, saves a lot 
 
 This is *messy*, I tried to categorize it but there will be outdated, duplicate and overlapping todo items.
 
-<span style="color: #0064B8;">Doing</span>, <span style="color: #080;">Done!</span>, <span style="color: #800;">Fail</span>
+<span style="color: #0064B8;">Doing</span>, <span style="color: #080;">Done!</span>, <span style="color: #800;">Fail</span>  
+These ^ are colorized, but github doesn't support that.
 
 **Technical:**
 
@@ -62,8 +63,6 @@ Things that need to go in a settings thing. File/table/whatever.
   - search: if zero results, stay on the same page, throw up alert (or new prompt) or something
     - initial search just returns a count, if > 0 redirect to search results page which does the actual links-rendering and such
   - search: jump to a page by typing/autocompleting the title (filtering out sensitive/non-public pages); means replacing prompt by something modal'y
-- make <tab> jump to the first link in the content, not the sidebar
-- alt showing numbers can show same number for same link if it appears multiple times
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
@@ -71,7 +70,6 @@ Things that need to go in a settings thing. File/table/whatever.
 - simply hilight all links, like with background. maybe this'd be a plugin.
 - allow one to include *another* page in the current page with a special tag; it would be subtly bordered or something, and there'd be links to the original/edit mode. This requires the main parser code to have been rewritten properly to class/methods. And should probably be a toggle in prefs to dis/allow it? Make sure it won't nest o.o or simply only include up to n levels deep. OR BOTH. Plugin?
 - on edit: show warning if page is already being edited elsewhere, + name & ip
-- mikron syntax could jump up in an overlay (overlay.css, kinda like print.css?)
 - what links here?
 
 
@@ -81,6 +79,13 @@ Things that need to go in a settings thing. File/table/whatever.
 - diff-view of content (background color? on alt?)
   - to allow searching in diff (like in git log -p) maybe keep the diff with the previous version around, in the current page record
 - show ip/username as in Last Changes page
+
+
+**Pretty / UI**
+- submit etc buttons change display on focus
+- make <tab> jump to the first link in the content, not the sidebar
+- alt showing numbers can show same number for same link if it appears multiple times
+- mikron/markdown syntax could jump up in an overlay (overlay.css, kinda like print.css?)
 
 
 **Random:**
@@ -95,6 +100,7 @@ Things that need to go in a settings thing. File/table/whatever.
 ***Future:***
 
 - 404 page?
+- API (needs looking at auth thing) so you can use different clients, and/or edit from CLI.
 - checkboxes that save state via Ajax for todo lists (field 'metadata' or something?)
   - or eeeven, checkboxes with multiple states for deluxe todo lists (todo, doing, done, waiting/low-prio, won't-do, prio, unclear).  
     This probably needs a tag-type thing that 1. knows what list-options it has 2. can save/"hold" those 3. is not overly long to type.  - hooks, for...
@@ -117,6 +123,7 @@ Things that need to go in a settings thing. File/table/whatever.
   - tag: [[parser:xizzy]] text that will be parsed not with the main page's format, but with xizzy [[/parser]]
   - tag: [[expr:someCallback]] data, stuff [[/expr]]
 - if plugins, then some interface for them to add preference tabs to settings page. thing. which will exist at some point.
+- offline version/synching.
 
 
 **Plugins**
