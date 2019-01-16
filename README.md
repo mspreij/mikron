@@ -13,7 +13,10 @@ I have it running under Apache, Nginx, and the PHP CLI server (had to enable som
 
 1. Mikron by default does some rudimentary auth, which sits in `inc/auth.inc.php`. For a fresh install you have to create this file by copying or renaming it from `inc/auth.inc.php.sample`, and editing it as you see fit. It is recommended to leave *some* form of authentication in place, unless it's a local-access-only wiki.
 
-2. By default records are saved to `data/mikron.db`. The server needs write access to this `data` directory. If I haven't yet added it to the repo, create it and if needed give it write access with `chmod go+w data`.
+2. By default records are saved to `data/mikron.db`. The server needs write access to this `data` directory. If I haven't yet added it to the repo, create it. You can give the server write access by changing the owner of the directory to the user the server runs as, for example `chown www-data data/`. You can find out what that user is by running  
+`ps aux | egrep '(httpd|apache|nginx)'`  
+It should sit in the first column of the output and should not be 'root'.  
+If all else fails you can give it write access with `chmod g+w data` or even `chmod go+w data`. I hope someone figures out the best way and lets me know >.>
 
 3. Now when visiting the wiki for the first time, it will offer an 'install' link, which should create the database file.  
 
