@@ -75,11 +75,13 @@ Things that need to go in a settings thing. File/table/whatever.
 
 **History mode:**
 
-- next/previous links
-- diff-view of content (background color? on alt?)
+- detail view
+  - next/previous links
+  - diff-view of content (background color? on alt?)
   - to allow searching in diff (like in git log -p) maybe keep the diff with the previous version around, in the current page record
-- show ip/username as in Last Changes page
-
+- list view
+  - show ip/username as in Last Changes page
+  - show size of content in bytes
 
 **Pretty / UI**
 - submit etc buttons change display on focus
