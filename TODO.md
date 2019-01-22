@@ -76,7 +76,8 @@ Things that need to go in a settings thing. File/table/whatever.
 **History mode:**
 
 - detail view
-  - next/previous links
+  - next/previous links (including if possible datetime, user)
+  - show IP/username, datetime modified, stuff. syntax mode? size?
   - diff-view of content (background color? on alt?)
   - to allow searching in diff (like in git log -p) maybe keep the diff with the previous version around, in the current page record
 - list view
