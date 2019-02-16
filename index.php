@@ -372,24 +372,11 @@ if ($html != "") {
 
 /* --- Log -------------------------------
 
-[2018-11-03 16:32:46] Refactoring o.o added support for markdown
-[2018-03-14 06:43:20] Time flies. Getting it ready for github.
-[2013-02-20 14:37:01] Keyboard link number shortcuts, they show up with Alt key
-[2013-01-21 11:30:56] UTF8 should work now.
-[2013-01-18 13:33:42] Fixed shortcuts getting in the way of command/meta key combo's
-[2013-01-17 11:55:32] Search result divs clickable (aka: "FINE. JQUERY. THERE.")
-                      Fixed substring count SQL thinger (REPLACE is case sensitive)
-[2013-01-17 10:33:22] uncommented 'auth' include line (why was this commented out again?)
-[2013-01-16 15:56:19] spent precious hours on implementing search, with pretty highlighted results.
-[2013-01-09 17:14:21] added #time# to pre_store_processing()
-                      added a second ---- > <hr> replace in post_process()
-[2012-12-17 16:21:10] added "last_modified" view, storing & showing ip address for this too
-
 Todo: use str_split_unicode(), rewrite parser to run through UTF characters instead of bytes.
 Todo: search: $count is set several times seperately, should be a sum. Also, there's "occurrences" in the result rows (they're sorted by that), could use that too -> still have to check the title too, though (in php).
-      - click from search results, if q in content, highlight it (url: "foo..&highlight=$q#result1") and add id=result1, or <a>, whatever works.
-      - prettify search preview, strip_tags should leave spaces in between words or something; maybe str_replace('<', ' <', $preview) ?
-      - search for 'index', the PHP5 preview is too short for some reason..
+    - click from search results, if q in content, highlight it (url: "foo..&highlight=$q#result1") and add id=result1, or <a>, whatever works.
+    - prettify search preview, strip_tags should leave spaces in between words or something; maybe str_replace('<', ' <', $preview) ?
+    - search for 'index', the PHP5 preview is too short for some reason..
 Todo: move <head> style to css file again, and merge last_modified results / search results a little maybe?
 Todo: possibly cache rendered content, simplifies showing search results and maybe other stuffs.
 
