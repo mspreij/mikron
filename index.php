@@ -25,6 +25,7 @@ $users = array(
 );
 
 $formats = ['markdown', 'mikron'];
+$stylesheets = [];
 
 $url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
@@ -90,8 +91,12 @@ if ($a == "view") {
 		if ($title == "") $title = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
 		if ($time != "") $html .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$url."?a=view&p=$page'>click here</a>.</div>";
 		$html .= wiki2html($row['content'], $row['format']);
-        
-		$html = post_process($html);
+		if ($row['format'] == 'mikron') {
+		    $html = post_process($html);
+        }
+		if ($row['format'] == 'markdown') {
+		    $stylesheets[] = 'markdown.css';
+        }
 		if ($html == "") $html = "No content";
 		if ($time != "") $html .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$url."?a=edit&p=$page&t=$time'>click here</a>.</div>";
 		$html .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
@@ -306,18 +311,24 @@ if ($html != "") {
 <html>
 
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<title><?php print $title." - ".$sitetitle ?></title>
-	<?php if ($printable): ?>
-		<link rel="stylesheet" href="css/printable.css" type="text/css" media="screen,print" title="no title" charset="utf-8">
-	<?php else: ?>
-		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
-	<?php endif; ?>
-	<script src='js/jquery.min.js' type='text/javascript'></script>
-	<script src="js/keyboardjs.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/script.js" type="text/javascript" charset="utf-8"></script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title><?php print $title." - ".$sitetitle ?></title>
+    <?php
+    if ($printable) {
+        echo '<link rel="stylesheet" href="css/printable.css" type="text/css" media="screen,print">';
+    } else {
+        echo '<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">';
+    }
+    echo "\n";
+    foreach ($stylesheets as $stylesheet) {
+        echo '    <link rel="stylesheet" href="css/'.$stylesheet.'">'."\n";
+    }
+    ?>
+    <script src='js/jquery.min.js' type='text/javascript'></script>
+    <script src="js/keyboard.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/script.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="css/mikron.css" type="text/css" media="screen">
-	<link rel="shortcut icon" href="css/favicon.ico" />
+    <link rel="shortcut icon" href="css/favicon.ico"/>
 </head>
 
 <body data-page="<?php echo htmlspecialchars($page); ?>">

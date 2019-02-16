@@ -2,7 +2,8 @@ Note to self: Github edit has a preview-changes thing when editing, saves a lot 
 
 This is *messy*, I tried to categorize it but there will be outdated, duplicate and overlapping todo items.
 
-<span style="color: #0064B8;">Doing</span>, <span style="color: #080;">Done!</span>, <span style="color: #800;">Fail</span> ← they're coloured as are some lines below, but Github doesn't show it
+<span style="color: #0064B8;">Doing</span>, <span style="color: #080;">Done!</span>, <span style="color: #800;">Fail</span>  
+These ^ are colorized, but github doesn't support that.
 
 **Technical:**
 
@@ -62,23 +63,32 @@ Things that need to go in a settings thing. File/table/whatever.
   - search: if zero results, stay on the same page, throw up alert (or new prompt) or something
     - initial search just returns a count, if > 0 redirect to search results page which does the actual links-rendering and such
   - search: jump to a page by typing/autocompleting the title (filtering out sensitive/non-public pages); means replacing prompt by something modal'y
-- make <tab> jump to the first link in the content, not the sidebar
-- alt showing numbers can show same number for same link if it appears multiple times
-- keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail?
+- keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
 - live preview! o.o
 - simply hilight all links, like with background. maybe this'd be a plugin.
 - allow one to include *another* page in the current page with a special tag; it would be subtly bordered or something, and there'd be links to the original/edit mode. This requires the main parser code to have been rewritten properly to class/methods. And should probably be a toggle in prefs to dis/allow it? Make sure it won't nest o.o or simply only include up to n levels deep. OR BOTH. Plugin?
+- on edit: show warning if page is already being edited elsewhere, + name & ip
+- what links here?
+
 
 **History mode:**
 
-- next/previous links
-- diff on content page (background color? on alt?)
-- show ip/username as in Last Changes page
-- on edit: show warning if page is already being edited elsewhere, + name & ip
-- mikron syntax could jump up in an overlay (overlay.css, kinda like print.css?)
-- what links here?
+- detail view
+  - next/previous links (including if possible datetime, user)
+  - show IP/username, datetime modified, stuff. syntax mode? size?
+  - diff-view of content (background color? on alt?)
+  - to allow searching in diff (like in git log -p) maybe keep the diff with the previous version around, in the current page record
+- list view
+  - show ip/username as in Last Changes page
+  - show size of content in bytes
+
+**Pretty / UI**
+- submit etc buttons change display on focus
+- make <tab> jump to the first link in the content, not the sidebar
+- alt showing numbers can show same number for same link if it appears multiple times
+- mikron/markdown syntax could jump up in an overlay (overlay.css, kinda like print.css?)
 
 
 **Random:**
@@ -87,12 +97,15 @@ Things that need to go in a settings thing. File/table/whatever.
 
 **Housekeeping:**
 
-- remove history older than 50 (say) versions.
+- remove history older than 50 (say) versions. Should be config option.
 
 
 ***Future:***
 
 - 404 page?
+- API (needs looking at auth thing) so you can use different clients, and/or edit from CLI.
+  - this might well impact plugins too o.o allow plugins to add/edit API calls?
+- tags or labels on pages? requires more tables..
 - checkboxes that save state via Ajax for todo lists (field 'metadata' or something?)
   - or eeeven, checkboxes with multiple states for deluxe todo lists (todo, doing, done, waiting/low-prio, won't-do, prio, unclear).  
     This probably needs a tag-type thing that 1. knows what list-options it has 2. can save/"hold" those 3. is not overly long to type.  - hooks, for...
@@ -107,12 +120,15 @@ Things that need to go in a settings thing. File/table/whatever.
 - analysis page: "broken" links, unlinked pages, most changes, oldest, ..
 - also after technical/refactoring: encryption? password thing on access, used as decrypt key. this will mess with the search though.. http://bristolcrypto.blogspot.nl/2013/11/how-to-search-on-encrypted-data-in.html
 - fuck it. filemanager (+table), upload and/or link files in edit mode. Uploading a file in edit mode could create an entry for it in the files table, and link it to the page in some link table. So one file could be attached to 0, 1 or many pages. Same for images (and sounds, yadda).
+  - for an implicit file link, a tag could be defined (plugin?) that links the file with a little inline "preview" thing (icon/type/size).
+    - bonus points: lightbox type thing for images (plugin)
 - subscribe to page change notifications: depends on user accounts
 - below tags: how in God's name do we keep stuff from overwriting the other's output? maybe the result of markdown needs to be re-parsed into an AST of sorts.. >.>
   - tag: [[noParse]] text that should not be touched (could be html, could be .. random stuff) [[/noParse]]
   - tag: [[parser:xizzy]] text that will be parsed not with the main page's format, but with xizzy [[/parser]]
   - tag: [[expr:someCallback]] data, stuff [[/expr]]
 - if plugins, then some interface for them to add preference tabs to settings page. thing. which will exist at some point.
+- offline version/synching.
 
 
 **Plugins**

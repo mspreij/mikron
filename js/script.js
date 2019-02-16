@@ -24,7 +24,7 @@ $(function(){
 if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index shortcuts
     
     // e: edit current page
-    KeyboardJS.on('e', function(e) {
+    keyboardJS.on('e', function(e) {
         // using a setTimeout callback for the "redirect"; FF remembers JS state which would confuse the script when using backbutton
         // (https://github.com/RobertWHurst/KeyboardJS/issues/42)
         // might be time to take another look at this because it was ages ago and I think another version of keyboardJS came out anyway?
@@ -54,7 +54,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     
     for (var shortcut in shortcutList) {
       
-      KeyboardJS.on(shortcut, (function(shortcut) {
+      keyboardJS.on(shortcut, (function(shortcut) {
         var target = shortcutList[shortcut];
         return function(e) {
           if (e.metaKey || e.ctrlKey) return; // allow default browser shortcuts
@@ -71,7 +71,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     
     
     // s: search popup
-    KeyboardJS.on('s', function(e) {
+    keyboardJS.on('s', function(e) {
         if (e.metaKey || e.ctrlKey) return;
         var query = prompt("Search for:");
         if (query) {
@@ -80,7 +80,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     });
 
     // alt key: Show link keyboard-shortcut numbers
-    KeyboardJS.on('alt', function(e) {
+    keyboardJS.on('alt', function(e) {
         $('#pagecontent a[href]').not('.toc').each(function(i, e) {
             $(e).html($(e).html()+'<span class="numberlink"> '+(i+1)+'</span>');
         });
@@ -91,7 +91,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     });
 
     // Jump to link
-    KeyboardJS.on('1,2,3,4,5,6,7,8,9,0', function(e) {
+    keyboardJS.on(['1','2','3','4','5','6','7','8','9','0'], function(e) {
         var links;
         var keys = '';
         var next_key_delay;
@@ -141,7 +141,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     });
     
     // esc: bail
-    KeyboardJS.on('esc', function() {
+    keyboardJS.on('esc', function() {
         if (confirm('Lose changes?')) {
             location.href = location.href.replace('a=edit', 'a=view');;
         }
