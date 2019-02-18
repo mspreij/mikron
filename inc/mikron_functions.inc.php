@@ -50,6 +50,7 @@ function wiki2html($code, $converter='markdown') {
         case 'commonmark':
             $converter = new CommonMarkConverter();
             $code = $converter->convertToHtml($code);
+            $code = postProcessMarkdown($code);
             return $code;
             break;
         case 'mikron':
@@ -58,6 +59,24 @@ function wiki2html($code, $converter='markdown') {
             return "<h1>unconverted!</h1>" . $code;
             break;
     }
+}
+
+//_____________________________
+// postProcessMarkdown($html) /  -- temp function to convert code blocks to textareas for easier copy/pasting. this could/should be a plugin one day
+function postProcessMarkdown($html) {
+    $loopBust = 0;
+    $codeTagStart = '<pre><code class="language-textarea">';
+    $codeTagEnd = '</code></pre>';
+    while (is_numeric($pos = strpos($html, $codeTagStart))) {
+        $content = substr($html, $pos + strlen($codeTagStart), $contentLength = (strpos($html, $codeTagEnd, $pos) - ($pos + strlen($codeTagStart))));
+        $trailing = substr($html, $pos + strlen($codeTagStart) + $contentLength + strlen($codeTagEnd));
+        $html = substr($html, 0, $pos).'<textarea readonly class="selectOnFocus" rows="'.(count(explode("\n", $content))-1).'">'.$content.'</textarea>'.$trailing;
+        if ($loopBust++ > 50) {
+            $html .= '<script>alert("either there are too many textareas on this page or wiki2html() got into a bloody loop again")</script>';
+            break;
+        }
+    }
+    return $html;
 }
 
 //_____________________
