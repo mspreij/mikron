@@ -76,7 +76,42 @@ function postProcessMarkdown($html) {
             break;
         }
     }
+    $html = handleMikronTags($html);
     return $html;
+}
+
+function handleMikronTags($code) {
+    $html = '';
+    $len = strlen($code);
+    $head = 0;
+    $text = '';
+    while ($head < $len) {
+        if ($code{$head} == '[' && $code{$head + 1} == '[') {
+            $head += 2;
+            $cmd = "";
+            while ($head < $len) {
+                if ($code{$head} == ']' && $code{$head + 1} == ']') {
+                    $head += 2;
+                    break;
+                }
+                $cmd .= $code{$head++};
+            }
+            $html .= $text.wiki_parse_cmd($cmd);
+            $text = "";
+        }
+        if ($code{$head} == "\n") {
+            $html .= "$text\n";
+            if (trim($text == "")) {
+                $html .= "</p><p class='content'>";
+            }else{
+                $text = "";
+            }
+        } else {
+            $text .= $code[$head];
+        }
+        $head++;
+    }
+    return $html.$text;
 }
 
 //_____________________
@@ -84,7 +119,6 @@ function postProcessMarkdown($html) {
 function mikron2html($code) {
     global $heads, $printable;
     $heads = array();
-    $html = "";
     $len = strlen($code);
     $code = $code.' ';
     $head = 0;
