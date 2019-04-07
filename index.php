@@ -27,7 +27,7 @@ $users = array(
 $formats = ['markdown', 'mikron'];
 $stylesheets = [];
 
-$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
+$url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
 if ($url{strlen($url)-1} == '?') $url = substr($url, 0, strlen($url)-1);
 
