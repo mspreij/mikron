@@ -211,7 +211,7 @@ if ($a == 'search') {
 	$q        = trim($_GET['q']);
 	$q_length = strlen($q);
 	if (! $q_length) {
-		header('Location: http://hermes/mikron/?a=search&q=fnord');
+		header("Location: $url?a=search&q=fnord");
 		die();
 	}
 	$preview_size = 200; // total length of content preview [parts] per found page
