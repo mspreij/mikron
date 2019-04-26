@@ -63,6 +63,9 @@ Things that need to go in a settings thing. File/table/whatever.
   - search: if zero results, stay on the same page, throw up alert (or new prompt) or something
     - initial search just returns a count, if > 0 redirect to search results page which does the actual links-rendering and such
   - search: jump to a page by typing/autocompleting the title (filtering out sensitive/non-public pages); means replacing prompt by something modal'y
+- Search:
+  - advanced search: title/body, date, $field (plugins could hook into this)
+  - show value again if no matches, see also Ajax->Search above
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
