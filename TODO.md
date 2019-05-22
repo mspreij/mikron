@@ -23,6 +23,8 @@ These ^ are colorized, but github doesn't support that.
 - make the shortcut keys object a non-repo file, just have a shortcutkeys.sample.js file (in the repo) that can be loaded if shortcutkeys.js doesn't exist.
   - orrrrrrrrrrrrrr... *page settings* (a tab or something in the edit mode). Which can include a shortcut?
   - if page settings also a default custom content for any pages created from this page (nice for linking back). or a checkbox with 'link back'. which would paste in that content. which could be configurable in *main* settings.
+  - custom js/css includes per page
+  - hook for plugins, of course
 - ? also show the shortcut key (if any) next to the title for the current page - and possibly in the links, too.
 
 
@@ -40,7 +42,7 @@ These ^ are colorized, but github doesn't support that.
 - effing chromebook triggers last link on '0' (zero) key. if that's by design, fuck it, leave it in.
 
 
-**Settings:**
+**Global settings:**
 
 Things that need to go in a settings thing. File/table/whatever.
 
