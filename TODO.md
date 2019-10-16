@@ -96,9 +96,9 @@ Things that need to go in a settings thing. File/table/whatever.
 - mikron/markdown syntax could jump up in an overlay (overlay.css, kinda like print.css?)
 
 
-**Random:**
+**Random:** 
 - github link somewhere in the sidebar?
-
+- https://tiddlywiki.com/ steal ideas \o/
 
 **Housekeeping:**
 
