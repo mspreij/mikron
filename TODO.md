@@ -68,6 +68,8 @@ Things that need to go in a settings thing. File/table/whatever.
 - Search:
   - advanced search: title/body, date, $field (plugins could hook into this)
   - show value again if no matches, see also Ajax->Search above
+  - show search results that have an exact title match first, maybe?
+  - maybe next/previous links for results? if that's not in there already? who wrote this thing!
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
