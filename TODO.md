@@ -140,3 +140,4 @@ Things that need to go in a settings thing. File/table/whatever.
 
 **Plugins**
 - Syntax blocks: [[code:js]] ... [[/code]] or something like that to syntax-hilight the contents. https://highlightjs.org/ or something similar?
+- Menu: make it so you can define an actual menu with submenu items in the lefthand menubar. Could be JSON/YAML type thing, simple 2-dim array with page names. Highlight current.
