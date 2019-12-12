@@ -102,9 +102,11 @@ Things that need to go in a settings thing. File/table/whatever.
 - github link somewhere in the sidebar?
 - https://tiddlywiki.com/ steal ideas \o/
 
+
 **Housekeeping:**
 
 - remove history older than 50 (say) versions. Should be config option.
+- allow removing history for a certain page or deleting certain history items ;>.>
 
 
 ***Future:***
