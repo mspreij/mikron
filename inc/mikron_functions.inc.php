@@ -253,14 +253,15 @@ function mikron2html($code) {
 function wiki_parse_cmd($cmd) {
     global $heads, $db, $url;
     static $linkCounter = 0;
+    $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
     if (strlen($cmd) == 1 and $cmd != '/') return $cmd;
-    if (startswith($cmd, "http:") || startswith($cmd, "https:") ||
+    if (startswith($cmd, "http:") || startswith($cmd, "https:") || // todo: if substr($cmd, 0, strpos($cmd, ':')) in_array $protocols, do..
         startswith($cmd, "ftp:") || startswith($cmd, "mailto:") ||
-    startswith($cmd, "news:") || startswith($cmd, "irc:") || startswith($cmd, "magnet:")) {
+        startswith($cmd, "news:") || startswith($cmd, "irc:") || startswith($cmd, "magnet:")) {
         if (strchr($cmd, " ") === false) {
-            return "<a href='".htmlspecialchars($cmd)."' target='_blank'>".htmlspecialchars($cmd)."</a>";
+            return "<a href='".htmlspecialchars($cmd)."' target='_blank'>".htmlspecialchars($cmd)."</a>$linkCounterHTML";
         } else {
-            return "<a href='".htmlspecialchars(substr($cmd, 0, strpos($cmd, " ")))."' target='_blank'>".htmlspecialchars(substr($cmd, strpos($cmd, " ") + 1, strlen($cmd)))."</a>";
+            return "<a href='".htmlspecialchars(substr($cmd, 0, strpos($cmd, " ")))."' target='_blank'>".htmlspecialchars(substr($cmd, strpos($cmd, " ") + 1, strlen($cmd)))."</a>$linkCounterHTML";
         }
     }
     
@@ -302,7 +303,6 @@ function wiki_parse_cmd($cmd) {
         // $row = sqlite_array_query($db, "SELECT title FROM pages WHERE name='".sqlite_escape_string($page)."' ORDER BY time DESC LIMIT 1", SQLITE_ASSOC);
         $res = $db->query("SELECT title FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1"); // todo: uh.. select all in one go and cache it?
         $row = $res->fetchArray(SQLITE3_ASSOC); // todo: why is this not a wrapper
-        $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
         if ($row) {
             if ($ftitle == "") {
                 $pagetitle = htmlspecialchars($row['title']);
