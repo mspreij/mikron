@@ -3,9 +3,6 @@ ini_set('display_errors', '1');
 error_reporting(-1);
 date_default_timezone_set("UTC"); 
 
-$sitetitle  = "Fargeau";
-$dbfile     = "data/mikron.db";
-
 $auth_file = 'inc/auth.inc.php';
 if (file_exists($auth_file)) {
     require_once $auth_file;
@@ -15,7 +12,7 @@ if (file_exists($auth_file)) {
 }
 
 define('TAB_LENGTH', 2);
-$sitetitle  = "Mikron";
+$sitetitle  = "Wtf Code";
 $dbpath     = 'data';
 $dbfile     = "$dbpath/mikron.db";
 $allowedit  = true;

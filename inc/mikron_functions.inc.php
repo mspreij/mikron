@@ -50,6 +50,7 @@ function wiki2html($code, $converter='markdown') {
         case 'commonmark':
             $converter = new CommonMarkConverter();
             $code = $converter->convertToHtml($code);
+            $code = postProcessMarkdown($code);
             return $code;
             break;
         case 'mikron':
@@ -58,6 +59,61 @@ function wiki2html($code, $converter='markdown') {
             return "<h1>unconverted!</h1>" . $code;
             break;
     }
+}
+
+//_____________________________
+// postProcessMarkdown($html) /  -- temp function to convert code blocks to textareas for easier copy/pasting. this could/should be a plugin one day
+function postProcessMarkdown($html) {
+    global $heads;
+    $heads = array();
+    $loopBust = 0;
+    $codeTagStart = '<pre><code class="language-textarea">';
+    $codeTagEnd = '</code></pre>';
+    while (is_numeric($pos = strpos($html, $codeTagStart))) {
+        $content = substr($html, $pos + strlen($codeTagStart), $contentLength = (strpos($html, $codeTagEnd, $pos) - ($pos + strlen($codeTagStart))));
+        $trailing = substr($html, $pos + strlen($codeTagStart) + $contentLength + strlen($codeTagEnd));
+        $html = substr($html, 0, $pos).'<textarea readonly class="selectOnFocus" rows="'.(count(explode("\n", $content))-1).'">'.$content.'</textarea>'.$trailing;
+        if ($loopBust++ > 50) {
+            $html .= '<script>alert("either there are too many textareas on this page or wiki2html() got into a bloody loop again")</script>';
+            break;
+        }
+    }
+    $html = handleMikronTags($html);
+    return $html;
+}
+
+function handleMikronTags($code) {
+    $html = '';
+    $len = strlen($code);
+    $head = 0;
+    $text = '';
+    while ($head < $len) {
+        if ($code{$head} == '[' && $code{$head + 1} == '[') {
+            $head += 2;
+            $cmd = "";
+            while ($head < $len) {
+                if ($code{$head} == ']' && $code{$head + 1} == ']') {
+                    $head += 2;
+                    break;
+                }
+                $cmd .= $code{$head++};
+            }
+            $html .= $text.wiki_parse_cmd($cmd);
+            $text = "";
+        }
+        if ($code{$head} == "\n") {
+            $html .= "$text\n";
+            if (trim($text == "")) {
+                $html .= "</p><p class='content'>";
+            }else{
+                $text = "";
+            }
+        } else {
+            $text .= $code[$head];
+        }
+        $head++;
+    }
+    return $html.$text;
 }
 
 //_____________________
@@ -206,6 +262,7 @@ function wiki_parse_cmd($cmd) {
             return "<a href='".htmlspecialchars(substr($cmd, 0, strpos($cmd, " ")))."' target='_blank'>".htmlspecialchars(substr($cmd, strpos($cmd, " ") + 1, strlen($cmd)))."</a>";
         }
     }
+    
     // check <h1> .. <h4>
     for ($i=1; $i <= 4; $i++) { 
         if (startswith($cmd, "h$i:")) {
