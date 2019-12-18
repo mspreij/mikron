@@ -12,8 +12,8 @@ if (file_exists($auth_file)) {
 }
 
 define('TAB_LENGTH', 2);
-$sitetitle  = "Wtf Code";
-$dbpath     = 'data';
+$sitetitle  = "Mikron";
+$dbpath     = "data";
 $dbfile     = "$dbpath/mikron.db";
 $allowedit  = true;
 $editurl    = ""; // use if $allowedit is false to put a link to an editable URL
