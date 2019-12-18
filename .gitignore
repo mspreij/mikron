@@ -6,3 +6,4 @@
 .DS_Store
 inc/auth.inc.php
 /todo.txt
+*.log

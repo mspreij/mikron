@@ -51,7 +51,8 @@
 	background: #fed;
 	border-bottom: 1px dashed #800;
 }
-#pagecontent a span.numberlink:first-child {
+#pagecontent span.numberlink {
 	font-size: .8em;
 	color: blue;
+    display: none;
 }

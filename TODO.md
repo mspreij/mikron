@@ -23,6 +23,8 @@ These ^ are colorized, but github doesn't support that.
 - make the shortcut keys object a non-repo file, just have a shortcutkeys.sample.js file (in the repo) that can be loaded if shortcutkeys.js doesn't exist.
   - orrrrrrrrrrrrrr... *page settings* (a tab or something in the edit mode). Which can include a shortcut?
   - if page settings also a default custom content for any pages created from this page (nice for linking back). or a checkbox with 'link back'. which would paste in that content. which could be configurable in *main* settings.
+  - custom js/css includes per page
+  - hook for plugins, of course
 - ? also show the shortcut key (if any) next to the title for the current page - and possibly in the links, too.
 
 
@@ -40,7 +42,7 @@ These ^ are colorized, but github doesn't support that.
 - effing chromebook triggers last link on '0' (zero) key. if that's by design, fuck it, leave it in.
 
 
-**Settings:**
+**Global settings:**
 
 Things that need to go in a settings thing. File/table/whatever.
 
@@ -63,6 +65,11 @@ Things that need to go in a settings thing. File/table/whatever.
   - search: if zero results, stay on the same page, throw up alert (or new prompt) or something
     - initial search just returns a count, if > 0 redirect to search results page which does the actual links-rendering and such
   - search: jump to a page by typing/autocompleting the title (filtering out sensitive/non-public pages); means replacing prompt by something modal'y
+- Search:
+  - advanced search: title/body, date, $field (plugins could hook into this)
+  - show value again if no matches, see also Ajax->Search above
+  - show search results that have an exact title match first, maybe?
+  - maybe next/previous links for results? if that's not in there already? who wrote this thing!
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?
 - new page property: markup that was used, selectlist on edit. Do the technical/refactoring first
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
@@ -91,13 +98,15 @@ Things that need to go in a settings thing. File/table/whatever.
 - mikron/markdown syntax could jump up in an overlay (overlay.css, kinda like print.css?)
 
 
-**Random:**
+**Random:** 
 - github link somewhere in the sidebar?
+- https://tiddlywiki.com/ steal ideas \o/
 
 
 **Housekeeping:**
 
 - remove history older than 50 (say) versions. Should be config option.
+- allow removing history for a certain page or deleting certain history items ;>.>
 
 
 ***Future:***
@@ -133,3 +142,4 @@ Things that need to go in a settings thing. File/table/whatever.
 
 **Plugins**
 - Syntax blocks: [[code:js]] ... [[/code]] or something like that to syntax-hilight the contents. https://highlightjs.org/ or something similar?
+- Menu: make it so you can define an actual menu with submenu items in the lefthand menubar. Could be JSON/YAML type thing, simple 2-dim array with page names. Highlight current. Probably only show when the current page is one of its items.

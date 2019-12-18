@@ -3,9 +3,6 @@ ini_set('display_errors', '1');
 error_reporting(-1);
 date_default_timezone_set("UTC"); 
 
-$sitetitle  = "Fargeau";
-$dbfile     = "data/mikron.db";
-
 $auth_file = 'inc/auth.inc.php';
 if (file_exists($auth_file)) {
     require_once $auth_file;
@@ -16,7 +13,7 @@ if (file_exists($auth_file)) {
 
 define('TAB_LENGTH', 2);
 $sitetitle  = "Mikron";
-$dbpath     = 'data';
+$dbpath     = "data";
 $dbfile     = "$dbpath/mikron.db";
 $allowedit  = true;
 $editurl    = ""; // use if $allowedit is false to put a link to an editable URL
@@ -27,7 +24,7 @@ $users = array(
 $formats = ['markdown', 'mikron'];
 $stylesheets = [];
 
-$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
+$url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
 if ($url{strlen($url)-1} == '?') $url = substr($url, 0, strlen($url)-1);
 
@@ -211,7 +208,7 @@ if ($a == 'search') {
 	$q        = trim($_GET['q']);
 	$q_length = strlen($q);
 	if (! $q_length) {
-		header('Location: http://hermes/mikron/?a=search&q=fnord');
+		header("Location: $url?a=search&q=fnord");
 		die();
 	}
 	$preview_size = 200; // total length of content preview [parts] per found page
