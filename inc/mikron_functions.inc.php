@@ -252,11 +252,11 @@ function mikron2html($code) {
 function wiki_parse_cmd($cmd) {
     global $heads, $db, $url;
     static $linkCounter = 0;
-    $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
     if (strlen($cmd) == 1 and $cmd != '/') return $cmd;
     if (startswith($cmd, "http:") || startswith($cmd, "https:") || // todo: if substr($cmd, 0, strpos($cmd, ':')) in_array $protocols, do..
         startswith($cmd, "ftp:") || startswith($cmd, "mailto:") ||
         startswith($cmd, "news:") || startswith($cmd, "irc:") || startswith($cmd, "magnet:")) {
+        $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
         if (strchr($cmd, " ") === false) {
             return "<a href='".htmlspecialchars($cmd)."' target='_blank'>".htmlspecialchars($cmd)."</a>$linkCounterHTML";
         } else {
@@ -309,7 +309,7 @@ function wiki_parse_cmd($cmd) {
             } else {
                 $pagetitle = htmlspecialchars($ftitle);
             }
-            
+            $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
             return "<a class='knownpageref' href='".$url."?a=view&p=$page'>".$pagetitle."</a>$linkCounterHTML";
         } else {
             if ($ftitle == "")
