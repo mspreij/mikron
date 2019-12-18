@@ -1,15 +1,13 @@
 <?php
-ini_set('display_errors', '1');
-error_reporting(-1);
-date_default_timezone_set("UTC"); 
-
-$auth_file = 'inc/auth.inc.php';
+$auth_file     = 'inc/auth.inc.php';
+$settings_file = 'inc/settings.inc.php';
 if (file_exists($auth_file)) {
     require_once $auth_file;
 }else{
     echo "Auth file missing, copy and edit *.sample file in inc/. See comments in that file for more info.";
     die();
 }
+if (file_exists($settings_file)) require_once $settings_file;
 
 define('TAB_LENGTH', 2);
 $sitetitle  = "Mikron";
