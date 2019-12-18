@@ -83,12 +83,12 @@ Things that need to go in a settings thing. File/table/whatever.
 **History mode:**
 
 - detail view
-  - next/previous links (including if possible datetime, user)
+  - next/previous links (including if possible datetime, user, update comment < requires new column)
   - show IP/username, datetime modified, stuff. syntax mode? size?
   - diff-view of content (background color? on alt?)
   - to allow searching in diff (like in git log -p) maybe keep the diff with the previous version around, in the current page record
 - list view
-  - show ip/username as in Last Changes page
+  - show date, ip/username as in Last Changes page
   - show size of content in bytes
 
 **Pretty / UI**
