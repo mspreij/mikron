@@ -29,8 +29,8 @@ If this fails, check that your install of PHP includes SQLite3 (enabled by defau
 
 Mostly this is reading and clicking the links in the sidebar, and the buttons below the editing form.  
 Syntax rules are linked from the editing form, or can be found at  
-http://yourdomain/wikipath/?a=view&p=MIKRON_SYNTAX&mikron
-
+http://yourdomain/wikipath/?a=view&p=MIKRON_SYNTAX&mikron  
+PS. if that looks like a big messy blob, go to edit mode and change the format (little select above the textarea) to "mikron". Sorry about that.
 
 ### Syntax examples / quickstart
 
