@@ -252,6 +252,7 @@ function mikron2html($code) {
 // wiki_parse_cmd($cmd) /
 function wiki_parse_cmd($cmd) {
     global $heads, $db, $url;
+    static $linkCounter = 0;
     if (strlen($cmd) == 1 and $cmd != '/') return $cmd;
     if (startswith($cmd, "http:") || startswith($cmd, "https:") ||
         startswith($cmd, "ftp:") || startswith($cmd, "mailto:") ||
@@ -299,22 +300,23 @@ function wiki_parse_cmd($cmd) {
             $ftitle = substr($cmd, strpos($cmd, ":") + 1, strlen($cmd));
         }
         // $row = sqlite_array_query($db, "SELECT title FROM pages WHERE name='".sqlite_escape_string($page)."' ORDER BY time DESC LIMIT 1", SQLITE_ASSOC);
-        $res = $db->query("SELECT title FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1");
-        $row = $res->fetchArray(SQLITE3_ASSOC);
+        $res = $db->query("SELECT title FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1"); // todo: uh.. select all in one go and cache it?
+        $row = $res->fetchArray(SQLITE3_ASSOC); // todo: why is this not a wrapper
+        $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
         if ($row) {
-            // $row = $row[0];
             if ($ftitle == "") {
                 $pagetitle = htmlspecialchars($row['title']);
                 if ($pagetitle == "") $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
             } else {
                 $pagetitle = htmlspecialchars($ftitle);
             }
-            return "<a class='knownpageref' href='".$url."?a=view&p=$page'>".$pagetitle."</a>";
+            
+            return "<a class='knownpageref' href='".$url."?a=view&p=$page'>".$pagetitle."</a>$linkCounterHTML";
         } else {
             if ($ftitle == "")
-                return "<a class='unknownpageref' href='".$url."?a=edit&p=$page'>".strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)))."</a>";
+                return "<a class='unknownpageref' href='".$url."?a=edit&p=$page'>".strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)))."</a>$linkCounterHTML";
             else
-                return "<a class='unknownpageref' href='".$url."?a=edit&p=$page'>".htmlspecialchars($ftitle)."</a>";
+                return "<a class='unknownpageref' href='".$url."?a=edit&p=$page'>".htmlspecialchars($ftitle)."</a>$linkCounterHTML";
         }
     }
     return "Unknown wiki command <tt>".htmlspecialchars($cmd)."</tt>";

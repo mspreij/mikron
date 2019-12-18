@@ -80,14 +80,10 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
     });
 
     // alt key: Show link keyboard-shortcut numbers
-    keyboardJS.on('alt', function(e) {
-        $('#pagecontent a[href]').not('.toc').each(function(i, e) {
-            $(e).html($(e).html()+'<span class="numberlink"> '+(i+1)+'</span>');
-        });
+    keyboardJS.on((getOS() === 'macOS') ? 'alt' : 'ctrl', function(e) {
+        $('.numberlink').show();
     }, function(e) {
-        $('#pagecontent a[href]').not('.toc').each(function(i, e) {
-            $('span', e).last().remove();
-        });
+        $('.numberlink').hide();
     });
 
     // Jump to link
@@ -146,4 +142,28 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
             location.href = location.href.replace('a=edit', 'a=view');;
         }
     });
+}
+
+// https://stackoverflow.com/a/38241481/126584
+function getOS() {
+    var userAgent = window.navigator.userAgent,
+        platform = window.navigator.platform,
+        macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+        os = null;
+
+    if (macosPlatforms.indexOf(platform) !== -1) {
+        os = 'macOS';
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+        os = 'iOS';
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+        os = 'Windows';
+    } else if (/Android/.test(userAgent)) {
+        os = 'Android';
+    } else if (!os && /Linux/.test(platform)) {
+        os = 'Linux';
+    }
+
+    return os;
 }
