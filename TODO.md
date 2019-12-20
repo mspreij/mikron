@@ -101,6 +101,7 @@ Things that need to go in a settings thing. File/table/whatever.
 **Random:** 
 - github link somewhere in the sidebar?
 - https://tiddlywiki.com/ steal ideas \o/
+- the hooks thing: they'll be all over the place, sort them out into a tree-like structure maybe, also easier to document
 
 
 **Housekeeping:**
