@@ -351,7 +351,7 @@ if ($html != "") {
 		- <span class='shortcutKeys'>H</span>istory for this page<br>
 		- <span class='shortcutKeys'>Esc</span>ape = cancel editing<br>
 		- <span class='shortcutKeys'>0-9</span> jump to nth link<br>
-		- <span class='shortcutKeys'>Alt</span> show link numbers
+		- <span class='shortcutKeys'>Ctrl</span> show link numbers
 	</div>
 	<div class="padding">
 		You: <?php echo $_SERVER['REMOTE_ADDR']; ?>
