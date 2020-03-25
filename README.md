@@ -1,18 +1,17 @@
 # Mikron wiki
 
 This is a simple, php/sqlite-based wiki, with very little configuration, intended for small, simple wiki usage.  
-It is very much under development still, has a 50+ item todo list, and requires some dependency stuffs, still. Which I have to figure out one day.
+It is very much under development still, has a 50+ item todo list, and requires some dependency stuffs, still.
 
 
 ### Requirements
-Some version of PHP that is not ancient (I started using this in 2012 if that's any indication), and includes SQLite3.  
+Some version of PHP that is not ancient (I started using this in 2012 if that's any indication), and includes SQLite3. The current composer.lock file suggests 5.4.8 which was released in October 2012.  
 I have it running under Apache, Nginx, and the PHP CLI server (had to enable some sqlite/pdo dlls in the php.ini file though).
 
 
 ### Install
 
-1. Mikron by default does some rudimentary auth, which sits in `inc/auth.inc.php`. For a fresh install you have to create this file by copying or renaming it from `inc/auth.inc.php.sample`, and editing it as you see fit. It is recommended to leave *some* form of authentication in place, unless it's a local-access-only wiki.
-
+1. There are two files you need to copy/rename and edit as needed: `inc/settings.inc.php.sample` and `inc/auth.inc.php.sample`. `inc/settings.inc.php` contains various defaults like stylesheets and site title that you can customize. `inc/auth.inc.php` contains some rudimentary auth code. It is recommended to leave *some* form of authentication in place, unless it's a local-access-only wiki.
 2. By default records are saved to `data/mikron.db`. The server needs write access to this `data` directory. If I haven't yet added it to the repo, create it. You can give the server write access by changing the owner of the directory to the user the server runs as, for example  
 `chown www-data data/`  
 You can find out what that user is by running  

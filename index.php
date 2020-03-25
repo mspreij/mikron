@@ -7,20 +7,20 @@ if (file_exists($auth_file)) {
     echo "Auth file missing, copy and edit *.sample file in inc/. See comments in that file for more info.";
     die();
 }
-if (file_exists($settings_file)) require_once $settings_file;
+// defaults
+$sitetitle   = "Mikron";
+$dbfile      = "data/mikron.db";
+$formats     = ['markdown', 'mikron'];
+$stylesheets = [];
+$users       = [
+    '127.0.0.1' => 'A. Utho',
+];
+// customization
+if (file_exists($settings_file))  require_once $settings_file;
+if (! defined('TAB_LENGTH'))      define('TAB_LENGTH', 2);
 
-define('TAB_LENGTH', 2);
-$sitetitle  = "Mikron";
-$dbpath     = "data";
-$dbfile     = "$dbpath/mikron.db";
 $allowedit  = true;
 $editurl    = ""; // use if $allowedit is false to put a link to an editable URL
-$users = array(
-    '127.0.0.1'  => 'A. Utho',
-);
-
-$formats = ['markdown', 'mikron'];
-$stylesheets = [];
 
 $url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
