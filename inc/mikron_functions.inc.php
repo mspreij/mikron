@@ -342,7 +342,7 @@ function pre_store_processing($string) {
     return rtrim($output)."\n";
 }
 
-function printDebug($var, $die=false)
+function printDebug($var, $ignore, $die=false)
 {
     var_export($var);
     if ($die) die();
