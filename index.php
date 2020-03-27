@@ -159,7 +159,7 @@ if ($a == "edit") {
             <strong>Content</strong> (<a href='".$url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)
                 ".selectList('format', $formats, $format, ['usekeys'=>0,'return'=>1])."
                 <br>
-            <textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
+            <textarea style='width: 100%; height: 500px' id='editTextarea' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
             <div class='submitcontainer'>
                 <input type='submit' value='Save page'>
                 <input type='reset' value='Reset form'>
@@ -351,7 +351,7 @@ if ($html != "") {
 		- <span class='shortcutKeys'>H</span>istory for this page<br>
 		- <span class='shortcutKeys'>Esc</span>ape = cancel editing<br>
 		- <span class='shortcutKeys'>0-9</span> jump to nth link<br>
-		- <span class='shortcutKeys'>Alt</span> show link numbers
+		- <span class='shortcutKeys'>Ctrl</span> show link numbers
 	</div>
 	<div class="padding">
 		You: <?php echo $_SERVER['REMOTE_ADDR']; ?>
@@ -367,8 +367,8 @@ if ($html != "") {
 
 <script type="text/javascript" charset="utf-8">
 	// focus on textarea when editing
-	var ta = document.getElementsByTagName('textarea');
-	if (typeof ta[0] != 'undefined') ta[0].focus();
+	var ta = document.getElementById('editTextarea');
+	if (ta && typeof ta.tagName !== 'undefined') ta.focus();
 </script>
 
 </body>

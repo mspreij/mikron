@@ -46,7 +46,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
       "i": './?a=view',
       "h": './?a=versions&p='+$('body').data('page'),
       "l": './?a=last_modified',
-      // "w": './?a=view&p=WIKI',
+      "w": './?a=view&p=WIKI',
       "u": './?a=view&p=URLS',
       "p": './?a=view&p=PROJECTS',
       "t": './?a=view&p=TODO'
@@ -122,17 +122,25 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
             }, 400);
         };
     }());
-
-    // any other shortcuts for non-editing go here..
-
+    
+    $(function(){
+    
+    $('.selectOnFocus').on('focus', function () {
+        $(this).select();
+    });
+    
+    });
+    
+    // any other things for non-editing go here..
+    
 }else{ // User is editing
     
     $(function(){ // THIS MAKES IT WORK OK
         // Resize the editing textarea to take up space available for it
-        var nonTextareaVertical = $('textarea').offset().top + 50; // 50px for the save/reset buttons
-        $('textarea').height($('body').height() - nonTextareaVertical);
+        var nonTextareaVertical = $('#editTextarea').offset().top + 50; // 50px for the save/reset buttons
+        $('#editTextarea').height($('body').height() - nonTextareaVertical);
         $(window).on('resize', function() {
-            $('textarea').height($('body').height() - nonTextareaVertical);
+            $('#editTextarea').height($('body').height() - nonTextareaVertical);
         }); // (you can maybe probably do this with CSS? but then this works without having to tear more hair out)
     });
     
