@@ -51,6 +51,7 @@ function wiki2html($code, $converter='markdown') {
             $converter = new CommonMarkConverter();
             $code = $converter->convertToHtml($code);
             $code = postProcessMarkdown($code);
+            $code = preg_replace_callback('/\[\[(.*?)\]\]/', 'wiki_parse_cmd_array', $code);
             return $code;
             break;
         case 'mikron':
@@ -78,42 +79,7 @@ function postProcessMarkdown($html) {
             break;
         }
     }
-    $html = handleMikronTags($html);
     return $html;
-}
-
-function handleMikronTags($code) {
-    $html = '';
-    $len = strlen($code);
-    $head = 0;
-    $text = '';
-    while ($head < $len) {
-        if ($code{$head} == '[' && $code{$head + 1} == '[') {
-            $head += 2;
-            $cmd = "";
-            while ($head < $len) {
-                if ($code{$head} == ']' && $code{$head + 1} == ']') {
-                    $head += 2;
-                    break;
-                }
-                $cmd .= $code{$head++};
-            }
-            $html .= $text.wiki_parse_cmd($cmd);
-            $text = "";
-        }
-        if ($code{$head} == "\n") {
-            $html .= "$text\n";
-            if (trim($text == "")) {
-                $html .= "</p><p class='content'>";
-            }else{
-                $text = "";
-            }
-        } else {
-            $text .= $code[$head];
-        }
-        $head++;
-    }
-    return $html.$text;
 }
 
 //_____________________
@@ -246,6 +212,11 @@ function mikron2html($code) {
     }
 	
     return $html;
+}
+
+
+function wiki_parse_cmd_array($array) {
+    return wiki_parse_cmd($array[1]);
 }
 
 //_______________________
