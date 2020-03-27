@@ -263,6 +263,7 @@ function wiki_parse_cmd($cmd) {
     }
     // wiki links
     if (valid_page($cmd) || (strchr($cmd, ":") !== false && valid_page(substr($cmd, 0, strpos($cmd, ":"))))) {
+        $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
         if (valid_page($cmd)) {
             $page = $cmd;
             $ftitle = "";
@@ -280,7 +281,6 @@ function wiki_parse_cmd($cmd) {
             } else {
                 $pagetitle = htmlspecialchars($ftitle);
             }
-            $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
             return "<a class='knownpageref' href='".$url."?a=view&p=$page'>".$pagetitle."</a>$linkCounterHTML";
         } else {
             if ($ftitle == "")

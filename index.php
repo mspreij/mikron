@@ -136,6 +136,7 @@ if ($a == "edit") {
 		}else{
 			$res=$db->query("SELECT title, content, format FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
 		}
+        $format = 'markdown';
 		$row = $res->fetchArray(SQLITE3_ASSOC);
 		if ($row === false) {
 			$pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
