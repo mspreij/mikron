@@ -5,7 +5,7 @@
 * 
 */
 
-class Thing
+class Wiki
 {
     
     protected $db;
@@ -158,17 +158,18 @@ class Thing
             $content   = getparam("content");
             $format    = getparam("format");
             if ($content == "") {
-                $r=$db->query("DELETE FROM pages WHERE name='".$db->escapeString($page)."'"); // deletes history as well. it's a feature!
+                $r=$this->db->query("DELETE FROM pages WHERE name='".$this->db->escapeString($page)."'"); // deletes history as well. it's a feature!
             }else{
                 $content = pre_store_processing($content);
                 $ip = $_SERVER['REMOTE_ADDR'];
-                $r=$db->query("INSERT INTO pages (time, name, format, title, content, ip) VALUES (".
+                // todo: welke masochist heeft dit gelayout. gebruik een array met join() ofzo?
+                $r = $this->db->query("INSERT INTO pages (time, name, format, title, content, ip) VALUES (".
                     time().", '".
-                        $db->escapeString($page)."', '".
-                            $db->escapeString($format)."', '".
-                                $db->escapeString($pagetitle)."', '".
-                                    $db->escapeString($content)."', '".
-                                        $db->escapeString($ip)."')");
+                    $this->db->escapeString($page)."', '".
+                    $this->db->escapeString($format)."', '".
+                    $this->db->escapeString($pagetitle)."', '".
+                    $this->db->escapeString($content)."', '".
+                    $this->db->escapeString($ip)."')");
             }
             if ($r === false) {
                 $html = "Failed to save $page";
@@ -190,7 +191,7 @@ class Thing
             die();
         }
         $preview_size = 200; // total length of content preview [parts] per found page
-        $q_esc = $db->escapeString($q);
+        $q_esc = $this->db->escapeString($q);
         $sql = 
             "SELECT     datetime(p.time, 'unixepoch', 'localtime') as lastedit, p.name, p.title AS link_title, p.content, p.format,
         (LENGTH(p.content)-LENGTH(REPLACE(LOWER(p.content), LOWER('$q_esc'), '')))/LENGTH('$q_esc') AS occurrences
@@ -278,7 +279,7 @@ class Thing
     }
     
     protected function install() {
-        if (! $db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), format VARCHAR(255), content TEXT, ip varchar(64))")) die($db->lastErrorMsg());
+        if (! $this->db->query("CREATE TABLE pages (time INT, name VARCHAR(255), title VARCHAR(255), format VARCHAR(255), content TEXT, ip varchar(64))")) die($this->db->lastErrorMsg());
         // Add Mikron Syntax page
         $page = file_get_contents('inc/syntax_template.txt');
         $db->query("INSERT INTO pages (time,name,title,content) VALUES (".time().", 'MIKRON_SYNTAX', 'MIKRON SYNTAX', '".$db->escapeString($page)."')");
