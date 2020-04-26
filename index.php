@@ -26,7 +26,7 @@ $url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
 if ($url{strlen($url)-1} == '?') $url = substr($url, 0, strlen($url)-1);
 
-require_once 'inc/site.inc.php';
+require_once 'inc/app.inc.php';
 
 if (!($db = new SQLite3($dbfile))) {
 	die($db->lastErrorMsg());

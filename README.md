@@ -1,7 +1,7 @@
 # Mikron wiki
 
 This is a simple, php/sqlite-based wiki, with very little configuration, intended for small, simple wiki usage.  
-It is very much under development still, has a 50+ item todo list, and requires some dependency stuffs, still.
+It is very much under development, has a 50+ item todo list, and requires some dependency stuffs, still.
 
 
 ### Requirements
@@ -14,12 +14,13 @@ I have it running under Apache, Nginx, and the PHP CLI server (had to enable som
 1. There are two files you need to copy/rename and edit as needed: `inc/settings.inc.php.sample` and `inc/auth.inc.php.sample`. `inc/settings.inc.php` contains various defaults like stylesheets and site title that you can customize. `inc/auth.inc.php` contains some rudimentary auth code. It is recommended to leave *some* form of authentication in place, unless it's a local-access-only wiki.
 2. By default records are saved to `data/mikron.db`. The server needs write access to this `data` directory. If I haven't yet added it to the repo, create it. You can give the server write access by changing the owner of the directory to the user the server runs as, for example  
 `chown www-data data/`  
-You can find out what that user is by running  
+You can find out what that user is, by running  
 `ps aux | egrep '(httpd|apache|nginx)'`  
 It should sit in the first column of the output and should not be 'root'.  
 If all else fails you can give it write access with `chmod g+w data` or even `chmod go+w data`. I hope someone figures out the best way and lets me know >.>
 
-3. Now when visiting the wiki for the first time, it will offer an 'install' link, which should create the database file.  
+3. This is where you run `composer install` in your shell, probably.
+4. Now when visiting the wiki for the first time, it will offer an 'install' link, which should create the database file.
 
 If this fails, check that your install of PHP includes SQLite3 (enabled by default since PHP 5.3.0), and that the server does have write access to the `data` directory. And uh, file an issue or something, hopefully it's fixable.
 
