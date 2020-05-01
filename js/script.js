@@ -117,7 +117,13 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
                 var use_keys = keys;
                 keys = '';
                 // link.trigger('click'); // why doesn't this work?
-                document.location.href = link.attr('href');
+
+                // Changed the location.href to window.open, just so we can open links in a new tab;
+                var linkTarget = link.attr("target");
+                var windowName = (linkTarget == undefined || linkTarget == false) ? "_self": "_blank";
+                window.open(link.attr('href'), windowName);
+
+                // document.location.href = link.attr('href');
                 link.css({fontWeight: 'normal'}); // un-bold link (in case people hit the backbutton)
             }, 400);
         };
