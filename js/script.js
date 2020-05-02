@@ -17,8 +17,23 @@ $(function(){
         var _this = $(this);
         location.href = './?a=view&p=' + _this.data('name');
     });
-    
+
+    setNumberLinksForUrls();
 });
+
+function setNumberLinksForUrls(){
+    let pagePart = document.getElementById('pagecontent');
+    let els = pagePart.getElementsByTagName('a');
+
+    let template = '<span class="numberlink" style="display: none;"> {num}</span>';
+    var x = 0;
+    for (let i = 0; i < els.length; i++) {
+        var link = els.item(i);
+        if (link.href == '') continue;
+        var tmp = template.replace("{num}", ++x);
+        link.innerHTML += tmp;
+    }
+}
 
 
 if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index shortcuts

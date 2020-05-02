@@ -227,7 +227,7 @@ function wiki_parse_cmd($cmd) {
     if (startswith($cmd, "http:") || startswith($cmd, "https:") || // todo: if substr($cmd, 0, strpos($cmd, ':')) in_array $protocols, do..
         startswith($cmd, "ftp:") || startswith($cmd, "mailto:") ||
         startswith($cmd, "news:") || startswith($cmd, "irc:") || startswith($cmd, "magnet:")) {
-        $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
+        $linkCounterHTML = '';//"<span class='numberlink'> ".++$linkCounter."</span>";
         if (strchr($cmd, " ") === false) {
             return "<a href='".htmlspecialchars($cmd)."' target='_blank'>".htmlspecialchars($cmd)."</a>$linkCounterHTML";
         } else {
@@ -263,7 +263,7 @@ function wiki_parse_cmd($cmd) {
     }
     // wiki links
     if (valid_page($cmd) || (strchr($cmd, ":") !== false && valid_page(substr($cmd, 0, strpos($cmd, ":"))))) {
-        $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
+        $linkCounterHTML = '';//"<span class='numberlink'> ".++$linkCounter."</span>";
         if (valid_page($cmd)) {
             $page = $cmd;
             $ftitle = "";

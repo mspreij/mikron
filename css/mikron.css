@@ -56,3 +56,14 @@
 	color: blue;
     display: none;
 }
+
+#pagecontent a span.numberlink {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-size: 1em;
+}
+
+#pagecontent a:hover span.numberlink {
+	background-color: white;
+}
