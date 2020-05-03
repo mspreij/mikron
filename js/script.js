@@ -96,9 +96,9 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
 
     // alt key: Show link keyboard-shortcut numbers
     keyboardJS.on((getOS() === 'macOS') ? 'alt' : 'ctrl', function(e) {
-        $('.numberlink').show();
+        $('.numberlink, .shortcutKeyList').show();
     }, function(e) {
-        $('.numberlink').hide();
+        $('.numberlink, .shortcutKeyList').hide();
     });
 
     // Jump to link
