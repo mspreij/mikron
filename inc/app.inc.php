@@ -9,9 +9,11 @@ app.inc.php:
 
 define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 
+
 require_once ROOT.'/vendor/autoload.php';
 require_once __DIR__.'/mikron_functions.inc.php';
 require_once __DIR__.'/functions.inc.php';
+add_autoloader_path('class/');
 
 $auth_file     = __DIR__.'/auth.inc.php';
 if (file_exists($auth_file)) {

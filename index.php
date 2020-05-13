@@ -40,6 +40,7 @@ $title = $page;
 $page = strtoupper($page);
 if (!valid_page($page)) {
     $html = "Invalid page name";
+    $page = "Invalid"; // reset to prevent weird clientside shizzle
     $a = "";
 }
 

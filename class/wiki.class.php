@@ -8,9 +8,12 @@
 class Wiki
 {
     
-    protected $db;
     public $action = 'view';
     public $page = '';
+    public $template = 'templates/mikron.php';
+    
+    protected $db;
+    protected $allowedit = true;
     
     protected $actions = [
         'view',
@@ -22,7 +25,8 @@ class Wiki
         'install',
     ];
     
-    // Constructor
+    
+    // == Constructor ==
     function __construct($db, $action, $page)
     {
         $this->db = $db;
@@ -30,18 +34,46 @@ class Wiki
         if (!valid_page($page)) {
             $this->html = "Invalid page name";
             $this->action = "";
+            $this->page = "__invalid__";
         }else{
             $this->page = $page;
         }
     }
     
-    // output?
-    public function html()
+    // handle_action()
+    public function handle_action()
     {
-        if (in_array($this->action, $this->actions)) {
-            return $this->{$this->action}(); // uuugh..
+        switch ($this->action) {
+            case 'view':
+                list($title, $body) = $this->view();
+                break;
+            case 'edit':
+                list($title, $body) = $this->edit();
+                break;
+            case 'versions':
+                list($title, $body) = $this->versions();
+                break;
+            case 'versions':
+                $this->body = $this->versions();
+                break;
+            
+            default:
+                $title = "Huh? ($this->page)";
+                $body = "I have no idea what you want..";
+                break;
         }
-        return "I have no idea what you want.";
+        $this->title = $title;
+        $this->body = $body;
+    }
+    
+    // output
+    public function output($print=true)
+    {
+        ob_start();
+        $html = $this->template;
+        $html = ob_get_clean();
+        if (! $print) return $html;
+        echo $html;
     }
     
     // === View ==========================
@@ -56,57 +88,62 @@ class Wiki
         if (! $res) echo '<div style="color: red;">No result, you might need to run <a href="./?a=install">install</a> at this point.</div>';
         $row = $res->fetchArray(SQLITE3_ASSOC);
         if ($row === false) {
-            $html = "Page <span class='pagename'>$this->page</span> not found. <a href='?a=edit&p=$this->page'>Create it</a>!";
+            $body = "Page <span class='pagename'>$this->page</span> not found. <a href='?a=edit&p=$this->page'>Create it</a>!";
         }else{
             // $row = $row[0];
             $title = htmlspecialchars($row['title']);
             if ($title == "") $title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
-            if ($time != "") $html .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$url."?a=view&p=$this->page'>click here</a>.</div>";
-            $html = wiki2html($row['content'], $row['format']);
+            if ($time != "") $body .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$url."?a=view&p=$this->page'>click here</a>.</div>";
+            $body = wiki2html($row['content'], $row['format']);
             if ($row['format'] == 'mikron') {
-                $html = post_process($html);
+                $body = post_process($body);
             }
             if ($row['format'] == 'markdown') {
                 $stylesheets[] = 'markdown.css';
             }
-            if ($html == "") $html = "No content";
-            if ($time != "") $html .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
-            $html .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
+            if ($body == "") $body = "No content";
+            if ($time != "") $body .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
+            $body .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
         }
-        return $html;
+        return [$title, $body];
     }
 
     // === Versions ======================
     protected function versions() {
         $title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
-        $res = $this->db->query("SELECT datetime(time, 'unixepoch') as lastedit,time,title,content FROM pages WHERE name='".$this->db->escapeString($this->page)."' ORDER BY time DESC");
-        while($row = $res->fetchArray(SQLITE3_ASSOC)) $rows[] = $row;
-        if ($rows === false) {
-            $html = "Page <span class='pagename'>$this->page</span> not found. <a href='?a=edit&p=$this->page'>Create it</a>!";
+        $res = $this->db->query("SELECT datetime(time, 'unixepoch') as lastedit, time, title, content FROM pages WHERE name='".$this->db->escapeString($this->page)."' ORDER BY time DESC");
+        $rows = [];
+        while($row = $res->fetchArray(SQLITE3_ASSOC)) {
+            $rows[] = $row;
+        }
+        if ($rows === []) {
+            $body = "Page <span class='pagename'>$this->page</span> not found. <a href='?a=edit&p=$this->page'>Create it</a>!";
         } else {
-            $html = "Known edits of this page:<ul>";
+            $body = "Known edits of this page:<ul>";
             $first = true;
+            $title = $rows[0]['title'];
             foreach ($rows as $row) {
-                $html .= "<li><a href='".$url."?a=view&p=$this->page";
-                if (!$first) $html .= "&t=".$row['time']."'>"; else $html .= "'>";
-                $this->pagetitle = htmlspecialchars($row['title']);
-                if ($this->pagetitle == "") $this->pagetitle = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($page)));
-                $html .= $pagetitle."</a> at ".$row['lastedit'];
+                $link_title = $row['title'];
+                $body .= "<li><a href='".$url."?a=view&p=$this->page";
+                if (!$first) $body .= "&t=".$row['time']."'>"; else $body .= "'>";
+                $link_title = htmlspecialchars($link_title);
+                if ($link_title == "") $link_title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($page)));
+                $body .= $link_title."</a> at ".$row['lastedit'];
                 if ($first) {
                     $first = false;
-                    $html .= " (current)";
+                    $body .= " (current)";
                 }
-                $html .= "</li>";
+                $body .= "</li>";
             }
-            $html .= "</ul>";
+            $body .= "</ul>";
         }
-        return $html;
+        return [$title, $body];
     }
     
     // === Edit ==============================
     protected function edit() {
-        if (!$allowedit) {
-            $html = "Editing is disabled.";
+        if (!$this->allowedit) {
+            $body = "Editing is disabled.";
         } else {
             $time = getparam("t");
             if ($time == "") {
@@ -116,20 +153,19 @@ class Wiki
             }
             $row = $res->fetchArray(SQLITE3_ASSOC);
             if ($row === false) {
-                $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+                $title = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
                 $content = "Type the content for the '$title' page here";
             } else {
                 // $row = $row[0];
-                $pagetitle = htmlspecialchars($row['title'], ENT_QUOTES);
+                $title = $row['title'];
+                $pagetitle = htmlspecialchars($title, ENT_QUOTES);
                 if ($pagetitle == "") $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
                 $content = $row['content'];
                 $format  = $row['format'];
                 if ($content == "") $content = "Type the content for the '$pagetitle' page here";
             }
             
-            $title = "Edit $pagetitle";
-            
-            $html = "
+            $body = "
                 <form action='$url' method='post'>
                 <input type='hidden' name='a' value='store'>
                 <input type='hidden' name='p' value='$page'>
@@ -144,14 +180,15 @@ class Wiki
                 </div>
                 </form>";
             if ($time != "") {
-                $html .= "<div class='contentwarning'>Please note that this form will not edit the previous version but will create a new one!</div>";
+                $body .= "<div class='contentwarning'>Please note that this form will not edit the previous version but will create a new one!</div>";
             }
         }
+        return [$title, $body];
     }
     
     // === Store =========================
     protected function store() {
-        if (!$allowedit) {
+        if (!$this->allowedit) {
             $html = "Editing is disabled";
         } else {
             $pagetitle = getparam("title", strtoupper($page{0}).strtolower(substr($page, 1, strlen($page))));
@@ -163,7 +200,7 @@ class Wiki
                 $content = pre_store_processing($content);
                 $ip = $_SERVER['REMOTE_ADDR'];
                 // todo: welke masochist heeft dit gelayout. gebruik een array met join() ofzo?
-                $r = $this->db->query("INSERT INTO pages (time, name, format, title, content, ip) VALUES (".
+                $res = $this->db->query("INSERT INTO pages (time, name, format, title, content, ip) VALUES (".
                     time().", '".
                     $this->db->escapeString($page)."', '".
                     $this->db->escapeString($format)."', '".
@@ -171,8 +208,8 @@ class Wiki
                     $this->db->escapeString($content)."', '".
                     $this->db->escapeString($ip)."')");
             }
-            if ($r === false) {
-                $html = "Failed to save $page";
+            if ($res === false) {
+                $body = "Failed to save $page";
             }else{
                 header("Location: ".$url."?a=view&p=$page");
                 die();
@@ -187,7 +224,7 @@ class Wiki
         $q        = trim($_GET['q']);
         $q_length = strlen($q);
         if (! $q_length) {
-            header('Location: http://hermes/mikron/?a=search&q=fnord');
+            header('Location: http://hermes/mikron/?a=search&q=fnord'); // Todo: Fix ಠ_ಠ
             die();
         }
         $preview_size = 200; // total length of content preview [parts] per found page
