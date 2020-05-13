@@ -27,7 +27,7 @@ class Wiki
     
     
     // == Constructor ==
-    function __construct($db, $action, $page)
+    function __construct($db, $page, $action)
     {
         $this->db = $db;
         $this->action = $action;
@@ -38,6 +38,7 @@ class Wiki
         }else{
             $this->page = $page;
         }
+        $this->url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
     }
     
     // handle_action()
@@ -70,7 +71,7 @@ class Wiki
     public function output($print=true)
     {
         ob_start();
-        $html = $this->template;
+        require_once $this->template;
         $html = ob_get_clean();
         if (! $print) return $html;
         echo $html;
@@ -93,7 +94,7 @@ class Wiki
             // $row = $row[0];
             $title = htmlspecialchars($row['title']);
             if ($title == "") $title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
-            if ($time != "") $body .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$url."?a=view&p=$this->page'>click here</a>.</div>";
+            if ($time != "") $body .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$this->url."?a=view&p=$this->page'>click here</a>.</div>";
             $body = wiki2html($row['content'], $row['format']);
             if ($row['format'] == 'mikron') {
                 $body = post_process($body);
@@ -102,9 +103,14 @@ class Wiki
                 $stylesheets[] = 'markdown.css';
             }
             if ($body == "") $body = "No content";
-            if ($time != "") $body .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
+            if ($time != "") $body .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$this->url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
             $body .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
         }
+        $body = "Body overruled! (".__FILE__.':'.__LINE__.")<br>
+        - import settings into wiki class somehow.. bunch of separate global variables right now, turn into array somewhere? ini/yml/thing file? PHP more flexible..<br>
+        - then continue handling the actions<br>
+        - init various other wiki properties that appear in multiple actions and the template<br>
+        - pull queries into methods for now; prefix db_ or something, should be nicer for plugins too";
         return [$title, $body];
     }
 
@@ -141,37 +147,42 @@ class Wiki
     }
     
     // === Edit ==============================
-    protected function edit() {
+    protected function edit($row=[]) {
         if (!$this->allowedit) {
             $body = "Editing is disabled.";
         } else {
-            $time = getparam("t");
-            if ($time == "") {
-                $res=$db->query("SELECT title, content, format FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC LIMIT 1");
+            if (isset($row['title']) && isset($row['content']) /* && isset($row['format']) */ ) {
+                // twiddle thumbs..
             }else{
-                $res=$db->query("SELECT title, content, format FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
+                // fetch
+                $time = getparam("t");
+                if ($time == "") {
+                    $res=$this->db->query("SELECT title, content, format FROM pages WHERE name='".$this->db->escapeString($this->page)."' ORDER BY time DESC LIMIT 1");
+                }else{
+                    $res=$this->db->query("SELECT title, content, format FROM pages WHERE name='".$this->db->escapeString($this->page)."' AND time=".intval($time, 10));
+                }
+                $row = $res->fetchArray(SQLITE3_ASSOC);
             }
-            $row = $res->fetchArray(SQLITE3_ASSOC);
-            if ($row === false) {
-                $title = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+            if (! $row) {
+                $title = ucfirst(strtolower($this->page));
                 $content = "Type the content for the '$title' page here";
             } else {
-                // $row = $row[0];
                 $title = $row['title'];
                 $pagetitle = htmlspecialchars($title, ENT_QUOTES);
-                if ($pagetitle == "") $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+                if ($pagetitle == "" or 1) $pagetitle = ucfirst(strtolower($this->page));
                 $content = $row['content'];
                 $format  = $row['format'];
                 if ($content == "") $content = "Type the content for the '$pagetitle' page here";
             }
-            
+            $warn_err = isset($row['error']) ? $row['error'] : '';
             $body = "
-                <form action='$url' method='post'>
+                $warn_err
+                <form action='$this->url' method='post'>
                 <input type='hidden' name='a' value='store'>
-                <input type='hidden' name='p' value='$page'>
+                <input type='hidden' name='p' value='$this->page'>
                 <strong>Title</strong> <input type='text' name='title' maxlength='255' value='$pagetitle'><br>
-                <strong>Content</strong> (<a href='".$url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)
-                ".selectList('format', $formats, $format, ['usekeys'=>0,'return'=>1])."
+                <strong>Content</strong> (<a href='".$this->url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)
+                ".selectList('format', $this->formats, $format, ['usekeys'=>0,'return'=>1])."
                 <br>
                 <textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
                 <div class='submitcontainer'>

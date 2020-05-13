@@ -39,3 +39,9 @@ function add_autoloader_path($path) {
         if (file_exists($file)) require $file;
     });
 }
+
+//____________________
+// htmlents($string) /
+function htmlents($string) {
+  return htmlspecialchars($string, ENT_QUOTES);
+}
