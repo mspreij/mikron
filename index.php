@@ -282,7 +282,6 @@ if ($a == 'last_modified') {
 	$sql = 
 	 "SELECT     datetime(MAX(time), 'unixepoch', 'localtime') AS lastedit, name, title AS link_title, ip
 	  FROM       pages
-	  WHERE      name NOT IN ('NEMO')
 	  GROUP BY   name
 	  ORDER BY   lastedit DESC
 	  LIMIT      10";
