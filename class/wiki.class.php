@@ -11,6 +11,7 @@ class Wiki
     public $action = 'view';
     public $page = '';
     public $template = 'templates/mikron.php';
+    public $stylesheets = ['markdown.css'];
     
     protected $db;
     protected $allowedit = true;
@@ -38,6 +39,9 @@ class Wiki
         }else{
             $this->page = $page;
         }
+        foreach (settings() as $key => $value) {
+            $this->$key = $value;
+        }
         $this->url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
     }
     
@@ -50,6 +54,9 @@ class Wiki
                 break;
             case 'edit':
                 list($title, $body) = $this->edit();
+                break;
+            case 'store':
+                list($title, $body) = $this->store();
                 break;
             case 'versions':
                 list($title, $body) = $this->versions();
@@ -107,8 +114,10 @@ class Wiki
             $body .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
         }
         $body = "Body overruled! (".__FILE__.':'.__LINE__.")<br>
-        - import settings into wiki class somehow.. bunch of separate global variables right now, turn into array somewhere? ini/yml/thing file? PHP more flexible..<br>
+        v import settings into wiki class somehow.. bunch of separate global variables right now, turn into array somewhere? ini/yml/thing file? PHP more flexible..<br>
         - then continue handling the actions<br>
+          v saving ('store')<br>
+          - viewing older versions<br>
         - init various other wiki properties that appear in multiple actions and the template<br>
         - pull queries into methods for now; prefix db_ or something, should be nicer for plugins too";
         return [$title, $body];
@@ -130,10 +139,10 @@ class Wiki
             $title = $rows[0]['title'];
             foreach ($rows as $row) {
                 $link_title = $row['title'];
-                $body .= "<li><a href='".$url."?a=view&p=$this->page";
+                $body .= "<li><a href='".$this->url."?a=view&p=$this->page";
                 if (!$first) $body .= "&t=".$row['time']."'>"; else $body .= "'>";
                 $link_title = htmlspecialchars($link_title);
-                if ($link_title == "") $link_title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($page)));
+                if ($link_title == "") $link_title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
                 $body .= $link_title."</a> at ".$row['lastedit'];
                 if ($first) {
                     $first = false;
@@ -199,32 +208,28 @@ class Wiki
     
     // === Store =========================
     protected function store() {
-        if (!$this->allowedit) {
-            $html = "Editing is disabled";
-        } else {
-            $pagetitle = getparam("title", strtoupper($page{0}).strtolower(substr($page, 1, strlen($page))));
-            $content   = getparam("content");
-            $format    = getparam("format");
-            if ($content == "") {
-                $r=$this->db->query("DELETE FROM pages WHERE name='".$this->db->escapeString($page)."'"); // deletes history as well. it's a feature!
-            }else{
-                $content = pre_store_processing($content);
-                $ip = $_SERVER['REMOTE_ADDR'];
-                // todo: welke masochist heeft dit gelayout. gebruik een array met join() ofzo?
-                $res = $this->db->query("INSERT INTO pages (time, name, format, title, content, ip) VALUES (".
-                    time().", '".
-                    $this->db->escapeString($page)."', '".
-                    $this->db->escapeString($format)."', '".
-                    $this->db->escapeString($pagetitle)."', '".
-                    $this->db->escapeString($content)."', '".
-                    $this->db->escapeString($ip)."')");
-            }
-            if ($res === false) {
-                $body = "Failed to save $page";
-            }else{
-                header("Location: ".$url."?a=view&p=$page");
-                die();
-            }
+        $pagetitle = getparam("title", strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page))));
+        $content   = getparam("content");
+        $format    = getparam("format");
+        if ($content === "") {
+            $r=$this->db->query("DELETE FROM pages WHERE name='".$this->db->escapeString($this->page)."'"); // deletes history as well. it's a feature!
+        }else{
+            $content = pre_store_processing($content);
+            $ip = $_SERVER['REMOTE_ADDR'];
+            // todo: welke masochist heeft dit gelayout. gebruik een array met join() ofzo?
+            $res = $this->db->query("INSERT INTO pages (time, name, format, title, content, ip) VALUES (".
+                time().", '".
+                $this->db->escapeString($this->page)."', '".
+                $this->db->escapeString($format)."', '".
+                $this->db->escapeString($pagetitle)."', '".
+                $this->db->escapeString($content)."', '".
+                $this->db->escapeString($ip)."')");
+        }
+        if ($res === false) {
+            $body = "Failed to save $this->page";
+        }else{
+            header("Location: ".$this->url."?a=view&p=$this->page");
+            die();
         }
     }
     
@@ -234,8 +239,9 @@ class Wiki
         $html     = '<div id="search_results">';
         $q        = trim($_GET['q']);
         $q_length = strlen($q);
+        $lpp      = 10; // links per page for pagination
         if (! $q_length) {
-            header('Location: http://hermes/mikron/?a=search&q=fnord'); // Todo: Fix ಠ_ಠ
+            header("Location: $this->url"); // this allows ?a=search&q=%s bookmarks
             die();
         }
         $preview_size = 200; // total length of content preview [parts] per found page
@@ -251,12 +257,16 @@ class Wiki
         WHERE      p.title   LIKE '%$q_esc%'
         OR       p.content LIKE '%$q_esc%'
         GROUP BY   p.name
-        ORDER BY   occurrences DESC
-        LIMIT 10";
+        ORDER BY   occurrences DESC"; // no limit: there isn't any gain (according to some dude online 15 years ago), just select everything and paginate in PHP.
+        
         $res = $db->query($sql);
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $rows[] = $row;
+        $totalFound = count($rows);
+        $page = (int) @$_GET['page'];
+        $rows = array_slice($rows, $page * $lpp, $lpp);
+        
         if (! empty($rows)) {
-            $html .= "Found ". count($rows) ." page".(count($rows)==1?'':'s').":<hr>\n";
+            $html .= "Found $totalFound page".($totalFound==1?'':'s').":<hr>\n";
             foreach ($rows as $row) {
                 extract($row);
                 $lastedit = date('H:i:s - l, j F', strtotime($row['lastedit']));
@@ -296,7 +306,7 @@ class Wiki
                 <div class='preview'>$preview <span class='last_edited'>$lastedit</span></div>
                 </div>\n";
             }
-            // googlinks
+            if ($totalFound > $lpp) $html .= '<br>'. googlinks($lpp, $totalFound);
         }else{
             $html .= 'No pages found.';
         }

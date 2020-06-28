@@ -1,11 +1,3 @@
-/*
-Handle some keyboard shortcuts.
-  "e" for edit
-  "i" for index page
-  "esc" to cancel editing
-  ... var shortcutList has some more
-*/
-
 var $page;
 
 $(function(){
@@ -17,7 +9,23 @@ $(function(){
         var _this = $(this);
         location.href = './?a=view&p=' + _this.data('name');
     });
-
+    
+    // arrow keys for prev/next in search pagination (for starters)
+    if ($('#googlinks').length > 0) {
+        keyboardJS.on('right', function(e) {
+            if (e.metaKey || e.ctrlKey) return;
+            let href = $('#googlinks a:contains("next")').attr('href');
+            if (href) location.href = href;
+        });
+        
+        keyboardJS.on('left', function(e) {
+            if (e.metaKey || e.ctrlKey) return;
+            let href = $('#googlinks a:contains("previous")').attr('href');
+            if (href) location.href = href;
+        });
+    }
+    $('#linkNumbersKey').text( (getOS() === 'macOS') ? 'Alt' : 'Ctrl');
+    
     setNumberLinksForUrls();
 });
 
@@ -107,7 +115,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
         var keys = '';
         var next_key_delay;
         return function(e) {
-            if (e.metaKey) return; // Cmd-S = save
+            if (e.metaKey || e.ctrlKey) return; // Cmd-S = save
             var key = e.which-48;
             if (! links) links = $('#pagecontent a[href]').not('.toc');
             if (keys.length) {

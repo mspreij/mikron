@@ -7,8 +7,10 @@ app.inc.php:
 
 */
 
-define('ROOT', $_SERVER['DOCUMENT_ROOT']);
+error_reporting(-1);
+ini_set('display_errors', '1');
 
+define('ROOT', __DIR__.'/../');
 
 require_once ROOT.'/vendor/autoload.php';
 require_once __DIR__.'/mikron_functions.inc.php';
@@ -23,19 +25,12 @@ if (file_exists($auth_file)) {
     die();
 }
 
-// default settings, override these in ./settings.inc.php as needed. Should this bunch also go into like, a default_settings.inc.php file?
-$sitetitle   = "Mikron";
-$dbfile      = "data/mikron.db";
-$formats     = ['markdown'];
-$stylesheets = [];
-$users       = [ // this one should eventually move elsewhere..
-    '127.0.0.1' => 'A. Utho',
-];
-date_default_timezone_set("UTC");
+// default settings
+extract(require(__DIR__.'/default_settings.inc.php'));
 
 // customization:
 $settings_file = __DIR__.'/settings.inc.php';
-if (file_exists($settings_file))  require_once $settings_file;
+if (file_exists($settings_file))  require $settings_file;
 
 if (! defined('TAB_LENGTH'))      define('TAB_LENGTH', 2);
 

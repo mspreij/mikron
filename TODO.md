@@ -65,7 +65,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - Search:
   - advanced search: title/body, date, $field (plugins could hook into this)
   - show value again if no matches, see also Ajax->Search above
-  - show search results that have an exact title match first, maybe?
+  - show search results that have an exact title match first, then partial title matches, then the rest (by position of key in contents?)
   - maybe next/previous links for results? if that's not in there already? who wrote this thing!
 - `-` get a markdown-editor textarea (cmd/ctrl-B for bold etc), that doesn't interfere with the current shortcut keys thing (it shouldn't). If ALL ELSE FAILS one could always hack in a ajax preview type thing. With jQuery. Or yanno, leave it for later.
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?

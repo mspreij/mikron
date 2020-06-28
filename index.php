@@ -208,7 +208,7 @@ if ($a == 'search') {
 	$q        = trim($_GET['q']);
 	$q_length = strlen($q);
 	if (! $q_length) {
-		header("Location: $url?a=search&q=fnord");
+		header("Location: $url"); // this allows ?a=search&q=%s bookmarks
 		die();
 	}
 	$preview_size = 200; // total length of content preview [parts] per found page
@@ -352,7 +352,7 @@ if ($html != "") {
 		- <span class='shortcutKeys'>H</span>istory for this page<br>
 		- <span class='shortcutKeys'>Esc</span>ape = cancel editing<br>
 		- <span class='shortcutKeys'>0-9</span> jump to nth link<br>
-		- <span class='shortcutKeys'>Ctrl</span> show link numbers
+		- <span class='shortcutKeys' id='linkNumbersKey'>Ctrl/Alt</span> show link numbers
 	</div>
 	<div class="padding">
 		You: <?php echo $_SERVER['REMOTE_ADDR']; ?>

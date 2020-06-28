@@ -5,11 +5,11 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title><?php print htmlents($this->title.($this->sitetitle ? " - ".$this->sitetitle : '')); ?></title>
     <?php
-    if ($this->printable) {
-        echo '<link rel="stylesheet" href="css/printable.css" type="text/css" media="screen,print">';
-    } else {
+    // if ($this->printable) {
+    //     echo '<link rel="stylesheet" href="css/printable.css" type="text/css" media="screen,print">';
+    // } else {
         echo '<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">';
-    }
+    // }
     echo "\n";
     foreach ($this->stylesheets as $stylesheet) {
         echo '    <link rel="stylesheet" href="css/'.$stylesheet.'">'."\n";
@@ -29,15 +29,11 @@
         <div id="sitetitle"><small><?php echo $this->sitetitle; ?></small></div>
         <a class="sidelink"  href="<?php echo $this->url; ?>?a=view&p=Welcome">Go to the welcome page</a>
         <?php if ($this->page != "") { ?>
-            <a class="sidelink" href="<?php echo $url ?>?a=printable&p=<?php echo $page ?>">Printable version</a>
-            <?php if ($allowedit) { ?>
-                <a class="sidelink" href="<?php echo $url ?>?a=edit&p=<?php echo $page ?>">Edit this page</a>
-            <?php } else if ($editurl != "") { ?>
-                <a class="sidelink" href="<?php echo $editurl ?>">Edit the wiki</a>
-            <?php } ?>
-            <a class="sidelink" href="<?php echo $url ?>?a=versions&p=<?php echo $page ?>">Older edits of this page</a>
+            <a class="sidelink" href="<?php echo $this->url ?>?a=printable&p=<?php echo $this->page ?>">Printable version</a>
+            <a class="sidelink" href="<?php echo $this->url ?>?a=edit&p=<?php echo $this->page ?>">Edit this page</a>
+            <a class="sidelink" href="<?php echo $this->url ?>?a=versions&p=<?php echo $this->page ?>">Older edits of this page</a>
         <?php } ?>
-        <a class="sidelink" href="<?php echo $url ?>?a=last_modified">See last changes</a>
+        <a class="sidelink" href="<?php echo $this->url ?>?a=last_modified">See last changes</a>
         <div class='shortcutKeyList'>
             Keyboard shortcuts:<br>
             - <span class='shortcutKeys'>I</span>ndex page<br>
@@ -47,7 +43,8 @@
             - <span class='shortcutKeys'>H</span>istory for this page<br>
             - <span class='shortcutKeys'>Esc</span>ape = cancel editing<br>
             - <span class='shortcutKeys'>0-9</span> jump to nth link<br>
-            - <span class='shortcutKeys'>Ctrl</span> show link numbers
+            - <span class='shortcutKeys' id='linkNumbersKey'>Ctrl</span> show link numbers
+            - <span class='shortcutKeys'>left/right</span> previous/next in search results
         </div>
         <div class="padding">
             You: <?php echo $_SERVER['REMOTE_ADDR']; ?>

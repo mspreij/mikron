@@ -332,7 +332,7 @@ function pre_store_processing($string) {
     $output = '';
     // Timestamp
     $string = str_replace('#time#', date('[Y-m-d H:i:s]'), $string);
-    // convert leading tabs to spaces
+    // convert leading tabs to spaces. why are we doing this again?
     foreach(explode("\n", $string) as $line) {
         $tabs = strspn($line, "\t");
         $output .= str_repeat(' ', $tabs * TAB_LENGTH) . substr($line, $tabs) . "\n";

@@ -2,19 +2,22 @@
 
 // If it doesn't yet exist, copy this file to "settings.inc.php" in the same directory, and edit these settings in there as you see fit.
 // The commented settings below should show the current/default setting, but may be out of date.
+// Tbf this whole thing is still in flux..
 
 // for debugging
 #ini_set('display_errors', '1');
 #error_reporting(-1);
 
 #date_default_timezone_set("UTC");
-
-#$sitetitle   = "Mikron";
-#$dbfile      = "data/mikron.db";
-#$formats     = ['markdown', 'mikron'];
-#$stylesheets = [];
-#$users       = [ // this one should eventually move elsewhere..
-#    '127.0.0.1' => 'A. Utho',
-#];
-
 #define('TAB_LENGTH', 2);
+
+return [
+    'sitetitle'   => "Mikron",
+    // 'dbfile'      => "data/mikron.db",
+    // 'formats'     => ['markdown', 'mikron'],
+    'stylesheets' => [],
+    #$users       => [ // this one should eventually move elsewhere..
+    #    '127.0.0.1' => 'A. Utho',
+    #],
+];
+
