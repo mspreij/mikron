@@ -89,6 +89,7 @@ Things that need to go in a settings thing. File/table/whatever.
   - next/previous links (including if possible datetime, user, update comment < requires new column)
   - show IP/username, datetime modified, stuff. syntax mode? size?
   - diff-view of content (background color? on alt?) <https://github.com/paulgb/simplediff>
+    - alternatively, show a collapsible patch at the top of the page?
   - to allow searching in diff (like in git log -p) maybe keep the diff with the previous version around, in the current page record
 - list view
   - show date, ip/username as in Last Changes page
