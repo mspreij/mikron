@@ -106,6 +106,7 @@ Things that need to go in a settings thing. File/table/whatever.
 
 **Random:**
 
+- save counter column
 - github link somewhere in the sidebar?
 - https://tiddlywiki.com/ steal ideas \o/
 - the hooks thing: they'll be all over the place, sort them out into a tree-like structure maybe, also easier to document
@@ -114,6 +115,8 @@ Things that need to go in a settings thing. File/table/whatever.
 **Housekeeping:**
 
 - remove history older than 50 (say) versions. Should be config option.
+  - or: treat older saves as backup snapshots for pruning: keep oldest, then every nth version until more recent, then every version. or like yearly/monthly/every.
+    if diffs are also saved (for searching in them), re-create these for the relevant records
 - allow removing history for a certain page or deleting certain history items ;>.>
 
 
