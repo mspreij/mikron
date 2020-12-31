@@ -51,6 +51,7 @@ function wiki2html($code, $converter='markdown') {
             $converter = new CommonMarkConverter();
             $code = $converter->convertToHtml($code);
             $code = postProcessMarkdown($code);
+            $code = preg_replace_callback('/\[\[(.*?)\]\]/', 'wiki_parse_cmd_array', $code);
             return $code;
             break;
         case 'mikron':
@@ -72,48 +73,13 @@ function postProcessMarkdown($html) {
     while (is_numeric($pos = strpos($html, $codeTagStart))) {
         $content = substr($html, $pos + strlen($codeTagStart), $contentLength = (strpos($html, $codeTagEnd, $pos) - ($pos + strlen($codeTagStart))));
         $trailing = substr($html, $pos + strlen($codeTagStart) + $contentLength + strlen($codeTagEnd));
-        $html = substr($html, 0, $pos).'<textarea readonly class="selectOnFocus" rows="'.(count(explode("\n", $content))-1).'">'.$content.'</textarea>'.$trailing;
-        if ($loopBust++ > 50) {
+        $html = substr($html, 0, $pos).'<textarea readonly class="selectOnFocus" rows="'.(count(explode("\n", $content))-1).'">'.trim($content).'</textarea>'.$trailing;
+        if ($loopBust++ > 100) {
             $html .= '<script>alert("either there are too many textareas on this page or wiki2html() got into a bloody loop again")</script>';
             break;
         }
     }
-    $html = handleMikronTags($html);
     return $html;
-}
-
-function handleMikronTags($code) {
-    $html = '';
-    $len = strlen($code);
-    $head = 0;
-    $text = '';
-    while ($head < $len) {
-        if ($code{$head} == '[' && $code{$head + 1} == '[') {
-            $head += 2;
-            $cmd = "";
-            while ($head < $len) {
-                if ($code{$head} == ']' && $code{$head + 1} == ']') {
-                    $head += 2;
-                    break;
-                }
-                $cmd .= $code{$head++};
-            }
-            $html .= $text.wiki_parse_cmd($cmd);
-            $text = "";
-        }
-        if ($code{$head} == "\n") {
-            $html .= "$text\n";
-            if (trim($text == "")) {
-                $html .= "</p><p class='content'>";
-            }else{
-                $text = "";
-            }
-        } else {
-            $text .= $code[$head];
-        }
-        $head++;
-    }
-    return $html.$text;
 }
 
 //_____________________
@@ -121,7 +87,6 @@ function handleMikronTags($code) {
 function mikron2html($code) {
     global $heads, $printable;
     $heads = array();
-    $html = "";
     $len = strlen($code);
     $code = $code.' ';
     $head = 0;
@@ -248,6 +213,11 @@ function mikron2html($code) {
     return $html;
 }
 
+
+function wiki_parse_cmd_array($array) {
+    return wiki_parse_cmd($array[1]);
+}
+
 //_______________________
 // wiki_parse_cmd($cmd) /
 function wiki_parse_cmd($cmd) {
@@ -257,7 +227,7 @@ function wiki_parse_cmd($cmd) {
     if (startswith($cmd, "http:") || startswith($cmd, "https:") || // todo: if substr($cmd, 0, strpos($cmd, ':')) in_array $protocols, do..
         startswith($cmd, "ftp:") || startswith($cmd, "mailto:") ||
         startswith($cmd, "news:") || startswith($cmd, "irc:") || startswith($cmd, "magnet:")) {
-        $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
+        $linkCounterHTML = '';//"<span class='numberlink'> ".++$linkCounter."</span>";
         if (strchr($cmd, " ") === false) {
             return "<a href='".htmlspecialchars($cmd)."' target='_blank'>".htmlspecialchars($cmd)."</a>$linkCounterHTML";
         } else {
@@ -293,6 +263,7 @@ function wiki_parse_cmd($cmd) {
     }
     // wiki links
     if (valid_page($cmd) || (strchr($cmd, ":") !== false && valid_page(substr($cmd, 0, strpos($cmd, ":"))))) {
+        $linkCounterHTML = '';//"<span class='numberlink'> ".++$linkCounter."</span>";
         if (valid_page($cmd)) {
             $page = $cmd;
             $ftitle = "";
@@ -310,7 +281,6 @@ function wiki_parse_cmd($cmd) {
             } else {
                 $pagetitle = htmlspecialchars($ftitle);
             }
-            $linkCounterHTML = "<span class='numberlink'> ".++$linkCounter."</span>";
             return "<a class='knownpageref' href='".$url."?a=view&p=$page'>".$pagetitle."</a>$linkCounterHTML";
         } else {
             if ($ftitle == "")
@@ -362,7 +332,7 @@ function pre_store_processing($string) {
     $output = '';
     // Timestamp
     $string = str_replace('#time#', date('[Y-m-d H:i:s]'), $string);
-    // convert leading tabs to spaces
+    // convert leading tabs to spaces. why are we doing this again?
     foreach(explode("\n", $string) as $line) {
         $tabs = strspn($line, "\t");
         $output .= str_repeat(' ', $tabs * TAB_LENGTH) . substr($line, $tabs) . "\n";
@@ -371,7 +341,7 @@ function pre_store_processing($string) {
     return rtrim($output)."\n";
 }
 
-function printDebug($var, $die=false)
+function printDebug($var, $ignore, $die=false)
 {
     var_export($var);
     if ($die) die();

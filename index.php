@@ -7,26 +7,26 @@ if (file_exists($auth_file)) {
     echo "Auth file missing, copy and edit *.sample file in inc/. See comments in that file for more info.";
     die();
 }
-if (file_exists($settings_file)) require_once $settings_file;
+// defaults
+$sitetitle   = "Mikron";
+$dbfile      = "data/mikron.db";
+$formats     = ['markdown', 'mikron'];
+$stylesheets = [];
+$users       = [
+    '127.0.0.1' => 'A. Utho',
+];
+// customization
+if (file_exists($settings_file))  require_once $settings_file;
+if (! defined('TAB_LENGTH'))      define('TAB_LENGTH', 2);
 
-define('TAB_LENGTH', 2);
-$sitetitle  = "Mikron";
-$dbpath     = "data";
-$dbfile     = "$dbpath/mikron.db";
 $allowedit  = true;
 $editurl    = ""; // use if $allowedit is false to put a link to an editable URL
-$users = array(
-    '127.0.0.1'  => 'A. Utho',
-);
-
-$formats = ['markdown', 'mikron'];
-$stylesheets = [];
 
 $url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
 if ($url{strlen($url)-1} == '?') $url = substr($url, 0, strlen($url)-1);
 
-require_once 'inc/site.inc.php';
+require_once 'inc/app.inc.php';
 
 if (!($db = new SQLite3($dbfile))) {
 	die($db->lastErrorMsg());
@@ -40,6 +40,7 @@ $title = $page;
 $page = strtoupper($page);
 if (!valid_page($page)) {
     $html = "Invalid page name";
+    $page = "Invalid"; // reset to prevent weird clientside shizzle
     $a = "";
 }
 
@@ -136,6 +137,7 @@ if ($a == "edit") {
 		}else{
 			$res=$db->query("SELECT title, content, format FROM pages WHERE name='".$db->escapeString($page)."' AND time=".intval($time, 10));
 		}
+        $format = 'markdown';
 		$row = $res->fetchArray(SQLITE3_ASSOC);
 		if ($row === false) {
 			$pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
@@ -159,7 +161,7 @@ if ($a == "edit") {
             <strong>Content</strong> (<a href='".$url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)
                 ".selectList('format', $formats, $format, ['usekeys'=>0,'return'=>1])."
                 <br>
-            <textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
+            <textarea style='width: 100%; height: 500px' id='editTextarea' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
             <div class='submitcontainer'>
                 <input type='submit' value='Save page'>
                 <input type='reset' value='Reset form'>
@@ -206,7 +208,7 @@ if ($a == 'search') {
 	$q        = trim($_GET['q']);
 	$q_length = strlen($q);
 	if (! $q_length) {
-		header("Location: $url?a=search&q=fnord");
+		header("Location: $url"); // this allows ?a=search&q=%s bookmarks
 		die();
 	}
 	$preview_size = 200; // total length of content preview [parts] per found page
@@ -280,7 +282,6 @@ if ($a == 'last_modified') {
 	$sql = 
 	 "SELECT     datetime(MAX(time), 'unixepoch', 'localtime') AS lastedit, name, title AS link_title, ip
 	  FROM       pages
-	  WHERE      name NOT IN ('NEMO')
 	  GROUP BY   name
 	  ORDER BY   lastedit DESC
 	  LIMIT      10";
@@ -342,7 +343,7 @@ if ($html != "") {
 		<a class="sidelink" href="<?php echo $url ?>?a=versions&p=<?php echo $page ?>">Older edits of this page</a>
 	<?php } ?>
 	<a class="sidelink" href="<?php echo $url ?>?a=last_modified">See last changes</a>
-	<div class='shortcutKeyList'>
+	<div class="shortcutKeyList" style="display: none;">
 		Keyboard shortcuts:<br>
 		- <span class='shortcutKeys'>I</span>ndex page<br>
 		- <span class='shortcutKeys'>S</span>earch<br>
@@ -351,7 +352,7 @@ if ($html != "") {
 		- <span class='shortcutKeys'>H</span>istory for this page<br>
 		- <span class='shortcutKeys'>Esc</span>ape = cancel editing<br>
 		- <span class='shortcutKeys'>0-9</span> jump to nth link<br>
-		- <span class='shortcutKeys'>Ctrl</span> show link numbers
+		- <span class='shortcutKeys' id='linkNumbersKey'>Ctrl/Alt</span> show link numbers
 	</div>
 	<div class="padding">
 		You: <?php echo $_SERVER['REMOTE_ADDR']; ?>
@@ -367,8 +368,8 @@ if ($html != "") {
 
 <script type="text/javascript" charset="utf-8">
 	// focus on textarea when editing
-	var ta = document.getElementsByTagName('textarea');
-	if (typeof ta[0] != 'undefined') ta[0].focus();
+	var ta = document.getElementById('editTextarea');
+	if (ta && typeof ta.tagName !== 'undefined') ta.focus();
 </script>
 
 </body>

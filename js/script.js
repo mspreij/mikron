@@ -1,11 +1,3 @@
-/*
-Handle some keyboard shortcuts.
-  "e" for edit
-  "i" for index page
-  "esc" to cancel editing
-  ... var shortcutList has some more
-*/
-
 var $page;
 
 $(function(){
@@ -18,7 +10,38 @@ $(function(){
         location.href = './?a=view&p=' + _this.data('name');
     });
     
+    // arrow keys for prev/next in search pagination (for starters)
+    if ($('#googlinks').length > 0) {
+        keyboardJS.on('right', function(e) {
+            if (e.metaKey || e.ctrlKey) return;
+            let href = $('#googlinks a:contains("next")').attr('href');
+            if (href) location.href = href;
+        });
+        
+        keyboardJS.on('left', function(e) {
+            if (e.metaKey || e.ctrlKey) return;
+            let href = $('#googlinks a:contains("previous")').attr('href');
+            if (href) location.href = href;
+        });
+    }
+    $('#linkNumbersKey').text( (getOS() === 'macOS') ? 'Alt' : 'Ctrl');
+    
+    setNumberLinksForUrls();
 });
+
+function setNumberLinksForUrls(){
+    let pagePart = document.getElementById('pagecontent');
+    let els = pagePart.getElementsByTagName('a');
+
+    let template = '<span class="numberlink" style="display: none;"> {num}</span>';
+    var x = 0;
+    for (let i = 0; i < els.length; i++) {
+        var link = els.item(i);
+        if (link.href == '') continue;
+        var tmp = template.replace("{num}", ++x);
+        link.innerHTML += tmp;
+    }
+}
 
 
 if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index shortcuts
@@ -81,9 +104,9 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
 
     // alt key: Show link keyboard-shortcut numbers
     keyboardJS.on((getOS() === 'macOS') ? 'alt' : 'ctrl', function(e) {
-        $('.numberlink').show();
+        $('.numberlink, .shortcutKeyList').show();
     }, function(e) {
-        $('.numberlink').hide();
+        $('.numberlink, .shortcutKeyList').hide();
     });
 
     // Jump to link
@@ -92,7 +115,7 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
         var keys = '';
         var next_key_delay;
         return function(e) {
-            if (e.metaKey) return; // Cmd-S = save
+            if (e.metaKey || e.ctrlKey) return; // Cmd-S = save
             var key = e.which-48;
             if (! links) links = $('#pagecontent a[href]').not('.toc');
             if (keys.length) {
@@ -117,22 +140,36 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
                 var use_keys = keys;
                 keys = '';
                 // link.trigger('click'); // why doesn't this work?
-                document.location.href = link.attr('href');
+
+                // Changed the location.href to window.open, just so we can open links in a new tab;
+                var linkTarget = link.attr("target");
+                var windowName = (linkTarget == undefined || linkTarget == false) ? "_self": "_blank";
+                window.open(link.attr('href'), windowName);
+
+                // document.location.href = link.attr('href');
                 link.css({fontWeight: 'normal'}); // un-bold link (in case people hit the backbutton)
             }, 400);
         };
     }());
-
-    // any other shortcuts for non-editing go here..
-
+    
+    $(function(){
+    
+    $('.selectOnFocus').on('focus', function () {
+        $(this).select();
+    });
+    
+    });
+    
+    // any other things for non-editing go here..
+    
 }else{ // User is editing
     
     $(function(){ // THIS MAKES IT WORK OK
         // Resize the editing textarea to take up space available for it
-        var nonTextareaVertical = $('textarea').offset().top + 50; // 50px for the save/reset buttons
-        $('textarea').height($('body').height() - nonTextareaVertical);
+        var nonTextareaVertical = $('#editTextarea').offset().top + 50; // 50px for the save/reset buttons
+        $('#editTextarea').height($('body').height() - nonTextareaVertical);
         $(window).on('resize', function() {
-            $('textarea').height($('body').height() - nonTextareaVertical);
+            $('#editTextarea').height($('body').height() - nonTextareaVertical);
         }); // (you can maybe probably do this with CSS? but then this works without having to tear more hair out)
     });
     
