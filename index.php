@@ -24,7 +24,7 @@ $editurl    = ""; // use if $allowedit is false to put a link to an editable URL
 
 $url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
-if ($url{strlen($url)-1} == '?') $url = substr($url, 0, strlen($url)-1);
+if ($url[strlen($url)-1] == '?') $url = substr($url, 0, strlen($url)-1);
 
 require_once 'inc/app.inc.php';
 
