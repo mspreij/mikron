@@ -1,5 +1,6 @@
 {
     "require": {
-        "league/commonmark": "0.18.3"
+        "league/commonmark": "0.18.3" ,
+        "ext-sqlite3": "*"
     }
 }
