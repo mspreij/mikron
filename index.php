@@ -24,8 +24,6 @@ $stylesheets = [];
 
 $url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 
-if ($url{strlen($url)-1} == '?') $url = substr($url, 0, strlen($url)-1);
-
 require_once 'inc/site.inc.php';
 
 if (!($db = new SQLite3($dbfile))) {
@@ -83,7 +81,7 @@ if ($a == "view") {
 	}else{
 		// $row = $row[0];
 		$title = htmlspecialchars($row['title']);
-		if ($title == "") $title = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+		if ($title == "") $title = strtoupper($page[0]).strtolower(substr($page, 1, strlen($page)));
 		if ($time != "") $html .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$url."?a=view&p=$page'>click here</a>.</div>";
 		$html .= wiki2html($row['content'], $row['format']);
 		if ($row['format'] == 'mikron') {
@@ -101,7 +99,7 @@ if ($a == "view") {
 // === Versions ==========================
 if ($a == "versions") {
 	// $title = ucwords($page)." (all)";
-	$title = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+	$title = strtoupper($page[0]).strtolower(substr($page, 1, strlen($page)));
 	$res = $db->query("SELECT datetime(time, 'unixepoch') as lastedit,time,title,content FROM pages WHERE name='".$db->escapeString($page)."' ORDER BY time DESC");
 	while($row = $res->fetchArray(SQLITE3_ASSOC)) $rows[] = $row;
 	if ($rows === false) {
@@ -113,7 +111,7 @@ if ($a == "versions") {
 			$html .= "<li><a href='".$url."?a=view&p=$page";
 			if (!$first) $html .= "&t=".$row['time']."'>"; else $html .= "'>";
 			$pagetitle = htmlspecialchars($row['title']);
-			if ($pagetitle == "") $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+			if ($pagetitle == "") $pagetitle = strtoupper($page[0]).strtolower(substr($page, 1, strlen($page)));
 			$html .= $pagetitle."</a> at ".$row['lastedit'];
 			if ($first) {
 				$first = false;
@@ -138,12 +136,12 @@ if ($a == "edit") {
 		}
 		$row = $res->fetchArray(SQLITE3_ASSOC);
 		if ($row === false) {
-			$pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+			$pagetitle = strtoupper($page[0]).strtolower(substr($page, 1, strlen($page)));
 			$content = "Type the content for the '$title' page here";
 		} else {
 			// $row = $row[0];
 			$pagetitle = htmlspecialchars($row['title'], ENT_QUOTES);
-			if ($pagetitle == "") $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+			if ($pagetitle == "") $pagetitle = strtoupper($page[0]).strtolower(substr($page, 1, strlen($page)));
 			$content = $row['content'];
 			$format  = $row['format'];
 			if ($content == "") $content = "Type the content for the '$pagetitle' page here";
@@ -174,7 +172,7 @@ if ($a == "store") {
 	if (!$allowedit) {
 		$html = "Editing is disabled";
 	} else {
-		$pagetitle = getparam("title", strtoupper($page{0}).strtolower(substr($page, 1, strlen($page))));
+		$pagetitle = getparam("title", strtoupper($page[0]).strtolower(substr($page, 1, strlen($page))));
 		$content   = getparam("content");
 		$format    = getparam("format");
 		if ($content == "") {

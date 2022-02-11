@@ -88,20 +88,20 @@ function handleMikronTags($code) {
     $head = 0;
     $text = '';
     while ($head < $len) {
-        if ($code{$head} == '[' && $code{$head + 1} == '[') {
+        if ($code[$head] == '[' && $code[$head + 1] == '[') {
             $head += 2;
             $cmd = "";
             while ($head < $len) {
-                if ($code{$head} == ']' && $code{$head + 1} == ']') {
+                if ($code[$head] == ']' && $code[$head + 1] == ']') {
                     $head += 2;
                     break;
                 }
-                $cmd .= $code{$head++};
+                $cmd .= $code[$head++];
             }
             $html .= $text.wiki_parse_cmd($cmd);
             $text = "";
         }
-        if ($code{$head} == "\n") {
+        if ($code[$head] == "\n") {
             $html .= "$text\n";
             if (trim($text == "")) {
                 $html .= "</p><p class='content'>";
@@ -135,22 +135,22 @@ function mikron2html($code) {
     $text = "";
     $html = "<p>";
     while ($head < $len) {
-        if ($code{$head} == '[' && $code{$head + 1} == '[') {
+        if ($code[$head] == '[' && $code[$head + 1] == '[') {
             $head += 2;
             $cmd = "";
             while ($head < $len) {
-                if ($code{$head} == ']' && $code{$head + 1} == ']') {
+                if ($code[$head] == ']' && $code[$head + 1] == ']') {
                     $head += 2;
                     break;
                 }
-                $cmd .= $code{$head++};
+                $cmd .= $code[$head++];
             }
             $html .= $text.wiki_parse_cmd($cmd);
             $text = "";
             continue;
         }
         // Bold
-        if ($code{$head} == '*' && $code{$head + 1} == '*') {
+        if ($code[$head] == '*' && $code[$head + 1] == '*') {
             $strong_on = !$strong_on;
             $html .= $text;
             $text = "";
@@ -159,7 +159,7 @@ function mikron2html($code) {
             continue;
         }
         // Italic (emphasis)
-        if ($code{$head} == '\'' && $code{$head + 1} == '\'') {
+        if ($code[$head] == '\'' && $code[$head + 1] == '\'') {
             $em_on = !$em_on;
             $html .= $text;
             $text = "";
@@ -168,7 +168,7 @@ function mikron2html($code) {
             continue;
         }
         // Italic (emphasis)
-        if ($code{$head} == '_' && $code{$head + 1} == '_') {
+        if ($code[$head] == '_' && $code[$head + 1] == '_') {
             $ul_on = !$ul_on;
             $html .= $text;
             $text = "";
@@ -177,7 +177,7 @@ function mikron2html($code) {
             continue;
         }
         // Superscript
-        if ($code{$head} == '^' && $code{$head + 1} == '^') {
+        if ($code[$head] == '^' && $code[$head + 1] == '^') {
             $sup_on = !$sup_on;
             $html .= $text;
             $text = "";
@@ -186,7 +186,7 @@ function mikron2html($code) {
             continue;
         }
         // Subscript
-        if ($code{$head} == ',' && $code{$head + 1} == ',') {
+        if ($code[$head] == ',' && $code[$head + 1] == ',') {
             $sub_on = !$sub_on;
             $html .= $text;
             $text = "";
@@ -195,7 +195,7 @@ function mikron2html($code) {
             continue;
         }
         // Strikethrough
-        if ($code{$head} == '~' && $code{$head + 1} == '~') {
+        if ($code[$head] == '~' && $code[$head + 1] == '~') {
             $strike_on = ! $strike_on;
             $html .= $text;
             $text = "";
@@ -204,7 +204,7 @@ function mikron2html($code) {
             continue;
         }
         // Code (preformatted)
-        if ($code{$head} == '%' && $code{$head + 1} == '%') {
+        if ($code[$head] == '%' && $code[$head + 1] == '%') {
             $code_on = ! $code_on;
             $html .= $text;
             $text = "";
@@ -213,7 +213,7 @@ function mikron2html($code) {
             continue;
         }
 		
-        if ($code{$head} == "\n") {
+        if ($code[$head] == "\n") {
             $html .= "$text\n";
             if (trim($text == "")) {
                 $html .= "</p><p class='content'>";
@@ -221,9 +221,9 @@ function mikron2html($code) {
                 $text = "";
             }
         } else {
-            if ($code{$head} != "\r") {
-                // $text .= htmlspecialchars($code{$head});
-                $text .= ($tmp = htmlspecialchars($code{$head})) ? $tmp : $code[$head]; // "fixes" UTF-8
+            if ($code[$head] != "\r") {
+                // $text .= htmlspecialchars($code[$head]);
+                $text .= ($tmp = htmlspecialchars($code[$head])) ? $tmp : $code[$head]; // "fixes" UTF-8
             }
         }
         $head++;
@@ -306,7 +306,7 @@ function wiki_parse_cmd($cmd) {
         if ($row) {
             if ($ftitle == "") {
                 $pagetitle = htmlspecialchars($row['title']);
-                if ($pagetitle == "") $pagetitle = strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)));
+                if ($pagetitle == "") $pagetitle = strtoupper($page[0]).strtolower(substr($page, 1, strlen($page)));
             } else {
                 $pagetitle = htmlspecialchars($ftitle);
             }
@@ -314,7 +314,7 @@ function wiki_parse_cmd($cmd) {
             return "<a class='knownpageref' href='".$url."?a=view&p=$page'>".$pagetitle."</a>$linkCounterHTML";
         } else {
             if ($ftitle == "")
-                return "<a class='unknownpageref' href='".$url."?a=edit&p=$page'>".strtoupper($page{0}).strtolower(substr($page, 1, strlen($page)))."</a>$linkCounterHTML";
+                return "<a class='unknownpageref' href='".$url."?a=edit&p=$page'>".strtoupper($page[0]).strtolower(substr($page, 1, strlen($page)))."</a>$linkCounterHTML";
             else
                 return "<a class='unknownpageref' href='".$url."?a=edit&p=$page'>".htmlspecialchars($ftitle)."</a>$linkCounterHTML";
         }
@@ -326,7 +326,7 @@ function wiki_parse_cmd($cmd) {
 // valid_page($page) /
 function valid_page($page) {
     for ($i=0; $i<strlen($page); $i++) {
-        if (strchr("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", $page{$i}) === false) // *cough*regex*cough*
+        if (strchr("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", $page[$i]) === false) // *cough*regex*cough*
             return false;
     }
     return true;
