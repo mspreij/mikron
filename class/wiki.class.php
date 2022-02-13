@@ -100,7 +100,7 @@ class Wiki
         }else{
             // $row = $row[0];
             $title = htmlspecialchars($row['title']);
-            if ($title == "") $title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
+            if ($title == "") $title = strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page)));
             if ($time != "") $body .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$this->url."?a=view&p=$this->page'>click here</a>.</div>";
             $body = wiki2html($row['content'], $row['format']);
             if ($row['format'] == 'mikron') {
@@ -125,7 +125,7 @@ class Wiki
 
     // === Versions ======================
     protected function versions() {
-        $title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
+        $title = strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page)));
         $res = $this->db->query("SELECT datetime(time, 'unixepoch') as lastedit, time, title, content FROM pages WHERE name='".$this->db->escapeString($this->page)."' ORDER BY time DESC");
         $rows = [];
         while($row = $res->fetchArray(SQLITE3_ASSOC)) {
@@ -142,7 +142,7 @@ class Wiki
                 $body .= "<li><a href='".$this->url."?a=view&p=$this->page";
                 if (!$first) $body .= "&t=".$row['time']."'>"; else $body .= "'>";
                 $link_title = htmlspecialchars($link_title);
-                if ($link_title == "") $link_title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
+                if ($link_title == "") $link_title = strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page)));
                 $body .= $link_title."</a> at ".$row['lastedit'];
                 if ($first) {
                     $first = false;
@@ -208,7 +208,7 @@ class Wiki
     
     // === Store =========================
     protected function store() {
-        $pagetitle = getparam("title", strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page))));
+        $pagetitle = getparam("title", strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page))));
         $content   = getparam("content");
         $format    = getparam("format");
         if ($content === "") {
