@@ -26,9 +26,6 @@ div#content {
   padding-right: 20px;
 }
 
-#content p {
-  margin: 0px;
-}
 code, .code {
   font-family: consolas, profont, monaco, monospace;
   white-space: pre-wrap;

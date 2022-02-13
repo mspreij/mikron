@@ -113,8 +113,7 @@ class Wiki
             if ($time != "") $body .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$this->url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
             $body .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
         }
-        $bodxy = "Body overruled! (".__FILE__.':'.__LINE__.")<br>
-        v import settings into wiki class somehow.. bunch of separate global variables right now, turn into array somewhere? ini/yml/thing file? PHP more flexible..<br>
+        $body .= "<hr><br>v import settings into wiki class somehow.. bunch of separate global variables right now, turn into array somewhere? ini/yml/thing file? PHP more flexible..<br>
         - then continue handling the actions<br>
           v saving ('store')<br>
           - viewing older versions<br>
@@ -193,7 +192,7 @@ class Wiki
                 <strong>Title</strong> <input type='text' name='title' maxlength='255' value='$pagetitle'><br>
                 <strong>Content</strong> ".($format === 'mikron' ? styled("Warning: mikron formatting, will change to markdown upon saving", 'red'):'')."
                 <br>
-                <textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
+                <textarea style='width: 100%; height: 500px' name='content' id='editTextarea' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
                 <div class='submitcontainer'>
                 <input type='submit' value='Save page'>
                 <input type='reset' value='Reset form'>

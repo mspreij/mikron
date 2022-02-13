@@ -45,21 +45,11 @@ function str_split_unicode($str, $l = 0) {
 //__________________________________________
 // wiki2html($code, $converter='markdown') /
 function wiki2html($code, $converter='markdown') {
-    switch ($converter) {
-        case 'markdown':
-        case 'commonmark':
-            $converter = new CommonMarkConverter();
-            $code = $converter->convertToHtml($code);
-            $code = postProcessMarkdown($code);
-            $code = preg_replace_callback('/\[\[(.*?)\]\]/', 'wiki_parse_cmd_array', $code);
-            return $code;
-            break;
-        case 'mikron':
-            return mikron2html($code);
-        default:
-            return "<h1>unconverted!</h1>" . $code;
-            break;
-    }
+    $converter = new CommonMarkConverter();
+    $code = $converter->convertToHtml($code);
+    $code = postProcessMarkdown($code);
+    $code = preg_replace_callback('/\[\[(.*?)\]\]/', 'wiki_parse_cmd_array', $code);
+    return $code;
 }
 
 //_____________________________
