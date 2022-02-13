@@ -101,7 +101,7 @@ class Wiki
             // $row = $row[0];
             $title = htmlspecialchars($row['title']);
             if ($title == "") $title = strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page)));
-            if ($time != "") $body .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$this->url."?a=view&p=$this->page'>click here</a>.</div>";
+            if ($time != "") $body = "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$this->url."?a=view&p=$this->page'>click here</a>.</div>";
             $body = wiki2html($row['content'], $row['format']);
             if ($row['format'] == 'mikron') {
                 $body = post_process($body);
@@ -113,7 +113,7 @@ class Wiki
             if ($time != "") $body .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$this->url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
             $body .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
         }
-        $body = "Body overruled! (".__FILE__.':'.__LINE__.")<br>
+        $bodxy = "Body overruled! (".__FILE__.':'.__LINE__.")<br>
         v import settings into wiki class somehow.. bunch of separate global variables right now, turn into array somewhere? ini/yml/thing file? PHP more flexible..<br>
         - then continue handling the actions<br>
           v saving ('store')<br>
@@ -173,8 +173,9 @@ class Wiki
                 $row = $res->fetchArray(SQLITE3_ASSOC);
             }
             if (! $row) {
-                $title = ucfirst(strtolower($this->page));
+                $pagetitle = $title = ucfirst(strtolower($this->page));
                 $content = "Type the content for the '$title' page here";
+                $format = "markdown";
             } else {
                 $title = $row['title'];
                 $pagetitle = htmlspecialchars($title, ENT_QUOTES);
@@ -190,8 +191,7 @@ class Wiki
                 <input type='hidden' name='a' value='store'>
                 <input type='hidden' name='p' value='$this->page'>
                 <strong>Title</strong> <input type='text' name='title' maxlength='255' value='$pagetitle'><br>
-                <strong>Content</strong> (<a href='".$this->url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)
-                ".selectList('format', $this->formats, $format, ['usekeys'=>0,'return'=>1])."
+                <strong>Content</strong> ".($format === 'mikron' ? styled("Warning: mikron formatting, will change to markdown upon saving", 'red'):'')."
                 <br>
                 <textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
                 <div class='submitcontainer'>

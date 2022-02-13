@@ -92,3 +92,19 @@ function settings($key=null, $value='')
         }
     }
 }
+
+function styled($string, $color = 'black', $style = '')
+{
+    if (func_num_args() == 1) return $string;
+    $style_str = "color: $color; ";
+    $style = strtolower($style);
+    $styles = [
+        'bold'      => 'font-weight: bold;',
+        'italic'    => 'font-style: italic;',
+        'underline' => 'text-decoration: underline;',
+        'pre'       => 'white-space: pre;',
+    ];
+    foreach(preg_split('/\s+/', $style) as $key => $declaration) if (isset($styles[$style])) $style_str .= ' '.$styles[$style];
+    $string = "<span style='$style_str'>$string</span>";
+    return $string;
+}
