@@ -343,7 +343,7 @@ if ($html != "") {
 		<a class="sidelink" href="<?php echo $url ?>?a=versions&p=<?php echo $page ?>">Older edits of this page</a>
 	<?php } ?>
 	<a class="sidelink" href="<?php echo $url ?>?a=last_modified">See last changes</a>
-	<div class="shortcutKeyList" style="display: none;">
+	<div class='shortcutKeyList'>
 		Keyboard shortcuts:<br>
 		- <span class='shortcutKeys'>I</span>ndex page<br>
 		- <span class='shortcutKeys'>S</span>earch<br>
