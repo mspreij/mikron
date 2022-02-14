@@ -63,5 +63,7 @@
     if (ta && typeof ta.tagName !== 'undefined') ta.focus();
 </script>
 
+<?php include 'templates/github_link.php'; ?>
+
 </body>
 </html>
