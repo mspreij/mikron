@@ -71,7 +71,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?
 - `v` new page property: markup that was used, selectlist on edit. Do the technical/refactoring first. This is a temp thing, moving to some markdown flavor (commonmark atm).
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
-  - possibly even link to return **only** that part of a page, for uh.. reasons... something friendly urls or another get-param
+  - `w` possibly even link to return **only** that part of the page, for uh.. reasons... something friendly urls or another get-param. move this to future when the parent is finished.
 - simply hilight all links, like with background. maybe this'd be a plugin.
 - allow one to include *another* page in the current page with a special tag; it would be subtly bordered or something, and there'd be links to the original/edit mode. This requires the main parser code to have been rewritten properly to class/methods. And should probably be a toggle in prefs to dis/allow it? Make sure it won't nest o.o or simply only include up to n levels deep. OR BOTH. Plugin?
 - on edit: show warning if page is already being edited elsewhere, + name & ip
