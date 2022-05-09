@@ -55,8 +55,8 @@ Things that need to go in a settings thing. File/table/whatever.
 - NB: some things here (also some not yet here) should become plugins rather than core functionality
 - friendly urls for nicer bookmarks, http://domain/path/$TITLE or something. maybe even a nicely cased version that will be uppercased by the script. router. thing.
 - make it auto-include js/css assets from 1 or 2 gitignore'd directories
-- make it so you can add pages without having to come from a link ('n' for new? js prompt? Ajax check for page name?)
-- allow one to rename a page (the actual name, not the title)
+- make it so you can add pages without having to come from a link ('n' for new? js prompt? Ajax check for page name?) (keep link, JS should be optional)
+- allow one to rename a page (the actual name, not the title) (and the history? -> what about renaming to existing page?)
 - Ajax:
   - make a Save action that doesn't leave edit mode, somehow. Ctrl-enter? Maybe even handle_ajax()?
   - search: if zero results, stay on the same page, throw up alert (or new prompt) or something
@@ -71,6 +71,7 @@ Things that need to go in a settings thing. File/table/whatever.
 - keyboard shortcut modifier that opens links in a new tab; alt is tricky in ChromeOS.. two-step shortcuts like in GMail? Shift?
 - `v` new page property: markup that was used, selectlist on edit. Do the technical/refactoring first. This is a temp thing, moving to some markdown flavor (commonmark atm).
 - link to #id/tag/a-name on page, somehow allow adding those easily too (MarkDown have anything? post-process again?)
+  - possibly even link to return **only** that part of a page, for uh.. reasons... something friendly urls or another get-param
 - simply hilight all links, like with background. maybe this'd be a plugin.
 - allow one to include *another* page in the current page with a special tag; it would be subtly bordered or something, and there'd be links to the original/edit mode. This requires the main parser code to have been rewritten properly to class/methods. And should probably be a toggle in prefs to dis/allow it? Make sure it won't nest o.o or simply only include up to n levels deep. OR BOTH. Plugin?
 - on edit: show warning if page is already being edited elsewhere, + name & ip
