@@ -1,7 +1,7 @@
 # Mikron wiki
 
 This is a simple, php/sqlite-based wiki, with very little configuration, intended for small, simple wiki usage.  
-It is very much under development, has a 50+ item todo list, and requires some dependency stuffs, still.
+It is very much ~~under development~~ not done yet, has a 50+ item todo list, and requires some dependency stuffs, still.
 
 
 ### Requirements
