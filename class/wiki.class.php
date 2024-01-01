@@ -1,7 +1,15 @@
 <?php
 /**
-* Thing that handles bunches, created while refactoring. I think the first non-vendor class in here?
-* I need to think up names still.
+* Thing that handles bunches, created while refactoring.
+* 
+*   __construct()
+*   output()
+*   handle_action()  calls other methods from 'action' parameter
+*     view()
+*     edit()
+*     store()
+*     versions()
+*     
 * 
 */
 
@@ -18,12 +26,12 @@ class Wiki
     
     protected $actions = [
         'view',
-        'versions',
         'edit',
         'store',
-        'search',
+        'versions',
         'last_modified',
         'install',
+        'search',
     ];
     
     
@@ -44,6 +52,16 @@ class Wiki
         }
         $this->url = "//".$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
     }
+
+    // output
+    public function output($print=true)
+    {
+        ob_start();
+        require_once $this->template;
+        $html = ob_get_clean();
+        if (! $print) return $html;
+        echo $html;
+    }
     
     // handle_action()
     public function handle_action()
@@ -56,13 +74,17 @@ class Wiki
                 list($title, $body) = $this->edit();
                 break;
             case 'store':
+                // store() does a redirect really, return values are only used on error
                 list($title, $body) = $this->store();
                 break;
             case 'versions':
                 list($title, $body) = $this->versions();
                 break;
-            case 'versions':
-                $this->body = $this->versions();
+            case 'last_modified':
+                list($title, $body) = $this->last_modified();
+                break;
+            case 'search':
+                list($title, $body) = $this->search();
                 break;
             
             default:
@@ -72,16 +94,6 @@ class Wiki
         }
         $this->title = $title;
         $this->body = $body;
-    }
-    
-    // output
-    public function output($print=true)
-    {
-        ob_start();
-        require_once $this->template;
-        $html = ob_get_clean();
-        if (! $print) return $html;
-        echo $html;
     }
     
     // === View ==========================
@@ -99,13 +111,11 @@ class Wiki
             $body = "Page <span class='pagename'>$this->page</span> not found. <a href='?a=edit&p=$this->page'>Create it</a>!";
         }else{
             // $row = $row[0];
+            $body = '';
             $title = htmlspecialchars($row['title']);
-            if ($title == "") $title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
-            if ($time != "") $body .= "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$this->url."?a=view&p=$this->page'>click here</a>.</div>";
-            $body = wiki2html($row['content'], $row['format']);
-            if ($row['format'] == 'mikron') {
-                $body = post_process($body);
-            }
+            if ($title == "") $title = strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page)));
+            if ($time != "") $body = "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$this->url."?a=view&p=$this->page'>click here</a>.</div>";
+            $body .= wiki2html($row['content']);
             if ($row['format'] == 'markdown') {
                 $stylesheets[] = 'markdown.css';
             }
@@ -113,48 +123,22 @@ class Wiki
             if ($time != "") $body .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$this->url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
             $body .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
         }
-        $body = "Body overruled! (".__FILE__.':'.__LINE__.")<br>
+        $body .= "<br>
+        ----------------<br>
         v import settings into wiki class somehow.. bunch of separate global variables right now, turn into array somewhere? ini/yml/thing file? PHP more flexible..<br>
-        - then continue handling the actions<br>
-          v saving ('store')<br>
-          - viewing older versions<br>
+        - then continue handling the actions:<br>
+          v view<br>
+          v edit<br>
+          v store (saving, redirects to view)<br>
+          v versions<br>
+          v last_modified<br>
+          - search<br>
+          v install<br>
         - init various other wiki properties that appear in multiple actions and the template<br>
         - pull queries into methods for now; prefix db_ or something, should be nicer for plugins too";
         return [$title, $body];
     }
 
-    // === Versions ======================
-    protected function versions() {
-        $title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
-        $res = $this->db->query("SELECT datetime(time, 'unixepoch') as lastedit, time, title, content FROM pages WHERE name='".$this->db->escapeString($this->page)."' ORDER BY time DESC");
-        $rows = [];
-        while($row = $res->fetchArray(SQLITE3_ASSOC)) {
-            $rows[] = $row;
-        }
-        if ($rows === []) {
-            $body = "Page <span class='pagename'>$this->page</span> not found. <a href='?a=edit&p=$this->page'>Create it</a>!";
-        } else {
-            $body = "Known edits of this page:<ul>";
-            $first = true;
-            $title = $rows[0]['title'];
-            foreach ($rows as $row) {
-                $link_title = $row['title'];
-                $body .= "<li><a href='".$this->url."?a=view&p=$this->page";
-                if (!$first) $body .= "&t=".$row['time']."'>"; else $body .= "'>";
-                $link_title = htmlspecialchars($link_title);
-                if ($link_title == "") $link_title = strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page)));
-                $body .= $link_title."</a> at ".$row['lastedit'];
-                if ($first) {
-                    $first = false;
-                    $body .= " (current)";
-                }
-                $body .= "</li>";
-            }
-            $body .= "</ul>";
-        }
-        return [$title, $body];
-    }
-    
     // === Edit ==============================
     protected function edit($row=[]) {
         if (!$this->allowedit) {
@@ -178,7 +162,7 @@ class Wiki
             } else {
                 $title = $row['title'];
                 $pagetitle = htmlspecialchars($title, ENT_QUOTES);
-                if ($pagetitle == "" or 1) $pagetitle = ucfirst(strtolower($this->page));
+                if ($pagetitle == "") $pagetitle = ucfirst(strtolower($this->page));
                 $content = $row['content'];
                 $format  = $row['format'];
                 if ($content == "") $content = "Type the content for the '$pagetitle' page here";
@@ -190,10 +174,9 @@ class Wiki
                 <input type='hidden' name='a' value='store'>
                 <input type='hidden' name='p' value='$this->page'>
                 <strong>Title</strong> <input type='text' name='title' maxlength='255' value='$pagetitle'><br>
-                <strong>Content</strong> (<a href='".$this->url."?a=view&p=MIKRON_SYNTAX&mikron'>Mikron Syntax</a>)
-                ".selectList('format', $this->formats, $format, ['usekeys'=>0,'return'=>1])."
+                <strong>Content</strong>
                 <br>
-                <textarea style='width: 100%; height: 500px' name='content' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
+                <textarea style='width: 100%; height: 500px' name='content' id='editTextarea' wrap='soft'>".trim(htmlspecialchars($content))."</textarea>
                 <div class='submitcontainer'>
                 <input type='submit' value='Save page'>
                 <input type='reset' value='Reset form'>
@@ -205,10 +188,10 @@ class Wiki
         }
         return [$title, $body];
     }
-    
+
     // === Store =========================
     protected function store() {
-        $pagetitle = getparam("title", strtoupper($this->page{0}).strtolower(substr($this->page, 1, strlen($this->page))));
+        $pagetitle = getparam("title", strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page))));
         $content   = getparam("content");
         $format    = getparam("format");
         if ($content === "") {
@@ -226,13 +209,69 @@ class Wiki
                 $this->db->escapeString($ip)."')");
         }
         if ($res === false) {
-            $body = "Failed to save $this->page";
+            return ['error saving', "Failed to save $this->page"];
         }else{
             header("Location: ".$this->url."?a=view&p=$this->page");
             die();
         }
     }
-    
+
+    // === Versions ======================
+    protected function versions() {
+        $title = strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page)));
+        $res = $this->db->query("SELECT datetime(time, 'unixepoch') as lastedit, time, title, content FROM pages WHERE name='".$this->db->escapeString($this->page)."' ORDER BY time DESC");
+        $rows = [];
+        while($row = $res->fetchArray(SQLITE3_ASSOC)) {
+            $rows[] = $row;
+        }
+        if ($rows === []) {
+            $body = "Page <span class='pagename'>$this->page</span> not found. <a href='?a=edit&p=$this->page'>Create it</a>!";
+        } else {
+            $body = "Known edits of this page:<ul>";
+            $first = true;
+            $title = $rows[0]['title'];
+            foreach ($rows as $row) {
+                $link_title = $row['title'];
+                $body .= "<li><a href='".$this->url."?a=view&p=$this->page";
+                if (!$first) $body .= "&t=".$row['time']."'>"; else $body .= "'>";
+                $link_title = htmlspecialchars($link_title);
+                if ($link_title == "") $link_title = strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page)));
+                $body .= $link_title."</a> at ".$row['lastedit'];
+                if ($first) {
+                    $first = false;
+                    $body .= " (current)";
+                }
+                $body .= "</li>";
+            }
+            $body .= "</ul>";
+        }
+        return [$title, $body];
+    }
+
+
+    // === Last Modified =====================
+    protected function last_modified() {
+        $sql = 
+            "SELECT     datetime(MAX(time), 'unixepoch', 'localtime') AS lastedit, name, title AS link_title, ip
+             FROM       pages
+             WHERE      name NOT IN ('SECRET PAGES TODO ADD THESE')
+             GROUP BY   name
+             ORDER BY   lastedit DESC
+             LIMIT      10";
+        $res = $this->db->query($sql);
+        while ($row = $res->fetchArray(SQLITE3_ASSOC)) $rows[] = $row;
+        $title = "Last modified pages:";
+        $html .= "<table id='last_modified'>\n<tr><td>Title</td>\n<td>Last edited</td>\n<td>By</td></tr>\n";
+        foreach ($rows as $row) {
+            extract($row);
+            $lastedit = date('H:i:s - l, j F', strtotime($row['lastedit']));
+            if (isset($users[$ip])) $ip = $users[$ip];
+            $html .= "<tr><td>\n<a href='?a=view&amp;p=".rawurlencode($name)."'>".$link_title."</a></td><td>$lastedit\n</td><td>$ip\n</td></tr>\n\n";
+        }
+        $html .= "</table>\n";
+        return ['Last modified pages', $html];
+    }
+
     // === Search ========================
     protected function search() {
         $title    = "Search results";
@@ -312,28 +351,6 @@ class Wiki
         }
         $html .= "</div>";
         
-    }
-    
-    // === Last Modified =====================
-    protected function last_modified() {
-        $sql = 
-            "SELECT     datetime(MAX(time), 'unixepoch', 'localtime') AS lastedit, name, title AS link_title, ip
-             FROM       pages
-             WHERE      name NOT IN ('SECRET PAGES TODO ADD THESE')
-             GROUP BY   name
-             ORDER BY   lastedit DESC
-             LIMIT      10";
-        $res = $db->query($sql);
-        while ($row = $res->fetchArray(SQLITE3_ASSOC)) $rows[] = $row;
-        $title = "Last modified pages:";
-        $html .= "<table id='last_modified'>\n<tr><td>Title</td>\n<td>Last edited</td>\n<td>By</td></tr>\n";
-        foreach ($rows as $row) {
-            extract($row);
-            $lastedit = date('H:i:s - l, j F', strtotime($row['lastedit']));
-            if (isset($users[$ip])) $ip = $users[$ip];
-            $html .= "<tr><td>\n<a href='?a=view&amp;p=".rawurlencode($name)."'>".$link_title."</a></td><td>$lastedit\n</td><td>$ip\n</td></tr>\n\n";
-        }
-        $html .= "</table>\n";
     }
     
     protected function install() {

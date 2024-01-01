@@ -5,8 +5,9 @@ It is very much ~~under development~~ not done yet, has a 50+ item todo list, an
 
 
 ### Requirements
-Some version of PHP that is not ancient (I started using this in 2012 if that's any indication), and includes SQLite3. The current composer.lock file suggests 5.4.8 which was released in October 2012.  
-I have it running under Apache, Nginx, and the PHP CLI server (had to enable some sqlite/pdo dlls in the php.ini file though).
+- PHP 8.\*, probably, because that's what I'm now hacking with.  
+- SQLite 3
+I have it running under Apache, Nginx, Caddy and the PHP CLI server (had to enable some sqlite/pdo dlls in the php.ini file though).
 
 
 ### QUICK Start
@@ -55,4 +56,4 @@ Thank you, original author, for doing the hard work, and letting me build on it.
 <br>
 <br>
 
-MSpreij (<mspreij@gmail.com>), 2018-03-13
+MSpreij (<mspreij@gmail.com>)
