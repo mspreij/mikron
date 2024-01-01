@@ -9,6 +9,13 @@ Some version of PHP that is not ancient (I started using this in 2012 if that's 
 I have it running under Apache, Nginx, and the PHP CLI server (had to enable some sqlite/pdo dlls in the php.ini file though).
 
 
+### QUICK Start
+AKA "I just need it running for dev stuff and don't care about explanations."
+- copy/rename `inc/settings.inc.php` and `inc/auth.inc.php` from their \*.sample files
+- create data directory, either chmod it 777 or chown it to what runs the webserver (often www-data)
+- run `composer install`
+- visit the page in a browser and follow the install link, this should create the database file and tables
+
 ### Install
 
 1. There are two files you need to copy/rename and edit as needed: `inc/settings.inc.php.sample` and `inc/auth.inc.php.sample`. `inc/settings.inc.php` contains various defaults like stylesheets and site title that you can customize. `inc/auth.inc.php` contains some rudimentary auth code. It is recommended to leave *some* form of authentication in place, unless it's a local-access-only wiki.
