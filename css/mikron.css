@@ -47,13 +47,14 @@
 	padding-left: 10px;
 }
 #search_results .highlight {
-	background: #fed;
-	border-bottom: 1px dashed #800;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  color: chartreuse; /* yeah. I went there. */
 }
 #pagecontent span.numberlink {
-	font-size: .8em;
-	color: blue;
-    display: none;
+  font-size: .8em;
+  color: cornflowerblue;
+  display: none;
 }
 
 #pagecontent a span.numberlink {

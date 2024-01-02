@@ -1,17 +1,17 @@
 <?php
 /**
-* Thing that handles bunches, created while refactoring.
-* 
-*   __construct()
-*   output()
-*   handle_action()  calls other methods from 'action' parameter
-*     view()
-*     edit()
-*     store()
-*     versions()
-*     
-* 
-*/
+ * Thing that handles bunches, created while refactoring.
+ * 
+ *   __construct()
+ *   output()
+ *   handle_action()  calls other methods from 'action' parameter
+ *     view()
+ *     edit()
+ *     store()
+ *     versions()
+ *     
+ * 
+**/
 
 class Wiki
 {
@@ -116,9 +116,6 @@ class Wiki
             if ($title == "") $title = strtoupper($this->page[0]).strtolower(substr($this->page, 1, strlen($this->page)));
             if ($time != "") $body = "<div class='contentwarning'>You are looking at an older edit of this page. For the latest version <a href='".$this->url."?a=view&p=$this->page'>click here</a>.</div>";
             $body .= wiki2html($row['content']);
-            if ($row['format'] == 'markdown') {
-                $stylesheets[] = 'markdown.css';
-            }
             if ($body == "") $body = "No content";
             if ($time != "") $body .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$this->url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
             $body .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
@@ -261,22 +258,22 @@ class Wiki
         $res = $this->db->query($sql);
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $rows[] = $row;
         $title = "Last modified pages:";
-        $html .= "<table id='last_modified'>\n<tr><td>Title</td>\n<td>Last edited</td>\n<td>By</td></tr>\n";
+        $body  = "<table id='last_modified'>\n<tr><td>Title</td>\n<td>Last edited</td>\n<td>By</td></tr>\n";
         foreach ($rows as $row) {
             extract($row);
             $lastedit = date('H:i:s - l, j F', strtotime($row['lastedit']));
             if (isset($users[$ip])) $ip = $users[$ip];
-            $html .= "<tr><td>\n<a href='?a=view&amp;p=".rawurlencode($name)."'>".$link_title."</a></td><td>$lastedit\n</td><td>$ip\n</td></tr>\n\n";
+            $body .= "<tr><td>\n<a href='?a=view&amp;p=".rawurlencode($name)."'>".$link_title."</a></td><td>$lastedit\n</td><td>$ip\n</td></tr>\n\n";
         }
-        $html .= "</table>\n";
-        return ['Last modified pages', $html];
+        $body .= "</table>\n";
+        return ['Last modified pages', $body];
     }
 
     // === Search ========================
     protected function search() {
         $title    = "Search results";
-        $html     = '<div id="search_results">';
-        $q        = trim($_GET['q']);
+        $body     = '<div id="search_results">';
+        $q        = trim(getparam('q'));
         $q_length = strlen($q);
         $lpp      = 10; // links per page for pagination
         if (! $q_length) {
@@ -298,14 +295,15 @@ class Wiki
         GROUP BY   p.name
         ORDER BY   occurrences DESC"; // no limit: there isn't any gain (according to some dude online 15 years ago), just select everything and paginate in PHP.
         
-        $res = $db->query($sql);
+        $res = $this->db->query($sql);
+        $rows = [];
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $rows[] = $row;
         $totalFound = count($rows);
-        $page = (int) @$_GET['page'];
+        $page = (int) getparam('page', 0);
         $rows = array_slice($rows, $page * $lpp, $lpp);
         
         if (! empty($rows)) {
-            $html .= "Found $totalFound page".($totalFound==1?'':'s').":<hr>\n";
+            $body .= "Found $totalFound page".($totalFound==1?'':'s').":<hr>\n";
             foreach ($rows as $row) {
                 extract($row);
                 $lastedit = date('H:i:s - l, j F', strtotime($row['lastedit']));
@@ -339,17 +337,19 @@ class Wiki
                     $preview = preg_replace("/(".preg_quote($q, '/').")/i", '<span class="highlight">$1</span>', $preview);
                 }
                 // .. and add it to output:
-                $html .= 
+                $body .= 
                     "<div class='result' data-name='".htmlspecialchars($name, ENT_QUOTES)."'>
                         <a class='title' href='./?a=view&amp;p=".rawurlencode($name)."'>$link_title</a>: $count ".($count != $occurrences ? "($occurrences)":'')."
                 <div class='preview'>$preview <span class='last_edited'>$lastedit</span></div>
                 </div>\n";
             }
-            if ($totalFound > $lpp) $html .= '<br>'. googlinks($lpp, $totalFound);
+            if ($totalFound > $lpp) $body .= '<br>'. googlinks($lpp, $totalFound);
         }else{
-            $html .= 'No pages found.';
+            $body .= 'No pages found.';
         }
-        $html .= "</div>";
+        $body .= "</div>";
+
+        return [$title, $body];
         
     }
     
