@@ -16,10 +16,9 @@
 }
 .shortcutKeyList {
 	padding: 4px 10px;
-	
 }
 .shortcutKeys {
-	color: red;
+	color: orange;
 }
 .bold {
   color: #f08;

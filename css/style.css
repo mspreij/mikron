@@ -36,9 +36,9 @@ div#content {
 code, .code {
   font-family: consolas, profont, monaco, monospace;
   white-space: pre-wrap;
-  background: #eee;
+  background: #222;
   padding: 0 4px;
-  color: navy;
+  color: #6287dd;
   line-height: .9em;
 }
 
@@ -85,7 +85,6 @@ a.knownpageref {
   font-variant: small-caps;
 }
 
-
 a.unknownpageref {
   font-variant: small-caps;
   font-style: italic;
@@ -115,10 +114,10 @@ div.submitcontainer {
 }
 
 div.contentwarning {
-  background: #F0F0F0;
+  background: #222;
   padding: 15px;
-  border: 1px solid #C00000;
-  color: #505050;
+  border: 1px solid #866134;
+  color: #ffc591;
 }
 
 div.toc:before {
