@@ -5,11 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title><?php print htmlents($this->title.($this->sitetitle ? " - ".$this->sitetitle : '')); ?></title>
     <?php
-    // if ($this->printable) {
-    //     echo '<link rel="stylesheet" href="css/printable.css" type="text/css" media="screen,print">';
-    // } else {
-        echo '<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">';
-    // }
+    echo '<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">';
     echo "\n";
     foreach ($this->stylesheets as $stylesheet) {
         echo '    <link rel="stylesheet" href="css/'.$stylesheet.'">'."\n";
@@ -34,7 +30,7 @@
             <a class="sidelink" href="<?php echo $this->url ?>?a=versions&p=<?php echo $this->page ?>">Older edits of this page</a>
         <?php } ?>
         <a class="sidelink" href="<?php echo $this->url ?>?a=last_modified">See last changes</a>
-        <div class='shortcutKeyList'>
+        <div class="shortcutKeyList" style="display: none;">
             Keyboard shortcuts:<br>
             - <span class='shortcutKeys'>I</span>ndex page<br>
             - <span class='shortcutKeys'>S</span>earch<br>
@@ -43,7 +39,7 @@
             - <span class='shortcutKeys'>H</span>istory for this page<br>
             - <span class='shortcutKeys'>Esc</span>ape = cancel editing<br>
             - <span class='shortcutKeys'>0-9</span> jump to nth link<br>
-            - <span class='shortcutKeys' id='linkNumbersKey'>Ctrl</span> show link numbers
+            - <span class='shortcutKeys' id='linkNumbersKey'>Ctrl</span> show link numbers<br>
             - <span class='shortcutKeys'>left/right</span> previous/next in search results
         </div>
         <div class="padding">
