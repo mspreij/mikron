@@ -1,3 +1,7 @@
+NO LONGER IN USE.
+
+The below text is kept for historical reasons, archival purposes, nostalgia and I'm not sure what's in it that I should keep.
+
 This page describes the syntax that Mikron understands for formatting pages.
 If it looks weird, try [[html:<a href='?a=view&p=MIKRON_SYNTAX&mikron'>here</a>]].
 When making major edits to this page, consider updating the original source version of it in index.php.
