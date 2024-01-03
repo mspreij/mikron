@@ -1,6 +1,13 @@
-Note to self: Github edit has a preview-changes thing when editing, saves a lot of commits eh.
-
 This is *messy*, I tried to categorize it but there will be outdated, duplicate and overlapping todo items.
+
+Things that need to move to the other todo list:
+- categorize and prioritize todo list items, hack something to sort them maybe (php file read script, in gitignored directory)
+- chop up js/script.js into view, edit, ..
+- make a flowchart hierarchy type dealio for what functions/methods call what other ones, see if it make sense
+  - shiv in some hooks/callbacks
+  - the action handler method can run through a list, this list can be added to by plugins maybe
+  - db queries in separate methods with possibly useful optional arguments
+  - maybe even the columns in these queries can come from property arrays that can be added to by plugins? (via validating wrappers)
 
 Legend: `-` todo; `*` doing; `!` important/priority; `?` maybe do; `w` waiting for/on $something; `x` won't do; `v|V` done'ish.; `√` Done!  
 Indented todos are part of the parent todo. Later comments (usually for `x`) start with a `>`. I use CommonMark and Markdown interchangeably.
