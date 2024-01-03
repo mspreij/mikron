@@ -105,7 +105,12 @@ class Wiki
         }else{
             $res = $this->db->query("SELECT datetime(time, 'unixepoch') as lastedit, title, format, content FROM pages WHERE name='".$this->db->escapeString($this->page)."' AND time=".intval($time, 10));
         }
-        if (! $res) echo '<div style="color: red;">No result, you might need to run <a href="./?a=install">install</a> at this point.</div>';
+        if (! $res) {
+            return [
+                "That didn't work!",
+                '<div style="color: red;">Query failure, you might need to run <a href="./?a=install">install</a> at this point.</div>'
+            ];
+        }
         $row = $res->fetchArray(SQLITE3_ASSOC);
         if ($row === false) {
             $title = "New page: $this->page";
@@ -142,9 +147,11 @@ class Wiki
                 $row = $res->fetchArray(SQLITE3_ASSOC);
             }
             if (! $row) {
+                // new page
                 $title = $pagetitle = ucfirst(strtolower($this->page));
                 $content = "Type the content for the '$title' page here";
             } else {
+                // existing page
                 $title = $row['title'];
                 $pagetitle = htmlspecialchars($title, ENT_QUOTES);
                 if ($pagetitle == "") $pagetitle = ucfirst(strtolower($this->page));
@@ -153,6 +160,7 @@ class Wiki
                 if ($content == "") $content = "Type the content for the '$pagetitle' page here";
             }
             $warn_err = isset($row['error']) ? $row['error'] : '';
+            // todo: use template, probably
             $body = "
                 $warn_err
                 <form action='$this->url' method='post'>
