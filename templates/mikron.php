@@ -11,9 +11,10 @@
         echo '    <link rel="stylesheet" href="css/'.$stylesheet.'">'."\n";
     }
     ?>
-    <script src='js/jquery.min.js' type='text/javascript'></script>
-    <script src="js/keyboard.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="js/script.js" type="text/javascript" charset="utf-8"></script>
+    <script src='js/jquery.min.js'></script>
+    <script src="js/keyboard.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/edit.js"></script>
     <link rel="stylesheet" href="css/mikron.css" type="text/css" media="screen">
     <link rel="shortcut icon" href="css/favicon.ico"/>
 </head>
@@ -52,12 +53,6 @@
         <div id="pagecontent"><?php print $this->body; ?></div>
     </div>
 </div>
-
-<script type="text/javascript" charset="utf-8">
-    // focus on textarea when editing
-    var ta = document.getElementById('editTextarea');
-    if (ta && typeof ta.tagName !== 'undefined') ta.focus();
-</script>
 
 </body>
 </html>
