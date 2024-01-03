@@ -108,6 +108,7 @@ class Wiki
         if (! $res) echo '<div style="color: red;">No result, you might need to run <a href="./?a=install">install</a> at this point.</div>';
         $row = $res->fetchArray(SQLITE3_ASSOC);
         if ($row === false) {
+            $title = "New page: $this->page";
             $body = "Page <span class='pagename'>$this->page</span> not found. <a href='?a=edit&p=$this->page'>Create it</a>!";
         }else{
             // $row = $row[0];
@@ -154,7 +155,7 @@ class Wiki
                 $row = $res->fetchArray(SQLITE3_ASSOC);
             }
             if (! $row) {
-                $title = ucfirst(strtolower($this->page));
+                $title = $pagetitle = ucfirst(strtolower($this->page));
                 $content = "Type the content for the '$title' page here";
             } else {
                 $title = $row['title'];
