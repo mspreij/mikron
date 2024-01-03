@@ -43,6 +43,11 @@ code, .code {
   line-height: .9em;
 }
 
+pre > code {
+  display: block;
+  line-height: inherit;
+}
+
 div#pagetitle {
   font-size: 30px;
   color: goldenrod;
