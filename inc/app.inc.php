@@ -34,7 +34,7 @@ if (file_exists($settings_file))  require $settings_file;
 
 if (! defined('TAB_LENGTH'))      define('TAB_LENGTH', 2);
 
-// database
+// database object. $dbfile is defined in [default_]settings
 if (!($db = new SQLite3($dbfile))) {
     die($db->lastErrorMsg());
 }

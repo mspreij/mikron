@@ -10,6 +10,7 @@ $action = getparam("a", "view");
 $page   = getparam("p", "Welcome");
 $html   = "";
 
+// $db comes from app.inc.php
 $wiki = new Wiki($db, strtoupper($page), $action);
 
 $wiki->handle_action();

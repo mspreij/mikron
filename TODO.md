@@ -7,21 +7,18 @@ Indented todos are part of the parent todo. Later comments (usually for `x`) sta
 
 **Technical (..somewhat; well, it was. maybe.):**
 
-- `*` split up index.php a little, and refactor. The installation/init code (and/or syntax template) at least can go in separate file(s), esp when adding prefs/session tables
-- `v` there is a crazy notion that Markdown - or commonMark, http://commonmark.org - would work, but we'd have to hack in wiki-style links and colors.. post-process? That could actually work, with the double-square bracket style. All the current formatting options could be left to markdown(/cm).
 - `*` refactor (yeah, again?): outsource the fetch-page-parse things to a class that splits it up in methods so it's easier to hook things in, and like implement sub-page tags.
 - `-` look at https://github.com/victorstanciu/Wikitten/ just for fun
 - `-` a few todos here concern settings/prefs in wiki pages vs hardcoded, maybe just add a table "settings" with name=value pairs for whatevers. like for example the IP -> name map, or the shortcuts -> pages.
   - `-` also look at session preferences, possibly for different modifier keys for shortcuts
 - `?` can/should the sidebar and the stylesheets be wiki'd as well?
 - `-` never mind the shortcut keys.. (additional prefs table? same db)
-- `v` better (?) idea: make an array/object in JS that's more easily editable that handles the thing. This is temporary.
-- `x` ~~make the shortcut keys object a non-repo file, just have a shortcutkeys.sample.js file (in the repo) that can be loaded if shortcutkeys.js doesn't exist.~~
+- `*` better (?) idea: make an array/object in JS that's more easily editable that handles the thing. This is temporary.
 - `?` also show the shortcut key (if any) next to the title for the current page - and possibly in the links, too.
 - `*` stop editing these effing todos and start doing them
 
 
-**Bugs:**
+**Bugs/nice-to-fix:**
 
 - `v-ish` this alt-key thing...
   - `v` make it so the links are numbered automatically, but the numbers are hidden and only show up on `Alt`-down.
@@ -129,7 +126,8 @@ Things that need to go in a settings thing. File/table/whatever.
 - tags or labels on pages? requires more tables..
 - checkboxes that save state via Ajax for todo lists (field 'metadata' or something?)
   - or eeeven, checkboxes with multiple states for deluxe todo lists (todo, doing, done, waiting/low-prio, won't-do, prio, unclear).  
-    This probably needs a tag-type thing that 1. knows what list-options it has 2. can save/"hold" those 3. is not overly long to type.  - hooks, for...
+    This probably needs a tag-type thing that 1. knows what list-options it has 2. can save/"hold" those 3. is not overly long to type.
+- hooks, for...
 - plugins! which could be single files that, when active, are included 1-3 times with '?js' or '?css' in the url. Pro: single file. Con: messy code. BUT SINGLE FILE! Come to think of it regular custom .js and .css files could go in the same directory and be included normally, in the right spots. Plugin filenames would be foo.php or foo.js.php or foo.js.css.php, depending. Make a nice little sample template. More complicated plugins would have their own directory and could sit in the same plugins dir.
 - show shortcut keys next to links to those pages, WIKI[w] or something.. possibly instead of the alt-numbers
 - prevent people overwriting eachother's work while editing at the same time - send an md5 of the current content along, if it has changed upon save, someone else also edited and saved. do smart things somehow? or lock records while editing? try keep it non-easily-breaking o.o

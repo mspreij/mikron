@@ -67,8 +67,8 @@ function wiki_parse_cmd_array($array) {
     return wiki_parse_cmd($array[1]);
 }
 
-//_______________________
-// wiki_parse_cmd($cmd) /
+// 
+// wiki_parse_cmd($cmd)
 function wiki_parse_cmd($cmd) {
     global $heads, $db, $url;
     static $linkCounter = 0;
