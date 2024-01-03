@@ -31,8 +31,9 @@ div#content {
 }
 
 #content p {
-  margin: 0px;
+/*  margin: 0px;*/
 }
+
 code, .code {
   font-family: consolas, profont, monaco, monospace;
   white-space: pre-wrap;

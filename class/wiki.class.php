@@ -121,19 +121,6 @@ class Wiki
             if ($time != "") $body .= "<div class='contentwarning'>To open the editor for this page using the content from this version <a href='".$this->url."?a=edit&p=$this->page&t=$time'>click here</a>.</div>";
             $body .= "<div class='lastedit'>Last edit at ".$row['lastedit']." UTC</div>";
         }
-        $body .= "<br>
-        ----------------<br>
-        v import settings into wiki class somehow.. bunch of separate global variables right now, turn into array somewhere? ini/yml/thing file? PHP more flexible..<br>
-        - then continue handling the actions:<br>
-          v view<br>
-          v edit<br>
-          v store (saving, redirects to view)<br>
-          v versions<br>
-          v last_modified<br>
-          - search<br>
-          v install<br>
-        - init various other wiki properties that appear in multiple actions and the template<br>
-        - pull queries into methods for now; prefix db_ or something, should be nicer for plugins too";
         return [$title, $body];
     }
 
@@ -290,9 +277,9 @@ class Wiki
         INNER JOIN (
             SELECT MAX(time) AS max_time, name FROM pages GROUP BY name
         ) AS l
-        ON      (p.time = l.max_time AND p.name = l.name)
+          ON      (p.time = l.max_time AND p.name = l.name)
         WHERE      p.title   LIKE '%$q_esc%'
-        OR       p.content LIKE '%$q_esc%'
+          OR       p.content LIKE '%$q_esc%'
         GROUP BY   p.name
         ORDER BY   occurrences DESC"; // no limit: there isn't any gain (according to some dude online 15 years ago), just select everything and paginate in PHP.
         

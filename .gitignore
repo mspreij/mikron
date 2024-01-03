@@ -8,3 +8,4 @@ inc/auth.inc.php
 /todo.txt
 *.log
 inc/settings.inc.php
+shortlist_todo.txt
