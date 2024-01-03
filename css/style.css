@@ -46,6 +46,7 @@ code, .code {
 pre > code {
   display: block;
   line-height: inherit;
+  padding: 4px;
 }
 
 div#pagetitle {

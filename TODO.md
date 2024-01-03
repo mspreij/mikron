@@ -108,7 +108,9 @@ Things that need to go in a settings thing. File/table/whatever.
 - github link somewhere in the sidebar?
 - https://tiddlywiki.com/ steal ideas \o/
 - the hooks thing: they'll be all over the place, sort them out into a tree-like structure maybe, also easier to document
-
+- backup db functionality (plugin?), since wiki has write perms already in data/
+- default dark/light themes with easier tweaking; kinda like SublimeText prefs maybe? user-settings overrule hardcoded defaults
+- fix favicon(s?)
 
 **Housekeeping:**
 
