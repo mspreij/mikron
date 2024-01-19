@@ -1,16 +1,5 @@
 This is *messy*, I tried to categorize it but there will be outdated, duplicate and overlapping todo items.
 
-Things that need to move to the other todo list:
-- categorize and prioritize todo list items, hack something to sort them maybe (php file read script, in gitignored directory)
-- chop up js/script.js into view, edit, ..
-- make a flowchart hierarchy type dealio for what functions/methods call what other ones, see if it make sense
-  - shiv in some hooks/callbacks
-  - the action handler method can run through a list, this list can be added to by plugins maybe
-  - db queries in separate methods with possibly useful optional arguments
-  - maybe even the columns in these queries can come from property arrays that can be added to by plugins? (via validating wrappers)
-- page level settings:
-  - enable plugin for this specific page (could be different parser/format, or different editor \o/)
-
 Legend: `-` todo; `*` doing; `!` important/priority; `?` maybe do; `w` waiting for/on $something; `x` won't do; `v|V` done'ish.; `√` Done!  
 Indented todos are part of the parent todo. Later comments (usually for `x`) start with a `>`. I use CommonMark and Markdown interchangeably.
 
@@ -94,6 +83,7 @@ Things that need to go in a settings thing. File/table/whatever.
 
 - detail view
   - next/previous links (including if possible datetime, user, update comment < requires new column)
+  - show date for current shown more prominent
   - show IP/username, datetime modified, stuff. syntax mode? size?
   - diff-view of content (background color? on alt?) <https://github.com/paulgb/simplediff>
     - alternatively, show a collapsible patch at the top of the page?
