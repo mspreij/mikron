@@ -1,4 +1,5 @@
 <?php
+# testing new github keys
 $auth_file     = 'inc/auth.inc.php';
 $settings_file = 'inc/settings.inc.php';
 if (file_exists($auth_file)) {
