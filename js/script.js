@@ -69,10 +69,10 @@ if (location.href.indexOf('a=edit')==-1) { // *not* editing, catch edit & index 
       "i": './?a=view',
       "h": './?a=versions&p='+$('body').data('page'),
       "l": './?a=last_modified',
-      "w": './?a=view&p=WIKI',
-      "u": './?a=view&p=URLS',
-      "p": './?a=view&p=PROJECTS',
-      "t": './?a=view&p=TODO'
+      // "w": './?a=view&p=WIKI',
+      // "u": './?a=view&p=URLS',
+      // "p": './?a=view&p=PROJECTS',
+      // "t": './?a=view&p=TODO'
     };
     
     for (var shortcut in shortcutList) {
