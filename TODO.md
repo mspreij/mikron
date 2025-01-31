@@ -32,7 +32,7 @@ Indented todos are part of the parent todo. Later comments (usually for `x`) sta
 - `?` does the sqlite table template need fixing with the IP varchar(64) (or really whatever) field? this is fixed *somewhere*
 - `x` effing chromebook triggers last link on '0' (zero) key. if that's by design, fuck it, leave it in. `>` I'm calling this a feature, now.
 - `-` currently CommonMark parsing is followed by handling `[[...]]` tags, which works, but messed up bash code examples which also use `[[`. Disabling that also disables the possibility to color some parts in said example :-( As an in-between solution, fix the [[-processor to simply ignore [[ followed by whitespace. Or, possibly, just ignore any invalid [[ things like `[[foo bar]]` where foo is a command that doesn't allow spaces, or simply not a valid command at all - atm it replaces this with 'Unknown wiki command' while often also messing up the rest of the line.
-
+- `-` Markdown shouldn't parse things between <code> and I think it is so take another look at what library/version you're using for that
 
 **Global settings:**
 
